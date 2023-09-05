@@ -26,12 +26,12 @@ public class BuildVars {
     public static boolean NO_SCOPED_STORAGE = Build.VERSION.SDK_INT <= 29;
     public static int BUILD_VERSION = 2808;
     public static String BUILD_VERSION_STRING = "9.0.2";
-    public static int APP_ID = 4;
-    public static String APP_HASH = "014b35b6184100b085b0d0572f9b5103";
+    public static int APP_ID = 22965454;
+    public static String APP_HASH = "8068b94bf079fa7851e985f1883dbbfb";
 
     public static String SMS_HASH = isStandaloneApp() ? "w0lkcmTZkKh" : (DEBUG_VERSION ? "O2P2z+/jBpJ" : "oLeq9AcOZkT");
     public static String PLAYSTORE_APP_URL = "https://play.google.com/store/apps/details?id=org.telegram.messenger";
-    public static String GOOGLE_AUTH_CLIENT_ID = "760348033671-81kmi3pi84p11ub8hp9a1funsv0rn2p9.apps.googleusercontent.com";
+    public static String GOOGLE_AUTH_CLIENT_ID = "67518078830-mrmifskbss70s7ugan6cl1bs76fhv1ek.apps.googleusercontent.com";
 
     public static String HUAWEI_APP_ID = "101184875";
 

@@ -29,7 +29,8 @@ public class BuildVars {
     public static int APP_ID = 22965454;
     public static String APP_HASH = "8068b94bf079fa7851e985f1883dbbfb";
 
-    public static String SMS_HASH = isStandaloneApp() ? "w0lkcmTZkKh" : (DEBUG_VERSION ? "O2P2z+/jBpJ" : "oLeq9AcOZkT");
+    public static String SMS_HASH = "";
+    // public static String SMS_HASH = isStandaloneApp() ? "w0lkcmTZkKh" : (DEBUG_VERSION ? "O2P2z+/jBpJ" : "oLeq9AcOZkT");
     public static String PLAYSTORE_APP_URL = "https://play.google.com/store/apps/details?id=org.telegram.messenger";
     public static String GOOGLE_AUTH_CLIENT_ID = "67518078830-mrmifskbss70s7ugan6cl1bs76fhv1ek.apps.googleusercontent.com";
 

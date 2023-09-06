@@ -22,7 +22,7 @@
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:colorPrimaryDark">#426482</item>
-        <item name="android:colorPrimary">#527da3</item>
+        <item name="android:colorPrimary">#00969E</item>
         <item name="android:navigationBarColor">#000000</item>
         <item name="android:textViewStyle">@style/MyTextViewStyle</item>
         <item name="android:forceDarkAllowed">false</item>

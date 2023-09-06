@@ -17,7 +17,7 @@
         <item name="android:windowBackground">@android:color/white</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:colorPrimaryDark">#426482</item>
-        <item name="android:colorPrimary">#527da3</item>
+        <item name="android:colorPrimary">#00969E</item>
         <item name="android:navigationBarColor">#000000</item>
         <item name="android:textViewStyle">@style/MyTextViewStyle</item>
         <item name="android:forceDarkAllowed">false</item>
@@ -35,7 +35,7 @@
         <item name="android:listChoiceBackgroundIndicator">@drawable/list_selector_ex</item>
         <item name="android:actionBarItemBackground">@drawable/bar_selector_style</item>
         <item name="android:colorPrimaryDark">#33000000</item>
-        <item name="android:colorPrimary">#527da3</item>
+        <item name="android:colorPrimary">#00969E</item>
         <item name="android:alertDialogTheme">@style/Theme.TMessages.Dialog.Alert</item>
         <item name="android:colorControlActivated">#808080</item>
         <item name="android:textColorHighlight">#60808080</item>
@@ -62,8 +62,8 @@
     </style>
 
     <style name="Theme.TMessages.Dialog.Alert" parent="android:style/Theme.Material.Light.Dialog.Alert">
-        <item name="android:colorAccent">#4991cc</item>
-        <item name="android:colorPrimary">#527da3</item>
+        <item name="android:colorAccent">#00969E</item>
+        <item name="android:colorPrimary">#00969E</item>
         <item name="android:colorControlActivated">#808080</item>
     </style>
 
@@ -98,7 +98,7 @@
     <!--ACTION BAR-->
 
     <style name="ActionBar.Transparent.TMessages.Start" parent="android:style/Widget.Material.Light.ActionBar">
-        <item name="android:background">#ff527da3</item>
+        <item name="android:background">#ff00969E</item>
         <item name="android:logo">@drawable/transparent</item>
         <item name="android:title">""</item>
     </style>
@@ -113,7 +113,7 @@
     <!--BORDERLESS BUTTON-->
 
     <style name="Theme.TMessages.BorderLessButton" parent="android:Widget.Material.Light.ButtonBar.AlertDialog">
-        <item name="android:textColor">#4991cc</item>
+        <item name="android:textColor">#00969E</item>
     </style>
 
     <!--DATEPICKER VIEW-->
@@ -159,8 +159,8 @@
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowFullscreen">false</item>
 
-        <item name="android:colorAccent">#4991cc</item>
-        <item name="android:colorPrimary">#527da3</item>
+        <item name="android:colorAccent">#00969E</item>
+        <item name="android:colorPrimary">#00969E</item>
         <item name="android:colorControlActivated">#808080</item>
         <item name="android:textColorHighlight">#60808080</item>
         <item name="android:windowActionModeOverlay">true</item>

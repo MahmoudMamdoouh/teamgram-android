@@ -3990,7 +3990,7 @@ public class Theme {
         defaultColors.put(key_dialogIcon, 0xff676b70);
         defaultColors.put(key_dialogRedIcon, 0xffe14d4d);
         defaultColors.put(key_dialogGrayLine, 0xffd2d2d2);
-        defaultColors.put(key_dialogTopBackground, 0xff6fb2e5);
+        defaultColors.put(key_dialogTopBackground, 0xff00969E);
         defaultColors.put(key_dialogInputField, 0xffdbdbdb);
         defaultColors.put(key_dialogInputFieldActivated, 0xff37a9f0);
         defaultColors.put(key_dialogCheckboxSquareBackground, 0xff43a0df);
@@ -4002,7 +4002,7 @@ public class Theme {
         defaultColors.put(key_dialogProgressCircle, 0xff289deb);
         defaultColors.put(key_dialogLineProgress, 0xff527da3);
         defaultColors.put(key_dialogLineProgressBackground, 0xffdbdbdb);
-        defaultColors.put(key_dialogButton, 0xff4991cc);
+        defaultColors.put(key_dialogButton, 0xff00969E);
         defaultColors.put(key_dialogButtonSelector, 0x0f000000);
         defaultColors.put(key_dialogScrollGlow, 0xfff5f6f7);
         defaultColors.put(key_dialogRoundCheckBox, 0xff4cb4f5);
@@ -4097,7 +4097,7 @@ public class Theme {
         defaultColors.put(key_contextProgressOuter3, 0xffffffff);
         defaultColors.put(key_contextProgressInner4, 0xffcacdd0);
         defaultColors.put(key_contextProgressOuter4, 0xff2f3438);
-        defaultColors.put(key_fastScrollActive, 0xff52a3db);
+        defaultColors.put(key_fastScrollActive, 0xff00969E);
         defaultColors.put(key_fastScrollInactive, 0xffc9cdd1);
         defaultColors.put(key_fastScrollText, 0xffffffff);
 
@@ -4110,12 +4110,13 @@ public class Theme {
         defaultColors.put(key_avatar_backgroundOrange, 0xfff28c48);
         defaultColors.put(key_avatar_backgroundViolet, 0xff8e85ee);
         defaultColors.put(key_avatar_backgroundGreen, 0xff76c84d);
-        defaultColors.put(key_avatar_backgroundCyan, 0xff5fbed5);
-        defaultColors.put(key_avatar_backgroundBlue, 0xff549cdd);
+        defaultColors.put(key_avatar_backgroundCyan, 0xffFFE29C);
+        defaultColors.put(key_avatar_backgroundBlue, 0xff00969E);
         defaultColors.put(key_avatar_backgroundPink, 0xfff2749a);
 
-        defaultColors.put(key_avatar_backgroundInProfileBlue, 0xff5085b1);
-        defaultColors.put(key_avatar_backgroundActionBarBlue, 0xff598fba);
+        defaultColors.put(key_avatar_backgroundInProfileBlue, 0xffFFE29C);
+        defaultColors.put(key_avatar_backgroundActionBarBlue, 0xff00969E);
+
         defaultColors.put(key_avatar_subtitleInProfileBlue, 0xffd7eafa);
         defaultColors.put(key_avatar_actionBarSelectorBlue, 0xff4981ad);
         defaultColors.put(key_avatar_actionBarIconBlue, 0xffffffff);
@@ -4127,8 +4128,7 @@ public class Theme {
         defaultColors.put(key_avatar_nameInMessageCyan, 0xff379eb8);
         defaultColors.put(key_avatar_nameInMessageBlue, 0xff4e92cc);
         defaultColors.put(key_avatar_nameInMessagePink, 0xff4e92cc);
-
-        defaultColors.put(key_actionBarDefault, 0xff527da3);
+        defaultColors.put(key_actionBarDefault, 0xff00969E);
         defaultColors.put(key_actionBarDefaultIcon, 0xffffffff);
         defaultColors.put(key_actionBarActionModeDefault, 0xffffffff);
         defaultColors.put(key_actionBarActionModeDefaultTop, 0x10000000);
@@ -4196,7 +4196,7 @@ public class Theme {
         defaultColors.put(key_chats_mentionIcon, 0xffffffff);
         defaultColors.put(key_chats_menuBackground, 0xffffffff);
         defaultColors.put(key_chats_menuItemText, 0xff444444);
-        defaultColors.put(key_chats_menuItemCheck, 0xff598fba);
+        defaultColors.put(key_chats_menuItemCheck, 0xff00969E);
         defaultColors.put(key_chats_menuItemIcon, 0xff889198);
         defaultColors.put(key_chats_menuName, 0xffffffff);
         defaultColors.put(key_chats_menuPhone, 0xffffffff);
@@ -4204,12 +4204,12 @@ public class Theme {
         defaultColors.put(key_chats_menuCloud, 0xffffffff);
         defaultColors.put(key_chats_menuCloudBackgroundCats, 0xff427ba9);
         defaultColors.put(key_chats_actionIcon, 0xffffffff);
-        defaultColors.put(key_chats_actionBackground, 0xff65a9e0);
-        defaultColors.put(key_chats_actionPressedBackground, 0xff569dd6);
+        defaultColors.put(key_chats_actionBackground, 0xff00969E);
+        defaultColors.put(key_chats_actionPressedBackground, 0xff00969E);
         defaultColors.put(key_chats_actionUnreadIcon, 0xff737373);
         defaultColors.put(key_chats_actionUnreadBackground, 0xffffffff);
         defaultColors.put(key_chats_actionUnreadPressedBackground, 0xfff2f2f2);
-        defaultColors.put(key_chats_menuTopBackgroundCats, 0xff598fba);
+        defaultColors.put(key_chats_menuTopBackgroundCats, 0xff00969E);
         defaultColors.put(key_chats_archivePullDownBackground, 0xffc6c9cc);
         defaultColors.put(key_chats_archivePullDownBackgroundActive, 0xff66a9e0);
 
@@ -4602,7 +4602,7 @@ public class Theme {
         defaultColors.put(key_stickers_menuSelector, 0x0f000000);
 
         defaultColors.put(key_changephoneinfo_image, 0xffb8bfc5);
-        defaultColors.put(key_changephoneinfo_image2, 0xff50a7ea);
+        defaultColors.put(key_changephoneinfo_image2, 0xff00969E);
 
         defaultColors.put(key_groupcreate_hintText, 0xffa1aab3);
         defaultColors.put(key_groupcreate_cursor, 0xff52a3db);
@@ -4616,7 +4616,7 @@ public class Theme {
         defaultColors.put(key_contacts_inviteText, 0xffffffff);
 
         defaultColors.put(key_login_progressInner, 0xffe1eaf2);
-        defaultColors.put(key_login_progressOuter, 0xff62a0d0);
+        defaultColors.put(key_login_progressOuter, 0xff00969E);
 
         defaultColors.put(key_musicPicker_checkbox, 0xff29b6f7);
         defaultColors.put(key_musicPicker_checkboxCheck, 0xffffffff);
@@ -10796,6 +10796,8 @@ public class Theme {
     }
 
     private static void addChatPaint(String key, Paint paint, String colorKey) {
+        paint.setColor(0xff00969E);
+
         defaultChatPaints.put(key, paint);
         if (colorKey != null) {
             defaultChatPaintColors.put(key, colorKey);

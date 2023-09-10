@@ -568,7 +568,7 @@ public class InviteContactsActivity extends BaseFragment implements Notification
         infoTextView.setBackgroundColor(Theme.getColor(Theme.key_contacts_inviteBackground));
         infoTextView.setTextColor(Theme.getColor(Theme.key_contacts_inviteText));
         infoTextView.setGravity(Gravity.CENTER);
-        infoTextView.setText(LocaleController.getString("InviteFriendsHelp", R.string.InviteFriendsHelp));
+        infoTextView.setText("Select contacts to invite them to Vconnct");
         infoTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13);
         infoTextView.setTypeface(AndroidUtilities.getTypeface("fonts/rmedium.ttf"));
         infoTextView.setPadding(AndroidUtilities.dp(17), AndroidUtilities.dp(9), AndroidUtilities.dp(17), AndroidUtilities.dp(9));
@@ -742,15 +742,15 @@ public class InviteContactsActivity extends BaseFragment implements Notification
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view;
-            switch (viewType) {
-                case 1:
+//            switch (viewType) {
+//                case 1:
                     view = new InviteTextCell(context);
-                    ((InviteTextCell) view).setTextAndIcon(LocaleController.getString("ShareTelegram", R.string.ShareTelegram), R.drawable.share);
-                    break;
-                default:
-                    view = new InviteUserCell(context, true);
-                    break;
-            }
+                    ((InviteTextCell) view).setTextAndIcon("Share Vconnct...", R.drawable.share);
+//                    break;
+//                default:
+//                    view = new InviteUserCell(context, true);
+//                    break;
+//            }
             return new RecyclerListView.Holder(view);
         }
 

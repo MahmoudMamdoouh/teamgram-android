@@ -964,7 +964,12 @@ public class ChatActionCell extends BaseCell implements DownloadController.FileD
         }
         Paint backgroundPaint = getThemedPaint(Theme.key_paint_chatActionBackground);
         textPaint = (TextPaint) getThemedPaint(Theme.key_paint_chatActionText);
+        System.out.println("MAHMOOOOODDDDDDD");
         if (overrideBackground != null) {
+            System.out.println("MAHMOOOOODDDDDDD");
+            System.out.println(overrideBackground);
+            System.out.println("MAHMOOOOODDDDDDD");
+
             int color = getThemedColor(overrideBackground);
             if (overrideBackgroundPaint == null) {
                 overrideBackgroundPaint = new Paint(Paint.ANTI_ALIAS_FLAG);

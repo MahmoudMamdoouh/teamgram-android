@@ -1438,6 +1438,7 @@ public class ThemeActivity extends BaseFragment implements NotificationCenter.No
         private Theme.ThemeAccent currentAccent;
         private boolean checked;
 
+
         InnerAccentView(Context context) {
             super(context);
         }

@@ -51,6 +51,9 @@ public class HintDialogCell extends FrameLayout {
     CheckBox2 checkBox;
     private final boolean drawCheckbox;
 
+
+
+//    !============== user hints in search view =============================================
     public HintDialogCell(Context context, boolean drawCheckbox) {
         super(context);
         this.drawCheckbox = drawCheckbox;
@@ -72,7 +75,6 @@ public class HintDialogCell extends FrameLayout {
         addView(counterView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 28, Gravity.TOP,0 ,4,0,0));
         counterView.setColors(Theme.key_chats_unreadCounterText, Theme.key_chats_unreadCounter);
         counterView.setGravity(Gravity.RIGHT);
-
         if (drawCheckbox) {
             checkBox = new CheckBox2(context, 21);
             checkBox.setColor(Theme.key_dialogRoundCheckBox, Theme.key_dialogBackground, Theme.key_dialogRoundCheckBoxCheck);

@@ -83,7 +83,7 @@ import javax.microedition.khronos.egl.EGLSurface;
 import javax.microedition.khronos.opengles.GL10;
 
 public class IntroActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
-    private final static int ICON_WIDTH_DP = 200, ICON_HEIGHT_DP = 150;
+    private final static int ICON_WIDTH_DP = 100, ICON_HEIGHT_DP = 100;
 
     private final Object pagerHeaderTag = new Object(),
             pagerMessageTag = new Object();
@@ -123,19 +123,19 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
 
         titles = new String[]{
                 LocaleController.getString("Page1Title", R.string.Page1Title),
-                LocaleController.getString("Page2Title", R.string.Page2Title),
-                LocaleController.getString("Page3Title", R.string.Page3Title),
-                LocaleController.getString("Page5Title", R.string.Page5Title),
-                LocaleController.getString("Page4Title", R.string.Page4Title),
-                LocaleController.getString("Page6Title", R.string.Page6Title)
+////                LocaleController.getString("Page2Title", R.string.Page2Title),
+////                LocaleController.getString("Page3Title", R.string.Page3Title),
+////                LocaleController.getString("Page5Title", R.string.Page5Title),
+////                LocaleController.getString("Page4Title", R.string.Page4Title),
+//                LocaleController.getString("Page6Title", R.string.Page6Title)
         };
         messages = new String[]{
                 LocaleController.getString("Page1Message", R.string.Page1Message),
-                LocaleController.getString("Page2Message", R.string.Page2Message),
-                LocaleController.getString("Page3Message", R.string.Page3Message),
-                LocaleController.getString("Page5Message", R.string.Page5Message),
-                LocaleController.getString("Page4Message", R.string.Page4Message),
-                LocaleController.getString("Page6Message", R.string.Page6Message)
+//                LocaleController.getString("Page2Message", R.string.Page2Message),
+//                LocaleController.getString("Page3Message", R.string.Page3Message),
+//                LocaleController.getString("Page5Message", R.string.Page5Message),
+//                LocaleController.getString("Page4Message", R.string.Page4Message),
+//                LocaleController.getString("Page6Message", R.string.Page6Message)
         };
         return true;
     }
@@ -230,7 +230,9 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
         frameContainerView.addView(frameLayout2, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP, 0, 78, 0, 0));
 
         TextureView textureView = new TextureView(context);
-        frameLayout2.addView(textureView, LayoutHelper.createFrame(ICON_WIDTH_DP, ICON_HEIGHT_DP, Gravity.CENTER));
+
+        //!=========== INTRO Telegram Lottie =====================
+    //    frameLayout2.addView(textureView, LayoutHelper.createFrame(ICON_WIDTH_DP, ICON_HEIGHT_DP, Gravity.TOP));
         textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
@@ -316,14 +318,15 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
 
         startMessagingButton = new TextView(context) {
             CellFlickerDrawable cellFlickerDrawable;
-
+//! Shimmer in start messaging button intro
             @Override
             protected void onDraw(Canvas canvas) {
                 super.onDraw(canvas);
                 if (cellFlickerDrawable == null) {
                     cellFlickerDrawable = new CellFlickerDrawable();
                     cellFlickerDrawable.drawFrame = false;
-                    cellFlickerDrawable.repeatProgress = 2f;
+                    //Speed
+                    cellFlickerDrawable.repeatProgress = 3f;
                 }
                 cellFlickerDrawable.setParentWidth(getMeasuredWidth());
                 AndroidUtilities.rectTmp.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
@@ -358,7 +361,7 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
         });
 
         bottomPages = new BottomPagesView(context, viewPager, 6);
-        frameContainerView.addView(bottomPages, LayoutHelper.createFrame(66, 5, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, ICON_HEIGHT_DP + 200, 0, 0));
+//        frameContainerView.addView(bottomPages, LayoutHelper.createFrame(66, 5, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, ICON_HEIGHT_DP + 200, 0, 0));
 
         switchLanguageTextView = new TextView(context);
         switchLanguageTextView.setGravity(Gravity.CENTER);
@@ -567,8 +570,9 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
                 }
             };
 
-            headerTextView.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
-            headerTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 26);
+            headerTextView.setTextColor(Theme.getColor(Theme.key_changephoneinfo_image2));
+            headerTextView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 30);
+
             headerTextView.setGravity(Gravity.CENTER);
             frameLayout.addView(headerTextView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.TOP | Gravity.LEFT, 18, 244, 18, 0));
 
@@ -579,7 +583,7 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
 
             container.addView(frameLayout, 0);
 
-            headerTextView.setText(titles[position]);
+            headerTextView.setText(AndroidUtilities.replaceTags(titles[position]));
             messageTextView.setText(AndroidUtilities.replaceTags(messages[position]));
 
             return frameLayout;
@@ -963,7 +967,7 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
             for (int i = 0; i < viewPager.getChildCount(); i++) {
                 View ch = viewPager.getChildAt(i);
                 TextView headerTextView = ch.findViewWithTag(pagerHeaderTag);
-                headerTextView.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
+                headerTextView.setTextColor(Theme.getColor(Theme.key_changephoneinfo_image2));
                 TextView messageTextView = ch.findViewWithTag(pagerMessageTag);
                 messageTextView.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteGrayText3));
             }

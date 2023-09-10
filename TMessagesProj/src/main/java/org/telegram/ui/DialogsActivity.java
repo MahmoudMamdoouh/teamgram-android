@@ -2318,11 +2318,11 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
             } else {
                 statusDrawable = new AnimatedEmojiDrawable.SwapAnimatedEmojiDrawable(null, AndroidUtilities.dp(26));
                 statusDrawable.center = true;
-                if (BuildVars.DEBUG_VERSION) {
-                    actionBar.setTitle(LocaleController.getString("AppNameBeta", R.string.AppNameBeta), statusDrawable);
-                } else {
-                    actionBar.setTitle(LocaleController.getString("AppName", R.string.AppName), statusDrawable);
-                }
+                // if (BuildVars.DEBUG_VERSION) {
+                     actionBar.setTitle("Vconnct", statusDrawable);
+                // } else {
+                //     actionBar.setTitle("Vconnct", statusDrawable);
+                // }
                 updateStatus(UserConfig.getInstance(currentAccount).getCurrentUser(), false);
             }
             if (folderId == 0) {
@@ -4219,6 +4219,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         updateFiltersView(true, null, null, false, true);
     }
 
+
+    //!=========== on long press chat =============
     private void createActionMode(String tag) {
         if (actionBar.actionModeIsExist(tag)) {
             return;

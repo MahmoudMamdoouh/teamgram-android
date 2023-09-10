@@ -1737,6 +1737,7 @@ public class LoginActivity extends BaseFragment {
             phoneOutlineView = new OutlineTextContainerView(context);
             phoneOutlineView.addView(linearLayout, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_VERTICAL, 16, 8, 16, 8));
             phoneOutlineView.setText(LocaleController.getString(R.string.PhoneNumber));
+
             addView(phoneOutlineView, LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, 58, 16, 8, 16, 8));
 
             plusTextView = new TextView(context);
@@ -2186,7 +2187,8 @@ public class LoginActivity extends BaseFragment {
 
             phoneField.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlackText));
             phoneField.setHintTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteHintText));
-            phoneField.setCursorColor(Theme.getColor(Theme.key_windowBackgroundWhiteInputFieldActivated));
+            phoneField.setCursorColor(Theme.getColor(Theme.key_changephoneinfo_image2));
+//            phoneField.color
 
             if (syncContactsBox != null) {
                 syncContactsBox.setSquareCheckBoxColor(Theme.key_checkboxSquareUnchecked, Theme.key_checkboxSquareBackground, Theme.key_checkboxSquareCheck);
@@ -3174,7 +3176,7 @@ public class LoginActivity extends BaseFragment {
             if (timeTextColorTag == null) timeTextColorTag = Theme.key_windowBackgroundWhiteGrayText6;
             timeText.setTextColor(Theme.getColor(timeTextColorTag));
 
-            problemText.setTextColor(Theme.getColor(Theme.key_windowBackgroundWhiteBlueText4));
+            problemText.setTextColor(Theme.getColor(Theme.key_changephoneinfo_image2));
             wrongCode.setTextColor(Theme.getColor(Theme.key_dialogTextRed));
         }
 
@@ -6350,6 +6352,7 @@ public class LoginActivity extends BaseFragment {
             avatarDrawable.setAvatarType(AvatarDrawable.AVATAR_TYPE_REGISTER);
             avatarDrawable.setInfo(5, null, null);
             avatarImage.setImageDrawable(avatarDrawable);
+//            avatarImage.setBackgroundColor(0xff00969E);
             avatarContainer.addView(avatarImage, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
             Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);

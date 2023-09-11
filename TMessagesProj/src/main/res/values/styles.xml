@@ -232,4 +232,14 @@
         <item name="android:textColor">@color/widget_badge</item>
     </style>
 
+    <style name="TMessages.AppWidget.Badgee" parent="Base.TMessages.AppWidget.Badge">
+        <item name="android:textColor">@color/widget_badge</item>
+    </style>
+
+
+    <style name="Theme.TMessages.Zego" parent="Theme.AppCompat">
+<!--        <item name="android:textColor">@color/widget_badge</item>-->
+    </style>
+
+
 </resources>

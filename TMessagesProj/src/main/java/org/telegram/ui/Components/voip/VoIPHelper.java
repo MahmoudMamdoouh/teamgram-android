@@ -38,6 +38,7 @@ import org.telegram.messenger.SendMessagesHelper;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.voip.Instance;
 import org.telegram.messenger.voip.VoIPService;
+//import org.telegram.messenger.voip.ZegoCallActivity;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
 import org.telegram.ui.ActionBar.AlertDialog;
@@ -59,8 +60,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+
+//import im.zego.zim.entity.ZIMCallInviteConfig;
+//import im.zego.zim.entity.ZIMPushConfig;
 
 public class VoIPHelper {
 
@@ -68,53 +73,138 @@ public class VoIPHelper {
 
 	private static final int VOIP_SUPPORT_ID = 4244000;
 
-	public static void startCall(TLRPC.User user, boolean videoCall, boolean canVideoCall, final Activity activity, TLRPC.UserFull userFull, AccountInstance accountInstance) {
-		if (userFull != null && userFull.phone_calls_private) {
-			new AlertDialog.Builder(activity)
-					.setTitle(LocaleController.getString("VoipFailed", R.string.VoipFailed))
-					.setMessage(AndroidUtilities.replaceTags(LocaleController.formatString("CallNotAvailable", R.string.CallNotAvailable,
-							ContactsController.formatName(user.first_name, user.last_name))))
-					.setPositiveButton(LocaleController.getString("OK", R.string.OK), null)
-					.show();
-			return;
-		}
-		if (ConnectionsManager.getInstance(UserConfig.selectedAccount).getConnectionState() != ConnectionsManager.ConnectionStateConnected) {
-			boolean isAirplaneMode = Settings.System.getInt(activity.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
-			AlertDialog.Builder bldr = new AlertDialog.Builder(activity)
-					.setTitle(isAirplaneMode ? LocaleController.getString("VoipOfflineAirplaneTitle", R.string.VoipOfflineAirplaneTitle) : LocaleController.getString("VoipOfflineTitle", R.string.VoipOfflineTitle))
-					.setMessage(isAirplaneMode ? LocaleController.getString("VoipOfflineAirplane", R.string.VoipOfflineAirplane) : LocaleController.getString("VoipOffline", R.string.VoipOffline))
-					.setPositiveButton(LocaleController.getString("OK", R.string.OK), null);
-			if (isAirplaneMode) {
-				final Intent settingsIntent = new Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
-				if (settingsIntent.resolveActivity(activity.getPackageManager()) != null) {
-					bldr.setNeutralButton(LocaleController.getString("VoipOfflineOpenSettings", R.string.VoipOfflineOpenSettings), (dialog, which) -> activity.startActivity(settingsIntent));
-				}
-			}
-			try {
-				bldr.show();
-			} catch (Exception e) {
-				FileLog.e(e);
-			}
-			return;
-		}
 
-		if (Build.VERSION.SDK_INT >= 23) {
-			int code;
-			ArrayList<String> permissions = new ArrayList<>();
-			if (activity.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-				permissions.add(Manifest.permission.RECORD_AUDIO);
-			}
-			if (videoCall && activity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-				permissions.add(Manifest.permission.CAMERA);
-			}
-			if (permissions.isEmpty()) {
-				initiateCall(user, null, null, videoCall, canVideoCall, false, null, activity, null, accountInstance);
-			} else {
-				activity.requestPermissions(permissions.toArray(new String[0]), videoCall ? 102 : 101);
-			}
-		} else {
-			initiateCall(user, null, null, videoCall, canVideoCall, false, null, activity, null, accountInstance);
-		}
+
+//!================= Start call ==================
+	public static void startCall(TLRPC.User user, boolean videoCall, boolean canVideoCall, final Activity activity, TLRPC.UserFull userFull, AccountInstance accountInstance) {
+
+
+		// String targetUserID = String.valueOf(user.id) ; ; // The ID of the user you want to call.
+		// String targetUserName = user.first_name + " " + user.last_name; // The username of the user you want to call.
+
+
+		// System.out.println(targetUserID);
+		// System.out.println(targetUserName);
+
+
+		// activity.setTheme(R.style.Theme_TMessages_Zego);
+
+
+
+
+//// Send call invitation
+//		List<String> invitees = null;  // List of callees
+//		invitees.add("421234");       // ID of the callee
+//		ZIMCallInviteConfig config = new ZIMCallInviteConfig();
+//		config.timeout = 200; // Timeout for the invitation in seconds, range: 1-600
+//
+//// (Optional) Fill in when it is necessary to send a call invitation to an offline user
+//		ZIMPushConfig pushConfig = new ZIMPushConfig();
+//		pushConfig.title = "your title";
+//		pushConfig.content = "your content";
+//		pushConfig.payload = "your payload";
+//		config.pushConfig = pushConfig;
+//
+//		zim.callInvite(invitees, config, new ZIMCallInvitationSentCallback() {
+//			public void onCallInvitationSent(String callID, ZIMCallInvitationSentInfo info, ZIMError errorInfo) {
+//				// The callID here is generated internally by the SDK to uniquely identify a call invitation. It will be used when the initiator cancels the call or the invitee accepts/rejects the call.
+//			}
+//		});
+//
+//// Callback notification for the invitee after receiving the invitation
+//		zim.setEventHandler(new ZIMEventHandler() {
+//			void onCallInvitationReceived(ZIM zim, ZIMCallInvitationReceivedInfo info, String callID) {
+//
+//			}
+//		});
+
+//		ZegoSendCallInvitationButton button = new ZegoSendCallInvitationButton(activity);
+//		//	If true, a video call is made when the button is pressed. Otherwise, a voice call is made.
+////		button.setIsVideoCall(true);
+////		//resourceID can be used to specify the ringtone of an offline call invitation, which must be set to the same value as the Push Resource ID in ZEGOCLOUD Admin Console. This only takes effect when the notifyWhenAppRunningInBackgroundOrQuit is true.
+//////		button.setResourceID("zego_uikit_call");
+////		button.setInvitees(Collections.singletonList(new ZegoUIKitUser(targetUserID)));
+//
+//
+////		ZegoSendCallInvitationButton button = new ZegoSendCallInvitationButton(activity);
+//		button.setIsVideoCall(true);
+//		button.setResourceID("zego_uikit_call");
+//		button.setInvitees(Collections.singletonList(new ZegoUIKitUser(targetUserID,targetUserName)));
+//
+
+
+
+
+        // System.out.println("MAHMOUUDDD_call_start");
+		// Intent intent = new Intent(activity, ZegoCallActivity.class);
+//		intent.putExtra("appID", appID);
+//		intent.putExtra("appSign", appSign);
+//		intent.putExtra("userID", userID);
+//		intent.putExtra("userName", userName);
+//		intent.putExtra("callID", callID);
+//		if (activity == null){
+//			System.out.println("nulllll");
+//		}
+		// System.out.println(activity);
+
+		// try {
+		// 	System.out.println("MAHMOUUDDD_call_finish_testt");
+
+		// 	activity.startActivity(intent);
+		// } catch (Throwable e) {
+		// 	System.out.println("MAHMOUUDDD_call_error");
+
+		// 	FileLog.e(e);
+		// }
+		// System.out.println("MAHMOUUDDD_call_finish");
+
+
+//		if (userFull != null && userFull.phone_calls_private) {
+//			new AlertDialog.Builder(activity)
+//					.setTitle(LocaleController.getString("VoipFailed", R.string.VoipFailed))
+//					.setMessage(AndroidUtilities.replaceTags(LocaleController.formatString("CallNotAvailable", R.string.CallNotAvailable,
+//							ContactsController.formatName(user.first_name, user.last_name))))
+//					.setPositiveButton(LocaleController.getString("OK", R.string.OK), null)
+//					.show();
+//			return;
+//		}
+//		if (ConnectionsManager.getInstance(UserConfig.selectedAccount).getConnectionState() != ConnectionsManager.ConnectionStateConnected) {
+//			boolean isAirplaneMode = Settings.System.getInt(activity.getContentResolver(), Settings.System.AIRPLANE_MODE_ON, 0) != 0;
+//			AlertDialog.Builder bldr = new AlertDialog.Builder(activity)
+//					.setTitle(isAirplaneMode ? LocaleController.getString("VoipOfflineAirplaneTitle", R.string.VoipOfflineAirplaneTitle) : LocaleController.getString("VoipOfflineTitle", R.string.VoipOfflineTitle))
+//					.setMessage(isAirplaneMode ? LocaleController.getString("VoipOfflineAirplane", R.string.VoipOfflineAirplane) : LocaleController.getString("VoipOffline", R.string.VoipOffline))
+//					.setPositiveButton(LocaleController.getString("OK", R.string.OK), null);
+//			if (isAirplaneMode) {
+//				final Intent settingsIntent = new Intent(Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+//				if (settingsIntent.resolveActivity(activity.getPackageManager()) != null) {
+//					bldr.setNeutralButton(LocaleController.getString("VoipOfflineOpenSettings", R.string.VoipOfflineOpenSettings), (dialog, which) -> activity.startActivity(settingsIntent));
+//				}
+//			}
+//			try {
+//				bldr.show();
+//			} catch (Exception e) {
+//				FileLog.e(e);
+//			}
+//			return;
+//		}
+//
+//		if (Build.VERSION.SDK_INT >= 23) {
+//			int code;
+//			ArrayList<String> permissions = new ArrayList<>();
+//			if (activity.checkSelfPermission(Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+//				permissions.add(Manifest.permission.RECORD_AUDIO);
+//			}
+//			if (videoCall && activity.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//				permissions.add(Manifest.permission.CAMERA);
+//			}
+//			if (permissions.isEmpty()) {
+//				initiateCall(user, null, null, videoCall, canVideoCall, false, null, activity, null, accountInstance);
+//			} else {
+//				activity.requestPermissions(permissions.toArray(new String[0]), videoCall ? 102 : 101);
+//			}
+//		} else {
+//			initiateCall(user, null, null, videoCall, canVideoCall, false, null, activity, null, accountInstance);
+//		}
 	}
 
 	public static void startCall(TLRPC.Chat chat, TLRPC.InputPeer peer, String hash, boolean createCall, Activity activity, BaseFragment fragment, AccountInstance accountInstance) {

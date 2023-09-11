@@ -3,6 +3,7 @@ apply plugin: 'com.android.application'
 repositories {
     mavenCentral()
     google()
+     
 }
 
 configurations {
@@ -25,7 +26,7 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 31
+    compileSdkVersion 33
     buildToolsVersion '31.0.0'
 
     defaultConfig.applicationId = APP_PACKAGE
@@ -142,7 +143,7 @@ android {
     }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 23
         targetSdkVersion 30
         versionName APP_VERSION_NAME
         ndkVersion "21.4.7075529"

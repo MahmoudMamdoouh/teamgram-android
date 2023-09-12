@@ -337,7 +337,8 @@ public class InviteMembersBottomSheet extends UsersAlertBase implements Notifica
         floatingButton.setAlpha(0.0f);
         floatingButton.setContentDescription(LocaleController.getString("Next", R.string.Next));
 
-        containerView.addView(floatingButton, LayoutHelper.createFrame((Build.VERSION.SDK_INT >= 21 ? 56 : 60), (Build.VERSION.SDK_INT >= 21 ? 56 : 60), Gravity.RIGHT | Gravity.BOTTOM, 14, 14, 14, 14));
+        containerView.addView(floatingButton, LayoutHelper.createFrame((Build.VERSION.SDK_INT >= 21 ? 56 : 60), (Build.VERSION.SDK_INT >= 21 ? 56 : 60),
+                Gravity.RIGHT | Gravity.BOTTOM, 14, 85, 14, 85));
 
         ((ViewGroup.MarginLayoutParams) emptyView.getLayoutParams()).topMargin = AndroidUtilities.dp(20);
         ((ViewGroup.MarginLayoutParams) emptyView.getLayoutParams()).leftMargin = AndroidUtilities.dp(4);

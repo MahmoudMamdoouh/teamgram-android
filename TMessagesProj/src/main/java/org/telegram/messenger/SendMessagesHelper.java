@@ -76,6 +76,7 @@ import org.telegram.ui.TwoStepVerificationSetupActivity;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
@@ -7949,6 +7950,8 @@ public class SendMessagesHelper extends BaseController implements NotificationCe
                     retriever.release();
                 } catch (RuntimeException ex) {
                     // Ignore failures while cleaning up.
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }

@@ -806,7 +806,8 @@ public class GroupCreateActivity extends BaseFragment implements NotificationCen
                 }
             });
         }
-        frameLayout.addView(floatingButton);
+        frameLayout.addView(floatingButton,LayoutHelper.createFrame((Build.VERSION.SDK_INT >= 21 ? 56 : 60) + 20, (Build.VERSION.SDK_INT >= 21 ? 56 : 60) + 20,
+                (LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.BOTTOM, LocaleController.isRTL ? 4 : 0, 0, LocaleController.isRTL ? 0 : 4, 85));
         floatingButton.setOnClickListener(v -> onDonePressed(true));
         if (chatType != ChatObject.CHAT_TYPE_CHANNEL) {
             floatingButton.setVisibility(View.INVISIBLE);

@@ -191,6 +191,7 @@ public class ThemePreviewActivity extends BaseFragment implements DownloadContro
     private RecyclerListView listView;
     private DialogsAdapter dialogsAdapter;
     private ImageView floatingButton;
+    private ImageView floatingButton2;
 
     private boolean wasScroll;
 
@@ -445,7 +446,7 @@ public class ThemePreviewActivity extends BaseFragment implements DownloadContro
         listView.setOnItemClickListener((view, position) -> {
 
         });
-        page1.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.LEFT | Gravity.TOP));
+        page1.addView(listView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT, Gravity.LEFT | Gravity.BOTTOM));
 
         floatingButton = new ImageView(context);
         floatingButton.setScaleType(ImageView.ScaleType.CENTER);

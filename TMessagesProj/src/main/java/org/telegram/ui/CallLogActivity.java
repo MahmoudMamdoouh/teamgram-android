@@ -1,5 +1,8 @@
 package org.telegram.ui;
 
+import static org.telegram.ui.Components.GroupCallPip.finish;
+import static org.webrtc.ContextUtils.getApplicationContext;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -8,6 +11,7 @@ import android.animation.StateListAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Outline;
 import android.graphics.Paint;
@@ -71,6 +75,8 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 public class CallLogActivity extends BaseFragment implements NotificationCenter.NotificationCenterDelegate {
 
 	private ListAdapter listViewAdapter;
@@ -99,6 +105,7 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 	private boolean scrollUpdated;
 	private boolean floatingHidden;
 	private final AccelerateDecelerateInterpolator floatingInterpolator = new AccelerateDecelerateInterpolator();
+	private BottomNavigationView bottomNavigationView;
 
 	private Drawable greenDrawable;
 	private Drawable greenDrawable2;
@@ -386,6 +393,12 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 	@Override
 	public boolean onFragmentCreate() {
 		super.onFragmentCreate();
+
+
+		System.out.println("onFragmentCreate");
+
+
+
 		getCalls(0, 50);
 		activeGroupCalls = getMessagesController().getActiveGroupCalls();
 
@@ -410,6 +423,63 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 
 	@Override
 	public View createView(Context context) {
+
+
+		//******* Radwan  *******
+
+//		bottomNavigationView = new BottomNavigationView(getContext());
+//
+//
+//		// Create menu items
+//		bottomNavigationView.getMenu().add(0, R.id.bottom_home, 0, "Home").setIcon(R.drawable.baseline_home_24);
+//		bottomNavigationView.getMenu().add(0, R.id.bottom_call, 1, "Calls").setIcon(R.drawable.baseline_call_24);
+//		bottomNavigationView.getMenu().add(0, R.id.bottom_meet, 2, "Meets").setIcon(R.drawable.baseline_meet_24);
+//		bottomNavigationView.getMenu().add(0, R.id.bottom_meet, 3, "Settings").setIcon(R.drawable.baseline_settings_24);
+//		bottomNavigationView.setBackgroundResource(R.color.primary_color);
+//
+//
+//		bottomNavigationView.setSelectedItemId(R.id.bottom_call);
+
+
+
+
+//
+//		// Set an item selected listener
+//		bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+//			int itemId = item.getItemId();
+//			if (itemId == R.id.bottom_home) {
+//
+//				Intent intent = new Intent(getContext(), LaunchActivity.class);
+//				context.startActivity(intent);
+//
+//
+////				context.startActivity(new Intent());
+//			} else if (itemId == R.id.bottom_call) {
+//
+//				return true;
+//
+//			} else if (itemId == R.id.bottom_meet) {
+//
+//
+//			} else if (itemId == R.id.bottom_settings) {
+//
+//
+//			}
+//			return true;
+//		});
+
+
+
+
+//		// Set the BottomNavigationView as the content view
+//		frameLayout.addView(bottomNavigationView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT,60 ));
+
+
+		//*******  *******  *******  *******  *******  *******  *******  *******  *******  **************  *******  *******  *******  *******  *******  *******  *******
+
+
+
+
 		greenDrawable = getParentActivity().getResources().getDrawable(R.drawable.ic_call_made_green_18dp).mutate();
 		greenDrawable.setBounds(0, 0, greenDrawable.getIntrinsicWidth(), greenDrawable.getIntrinsicHeight());
 		greenDrawable.setColorFilter(new PorterDuffColorFilter(Theme.getColor(Theme.key_calls_callReceivedGreenIcon), PorterDuff.Mode.MULTIPLY));
@@ -540,7 +610,6 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 		floatingButton = new ImageView(context);
 		floatingButton.setVisibility(View.VISIBLE);
 		floatingButton.setScaleType(ImageView.ScaleType.CENTER);
-
 		Drawable drawable = Theme.createSimpleSelectorCircleDrawable(AndroidUtilities.dp(56), Theme.getColor(Theme.key_chats_actionBackground), Theme.getColor(Theme.key_chats_actionPressedBackground));
 		if (Build.VERSION.SDK_INT < 21) {
 			Drawable shadowDrawable = context.getResources().getDrawable(R.drawable.floating_shadow).mutate();
@@ -566,7 +635,8 @@ public class CallLogActivity extends BaseFragment implements NotificationCenter.
 				}
 			});
 		}
-		frameLayout.addView(floatingButton, LayoutHelper.createFrame(Build.VERSION.SDK_INT >= 21 ? 56 : 60, Build.VERSION.SDK_INT >= 21 ? 56 : 60, (LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.BOTTOM, LocaleController.isRTL ? 14 : 0, 0, LocaleController.isRTL ? 0 : 14, 14));
+		frameLayout.addView(floatingButton, LayoutHelper.createFrame(Build.VERSION.SDK_INT >= 21 ? 56 : 60, Build.VERSION.SDK_INT >= 21 ? 56 : 60,
+				(LocaleController.isRTL ? Gravity.LEFT : Gravity.RIGHT) | Gravity.BOTTOM, LocaleController.isRTL ? 14 : 0, 0, LocaleController.isRTL ? 0 : 14, 85));
 		floatingButton.setOnClickListener(v -> {
 			Bundle args = new Bundle();
 			args.putBoolean("destroyAfterSelect", true);

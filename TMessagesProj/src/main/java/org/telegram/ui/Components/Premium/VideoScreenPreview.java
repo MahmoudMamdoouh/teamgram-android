@@ -40,6 +40,7 @@ import org.telegram.ui.Components.voip.CellFlickerDrawable;
 import org.telegram.ui.PremiumPreviewFragment;
 
 import java.io.File;
+import java.io.IOException;
 
 public class VideoScreenPreview extends FrameLayout implements PagerHeaderView, NotificationCenter.NotificationCenterDelegate {
 
@@ -53,7 +54,7 @@ public class VideoScreenPreview extends FrameLayout implements PagerHeaderView, 
     String attachFileName;
     ImageReceiver imageReceiver = new ImageReceiver(this);
 
-    private void checkVideo() {
+    private void checkVideo() throws IOException {
         if (file != null && file.exists()) {
             MediaMetadataRetriever retriever = new MediaMetadataRetriever();
             retriever.setDataSource(ApplicationLoader.applicationContext, Uri.fromFile(file));
@@ -233,7 +234,11 @@ public class VideoScreenPreview extends FrameLayout implements PagerHeaderView, 
                     File file = FileLoader.getInstance(currentAccount).getPathToAttach(document);
                     AndroidUtilities.runOnUIThread(() -> {
                         this.file = file;
-                        checkVideo();
+                        try {
+                            checkVideo();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     });
                 });
 
@@ -457,7 +462,11 @@ public class VideoScreenPreview extends FrameLayout implements PagerHeaderView, 
         attached = true;
         updateAttachState();
         if (!firstFrameRendered) {
-            checkVideo();
+            try {
+                checkVideo();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
         NotificationCenter.getInstance(currentAccount).addObserver(this, NotificationCenter.fileLoaded);
     }
@@ -476,7 +485,11 @@ public class VideoScreenPreview extends FrameLayout implements PagerHeaderView, 
             final String path = (String) args[0];
             if (attachFileName != null && attachFileName.equals(path)) {
                 file = (File) args[1];
-                checkVideo();
+                try {
+                    checkVideo();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

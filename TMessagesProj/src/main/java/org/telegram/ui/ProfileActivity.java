@@ -2537,40 +2537,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         ttlIconView.setColorFilter(new PorterDuffColorFilter(getThemedColor(Theme.key_actionBarDefaultIcon), PorterDuff.Mode.MULTIPLY));
         AndroidUtilities.updateViewVisibilityAnimated(ttlIconView, false, 0.8f, false);
         ttlIconView.setImageResource(R.drawable.msg_mini_autodelete_timer);
-        TLRPC.User user = MessagesController.getInstance(currentAccount).getUser(UserConfig.getInstance(currentAccount).getClientUserId());
-
-
-
-        String targetUserID = String.valueOf(userId) ; ; // The ID of the user you want to call.
-        String targetUserName = user.first_name + " " + user.last_name; // The username of the user you want to call.
-//        ZegoSendCallInvitationButton buttonn = new ZegoSendCallInvitationButton(this.getContext());
-//        //	If true, a video call is made when the button is pressed. Otherwise, a voice call is made.
-////		button.setIsVideoCall(true);
-////		//resourceID can be used to specify the ringtone of an offline call invitation, which must be set to the same value as the Push Resource ID in ZEGOCLOUD Admin Console. This only takes effect when the notifyWhenAppRunningInBackgroundOrQuit is true.
-//////		button.setResourceID("zego_uikit_call");
-////		button.setInvitees(Collections.singletonList(new ZegoUIKitUser(targetUserID)));
-//
-//
-////		ZegoSendCallInvitationButton button = new ZegoSendCallInvitationButton(activity);
-//        buttonn.setIsVideoCall(false);
-//        buttonn.setResourceID("zego_uikit_call");
-//
-//        buttonn.setOnClickListener(
-//
-//                v -> {
-//
-//                    System.out.println("yaraaab");
-//                    System.out.println(targetUserID);
-//                    buttonn.setInvitees(Collections.singletonList(new ZegoUIKitUser(targetUserID,targetUserName)));
-//
-//                }
-//
-//        );
-//
-//        otherItem.addView(buttonn, LayoutHelper.createFrame(30, 30, Gravity.CENTER_VERTICAL | Gravity.RIGHT, 8, 2, 0, 0));
-//
-
-//        otherItem.addView(ttlIconView, LayoutHelper.createFrame(12, 12, Gravity.CENTER_VERTICAL | Gravity.LEFT, 8, 2, 0, 0));
+        otherItem.addView(ttlIconView, LayoutHelper.createFrame(12, 12, Gravity.CENTER_VERTICAL | Gravity.LEFT, 8, 2, 0, 0));
         otherItem.setContentDescription(LocaleController.getString("AccDescrMoreOptions", R.string.AccDescrMoreOptions));
 
         int scrollTo;

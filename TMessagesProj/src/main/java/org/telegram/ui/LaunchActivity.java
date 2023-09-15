@@ -79,9 +79,9 @@ import com.google.android.gms.common.api.Status;
 import com.google.firebase.appindexing.Action;
 import com.google.firebase.appindexing.FirebaseUserActions;
 import com.google.firebase.appindexing.builders.AssistActionBuilder;
-//import com.zegocloud.uikit.prebuilt.call.config.ZegoNotificationConfig;
-//import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationConfig;
-//import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationService;
+import com.zegocloud.uikit.prebuilt.call.config.ZegoNotificationConfig;
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationConfig;
+import com.zegocloud.uikit.prebuilt.call.invite.ZegoUIKitPrebuiltCallInvitationService;
 
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AccountInstance;
@@ -306,31 +306,32 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     }
                 }
             }
+        } else {
+//!=============== ZEGO CONFIG ========================
+            TLRPC.User user = UserConfig.getInstance(currentAccount).getCurrentUser();
+            System.out.println("YALAhwyyyyyyyy");
+
+            Application application = getApplication(); // Android's application context
+            long appID = 654464311;   // yourAppID
+            String appSign = "a087a0b9a7d4169da49300c6c699936a3e9f45b0d4ef97aebf7a220403fe6519";  // yourAppSign
+            String userID = String.valueOf(user.id); // yourUserID, userID should only contain numbers, English characters, and '_'.
+            String userName = user.first_name + user.last_name;   // yourUserName
+
+
+            System.out.println(userID);
+
+            ZegoUIKitPrebuiltCallInvitationConfig callInvitationConfig = new ZegoUIKitPrebuiltCallInvitationConfig();
+            callInvitationConfig.notifyWhenAppRunningInBackgroundOrQuit = true;
+            ZegoNotificationConfig notificationConfig = new ZegoNotificationConfig();
+            notificationConfig.sound = "zego_uikit_sound_call";
+            notificationConfig.channelID = "CallInvitation";
+            notificationConfig.channelName = "CallInvitation";
+            ZegoUIKitPrebuiltCallInvitationService.init(application, appID, appSign, userID, userName, callInvitationConfig);
+
+            System.out.println("YALAhwyyyyyyyy");
+
+//!=============== ZEGO CONFIG ========================
         }
-//!=============== ZEGO CONFIG ========================
-//        TLRPC.User user = UserConfig.getInstance(currentAccount).getCurrentUser();
-//
-//        Application application = getApplication() ; // Android's application context
-//        long appID = 654464311 ;   // yourAppID
-//        String appSign = "a087a0b9a7d4169da49300c6c699936a3e9f45b0d4ef97aebf7a220403fe6519";  // yourAppSign
-//        String userID = String.valueOf(user.id); // yourUserID, userID should only contain numbers, English characters, and '_'.
-//        String userName = user.first_name + user.last_name;   // yourUserName
-//
-//
-//        System.out.println(userID);
-//
-//        ZegoUIKitPrebuiltCallInvitationConfig callInvitationConfig = new ZegoUIKitPrebuiltCallInvitationConfig();
-//        callInvitationConfig.notifyWhenAppRunningInBackgroundOrQuit = true;
-//        ZegoNotificationConfig notificationConfig = new ZegoNotificationConfig();
-//        notificationConfig.sound = "zego_uikit_sound_call";
-//        notificationConfig.channelID = "CallInvitation";
-//        notificationConfig.channelName = "CallInvitation";
-//        ZegoUIKitPrebuiltCallInvitationService.init(application, appID, appSign, userID, userName,callInvitationConfig);
-//
-//        System.out.println("YALAhwyyyyyyyy");
-
-//!=============== ZEGO CONFIG ========================
-
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setTheme(R.style.Theme_TMessages);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {

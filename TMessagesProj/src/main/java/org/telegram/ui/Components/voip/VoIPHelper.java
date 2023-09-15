@@ -22,6 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+//import com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton;
+//import com.zegocloud.uikit.service.defines.ZegoUIKitUser;
+
+import com.zegocloud.uikit.prebuilt.call.invite.widget.ZegoSendCallInvitationButton;
+import com.zegocloud.uikit.service.defines.ZegoUIKitUser;
+
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
 import org.telegram.messenger.ApplicationLoader;
@@ -38,6 +44,7 @@ import org.telegram.messenger.SendMessagesHelper;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.voip.Instance;
 import org.telegram.messenger.voip.VoIPService;
+////import org.telegram.messenger.voip.ZegoCallActivity;
 //import org.telegram.messenger.voip.ZegoCallActivity;
 import org.telegram.tgnet.ConnectionsManager;
 import org.telegram.tgnet.TLRPC;
@@ -64,6 +71,19 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
+//import im.zego.zim.ZIM;
+//import im.zego.zim.callback.ZIMCallInvitationSentCallback;
+//import im.zego.zim.callback.ZIMEventHandler;
+//import im.zego.zim.entity.ZIMCallInvitationReceivedInfo;
+//import im.zego.zim.entity.ZIMCallInvitationSentInfo;
+//import im.zego.zim.entity.ZIMCallInviteConfig;
+//import im.zego.zim.entity.ZIMError;
+//import im.zego.zim.entity.ZIMPushConfig;
+
+//import im.zego.zim.callback.ZIMCallInvitationSentCallback;
+//import im.zego.zim.entity.ZIMCallInviteConfig;
+//import im.zego.zim.entity.ZIMPushConfig;
+
 //import im.zego.zim.entity.ZIMCallInviteConfig;
 //import im.zego.zim.entity.ZIMPushConfig;
 
@@ -77,24 +97,38 @@ public class VoIPHelper {
 
 //!================= Start call ==================
 	public static void startCall(TLRPC.User user, boolean videoCall, boolean canVideoCall, final Activity activity, TLRPC.UserFull userFull, AccountInstance accountInstance) {
-
-
-		// String targetUserID = String.valueOf(user.id) ; ; // The ID of the user you want to call.
-		// String targetUserName = user.first_name + " " + user.last_name; // The username of the user you want to call.
-
-
-		// System.out.println(targetUserID);
-		// System.out.println(targetUserName);
-
-
-		// activity.setTheme(R.style.Theme_TMessages_Zego);
+		 String targetUserID = String.valueOf(user.id) ; ; // The ID of the user you want to call.
+		 String targetUserName = user.first_name + " " + user.last_name; // The username of the user you want to call.
 
 
 
+		activity.setTheme(R.style.Theme_TMessages_Zego);
 
-//// Send call invitation
+
+		ZegoSendCallInvitationButton button = new ZegoSendCallInvitationButton(activity);
+
+
+
+
+
+		button.setIsVideoCall(videoCall);
+		button.setResourceID("zego_uikit_call");
+		button.setInvitees(Collections.singletonList(new ZegoUIKitUser(targetUserID,targetUserName)));
+
+//		button.performClick();
+
+
+
+
+
+
+
+
+
+
+//		// Send call invitation
 //		List<String> invitees = null;  // List of callees
-//		invitees.add("421234");       // ID of the callee
+//		invitees.add(targetUserID);       // ID of the callee
 //		ZIMCallInviteConfig config = new ZIMCallInviteConfig();
 //		config.timeout = 200; // Timeout for the invitation in seconds, range: 1-600
 //
@@ -105,32 +139,85 @@ public class VoIPHelper {
 //		pushConfig.payload = "your payload";
 //		config.pushConfig = pushConfig;
 //
+//		ZIM zim = null;
 //		zim.callInvite(invitees, config, new ZIMCallInvitationSentCallback() {
-//			public void onCallInvitationSent(String callID, ZIMCallInvitationSentInfo info, ZIMError errorInfo) {
-//				// The callID here is generated internally by the SDK to uniquely identify a call invitation. It will be used when the initiator cancels the call or the invitee accepts/rejects the call.
-//			}
-//		});
+//					public void onCallInvitationSent(String callID, ZIMCallInvitationSentInfo info, ZIMError errorInfo) {
+//						Intent intent = new Intent(activity, ZegoCallActivity.class);
 //
+//
+//						intent.putExtra("userID", targetUserID);
+//						intent.putExtra("userName", targetUserName);
+//						intent.putExtra("callID", callID);
+//
+//						activity.startActivity(intent);
+//
+//						// The callID here is generated internally by the SDK to uniquely identify a call invitation. It will be used when the initiator cancels the call or the invitee accepts/rejects the call.
+//					};
+//
+//
+//
+//				}
+//
+//		);
 //// Callback notification for the invitee after receiving the invitation
-//		zim.setEventHandler(new ZIMEventHandler() {
-//			void onCallInvitationReceived(ZIM zim, ZIMCallInvitationReceivedInfo info, String callID) {
+////		zim.setEventHandler(new ZIMEventHandler() {
+////			void onCallInvitationReceived(ZIM zim, ZIMCallInvitationReceivedInfo info, String callID) {
+////
+////			}
+////		});
 //
-//			}
-//		});
+//
+//
+//
+//
+//
+//
+//		// String targetUserID = String.valueOf(user.id) ; ; // The ID of the user you want to call.
+//		// String targetUserName = user.first_name + " " + user.last_name; // The username of the user you want to call.
+//
+//
+//		// System.out.println(targetUserID);
+//		// System.out.println(targetUserName);
+//
+//
+//
+//
+//
+//
+////// Send call invitation
+////		List<String> invitees = null;  // List of callees
+////		invitees.add("421234");       // ID of the callee
+////		ZIMCallInviteConfig config = new ZIMCallInviteConfig();
+////		config.timeout = 200; // Timeout for the invitation in seconds, range: 1-600
+////
+////// (Optional) Fill in when it is necessary to send a call invitation to an offline user
+////		ZIMPushConfig pushConfig = new ZIMPushConfig();
+////		pushConfig.title = "your title";
+////		pushConfig.content = "your content";
+////		pushConfig.payload = "your payload";
+////		config.pushConfig = pushConfig;
+////
+////		zim.callInvite(invitees, config, new ZIMCallInvitationSentCallback() {
+////			public void onCallInvitationSent(String callID, ZIMCallInvitationSentInfo info, ZIMError errorInfo) {
+////				// The callID here is generated internally by the SDK to uniquely identify a call invitation. It will be used when the initiator cancels the call or the invitee accepts/rejects the call.
+////			}
+////		});
+////
+////// Callback notification for the invitee after receiving the invitation
+////		zim.setEventHandler(new ZIMEventHandler() {
+////			void onCallInvitationReceived(ZIM zim, ZIMCallInvitationReceivedInfo info, String callID) {
+////
+////			}
+////		});
+
+		//	If true, a video call is made when the button is pressed. Otherwise, a voice call is made.
+//		button.setIsVideoCall(true);
+//		//resourceID can be used to specify the ringtone of an offline call invitation, which must be set to the same value as the Push Resource ID in ZEGOCLOUD Admin Console. This only takes effect when the notifyWhenAppRunningInBackgroundOrQuit is true.
+////		button.setResourceID("zego_uikit_call");
+//		button.setInvitees(Collections.singletonList(new ZegoUIKitUser(targetUserID)));
+
 
 //		ZegoSendCallInvitationButton button = new ZegoSendCallInvitationButton(activity);
-//		//	If true, a video call is made when the button is pressed. Otherwise, a voice call is made.
-////		button.setIsVideoCall(true);
-////		//resourceID can be used to specify the ringtone of an offline call invitation, which must be set to the same value as the Push Resource ID in ZEGOCLOUD Admin Console. This only takes effect when the notifyWhenAppRunningInBackgroundOrQuit is true.
-//////		button.setResourceID("zego_uikit_call");
-////		button.setInvitees(Collections.singletonList(new ZegoUIKitUser(targetUserID)));
-//
-//
-////		ZegoSendCallInvitationButton button = new ZegoSendCallInvitationButton(activity);
-//		button.setIsVideoCall(true);
-//		button.setResourceID("zego_uikit_call");
-//		button.setInvitees(Collections.singletonList(new ZegoUIKitUser(targetUserID,targetUserName)));
-//
 
 
 

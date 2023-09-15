@@ -26,10 +26,13 @@ dependencies {
     implementation "androidx.sharetarget:sharetarget:1.1.0"
     implementation 'androidx.appcompat:appcompat:1.6.1'
 
-//    implementation 'com.github.ZEGOCLOUD:zego_uikit_prebuilt_call_android:+'
-//    implementation 'com.github.ZEGOCLOUD:zego_uikit_prebuilt_call_android:+'
-//     implementation 'com.github.ZEGOCLOUD:zego_uikit_signaling_plugin_android:+'
-     implementation 'im.zego:zim:+'
+    implementation 'com.github.ZEGOCLOUD:zego_uikit_prebuilt_call_android:+'
+//     implementation ('com.github.ZEGOCLOUD:zego_uikit_prebuilt_call_android:+'){
+//         exclude group: "im.zego", module: "express-video"
+//     }
+
+     implementation 'com.github.ZEGOCLOUD:zego_uikit_signaling_plugin_android:+'
+//     implementation 'im.zego:zim:+'
 
     implementation(platform("com.google.firebase:firebase-bom:32.2.3"))
 
@@ -154,7 +157,8 @@ android {
         }
 
         release {
-            debuggable false
+
+           debuggable false
             jniDebuggable false
             minifyEnabled true
             shrinkResources false

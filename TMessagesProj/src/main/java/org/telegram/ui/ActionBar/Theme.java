@@ -8318,7 +8318,7 @@ public class Theme {
             setDrawableColor(otherDrawable, actionBarIconColor);
             Drawable emojiDrawable = ApplicationLoader.applicationContext.getResources().getDrawable(R.drawable.preview_smile).mutate();
             setDrawableColor(emojiDrawable, messageFieldIconColor);
-            Drawable micDrawable = ApplicationLoader.applicationContext.getResources().getDrawable(R.drawable.preview_mic).mutate();
+            Drawable micDrawable = ApplicationLoader.applicationContext.getResources().getDrawable(R.drawable.input_mic).mutate();
             setDrawableColor(micDrawable, messageFieldIconColor);
 
             MessageDrawable[] msgDrawable = new MessageDrawable[2];

@@ -759,7 +759,7 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
             loadTexture(R.drawable.intro_ic_bubble, 5);
             loadTexture(R.drawable.intro_ic_cam_lens, 6);
             loadTexture(R.drawable.intro_ic_cam, 7);
-            loadTexture(R.drawable.intro_ic_pencil, 8);
+//            loadTexture(R.drawable.intro_ic_pencil, 8);
             loadTexture(R.drawable.intro_ic_pin, 9);
             loadTexture(R.drawable.intro_ic_smile_eye, 10);
             loadTexture(R.drawable.intro_ic_smile, 11);

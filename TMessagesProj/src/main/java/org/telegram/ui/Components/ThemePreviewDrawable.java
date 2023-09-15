@@ -69,7 +69,7 @@ public class ThemePreviewDrawable extends BitmapDrawable {
         Theme.setDrawableColor(otherDrawable, actionBarIconColor);
         Drawable emojiDrawable = ApplicationLoader.applicationContext.getResources().getDrawable(R.drawable.preview_smile).mutate();
         Theme.setDrawableColor(emojiDrawable, messageFieldIconColor);
-        Drawable micDrawable = ApplicationLoader.applicationContext.getResources().getDrawable(R.drawable.preview_mic).mutate();
+        Drawable micDrawable = ApplicationLoader.applicationContext.getResources().getDrawable(R.drawable.input_mic).mutate();
         Theme.setDrawableColor(micDrawable, messageFieldIconColor);
 
         Theme.MessageDrawable[] messageDrawable = new Theme.MessageDrawable[2];

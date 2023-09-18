@@ -88,6 +88,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import org.telegram.PhoneFormat.PhoneFormat;
 import org.telegram.messenger.AccountInstance;
 import org.telegram.messenger.AndroidUtilities;
@@ -378,7 +380,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private TLRPC.FileLocation avatar;
     private TLRPC.FileLocation avatarBig;
     private ImageLocation uploadingImageLocation;
-
+    private BottomNavigationView bottomNavigationView;
     private final static int add_contact = 1;
     private final static int block_contact = 2;
     private final static int share_contact = 3;
@@ -1396,6 +1398,10 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
     @Override
     public boolean onFragmentCreate() {
+
+
+
+
         userId = arguments.getLong("user_id", 0);
         chatId = arguments.getLong("chat_id", 0);
         banFromGroup = arguments.getLong("ban_chat_id", 0);
@@ -1578,6 +1584,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
     @Override
     protected ActionBar createActionBar(Context context) {
+
         BaseFragment lastFragment = parentLayout.getLastFragment();
         if (lastFragment instanceof ChatActivity && ((ChatActivity) lastFragment).themeDelegate != null && ((ChatActivity) lastFragment).themeDelegate.getCurrentTheme() != null) {
             resourcesProvider = lastFragment.getResourceProvider();
@@ -2769,6 +2776,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     cells[0].setPadding(LocaleController.isRTL ? AndroidUtilities.dp(16) : AndroidUtilities.dp(8), 0, LocaleController.isRTL ? AndroidUtilities.dp(8) : AndroidUtilities.dp(16), 0);
                     linearLayout.addView(cells[0], LayoutHelper.createLinear(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT));
                     cells[0].setOnClickListener(v -> {
+
                         cells[0].setChecked(!cells[0].isChecked(), true);
                     });
                     builder.setCustomViewOffset(12);
@@ -2807,7 +2815,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 if (button != null) {
                     button.setTextColor(Theme.getColor(Theme.key_dialogTextRed2));
                 }
-            } if (position == settingsKeyRow) {
+            }
+
+            if (position == settingsKeyRow) {
                 Bundle args = new Bundle();
                 args.putInt("chat_id", DialogObject.getEncryptedChatId(dialogId));
                 presentFragment(new IdenticonActivity(args));
@@ -2917,7 +2927,9 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }, getResourceProvider());
                 chatNotificationsPopupWrapper.update(did);
                 chatNotificationsPopupWrapper.showAsOptions(ProfileActivity.this, view, x, y);
-            } else if (position == unblockRow) {
+            }
+
+            else if (position == unblockRow) {
                 getMessagesController().unblockPeer(userId);
                 if (BulletinFactory.canShowBulletin(ProfileActivity.this)) {
                     BulletinFactory.createBanBulletin(ProfileActivity.this, false).show();

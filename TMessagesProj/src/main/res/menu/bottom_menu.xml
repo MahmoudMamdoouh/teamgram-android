@@ -9,15 +9,24 @@
         />
 
     <item
-        android:id="@+id/bottom_call"
-        android:icon="@drawable/baseline_call_24"
-        android:title="Calls"
-        />
-
-    <item
         android:id="@+id/bottom_meet"
         android:icon="@drawable/baseline_meet_24"
         android:title="Meets"
+        />
+
+
+    <item
+        android:id="@+id/bottom_discover"
+        android:icon="@drawable/intro_tg_plane"
+        android:title="Discover"
+        />
+
+
+
+    <item
+        android:id="@+id/bottom_apps"
+        android:icon="@drawable/baseline_apps_24"
+        android:title="Apps"
         />
 
     <item
@@ -25,14 +34,6 @@
         android:icon="@drawable/baseline_settings_24"
         android:title="Settings"
         />
-
-
-
-
-
-
-
-
 
 
 </menu>

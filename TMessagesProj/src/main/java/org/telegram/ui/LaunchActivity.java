@@ -18,11 +18,12 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -43,10 +44,7 @@ import android.os.StrictMode;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.provider.Settings;
-import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.TextUtils;
-import android.text.style.AbsoluteSizeSpan;
 import android.util.Base64;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
@@ -71,9 +69,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.ColorUtils;
@@ -116,6 +112,10 @@ import org.telegram.messenger.SharedConfig;
 import org.telegram.messenger.UserConfig;
 import org.telegram.messenger.UserObject;
 import org.telegram.messenger.Utilities;
+import org.telegram.messenger.bottomnav.AppsActivity;
+import org.telegram.messenger.bottomnav.DiscoverActivity;
+import org.telegram.messenger.bottomnav.discoverFragment;
+import org.telegram.messenger.bottomnav.meetsActivity;
 import org.telegram.messenger.browser.Browser;
 import org.telegram.messenger.voip.VideoCapturerDevice;
 import org.telegram.messenger.voip.VoIPPendingCall;
@@ -289,15 +289,24 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        bottomNavigationView = new BottomNavigationView(this);
+        System.out.println("gone *1 "+bottomNavigationView.getVisibility());
+
         if (BuildVars.DEBUG_VERSION) {
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder(StrictMode.getVmPolicy())
                     .detectLeakedClosableObjects()
                     .build());
         }
 
+
         ApplicationLoader.postInitApplication();
+
         AndroidUtilities.checkDisplaySize(this, getResources().getConfiguration());
+
         currentAccount = UserConfig.selectedAccount;
+
+
+
         if (!UserConfig.getInstance(currentAccount).isClientActivated()) {
             Intent intent = getIntent();
             boolean isProxy = false;
@@ -315,8 +324,17 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 }
             }
         }
+
+
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
+
         setTheme(R.style.Theme_TMessages);
+
+
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             try {
                 setTaskDescription(new ActivityManager.TaskDescription(null, null, Theme.getColor(Theme.key_actionBarDefault) | 0xff000000));
@@ -330,7 +348,12 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
             }
         }
+
+
         getWindow().setBackgroundDrawableResource(R.drawable.transparent);
+
+
+
         if (SharedConfig.passcodeHash.length() > 0 && !SharedConfig.allowScreenCapture) {
             try {
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
@@ -339,7 +362,10 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             }
         }
 
+
+
         super.onCreate(savedInstanceState);
+
 
 
 
@@ -347,12 +373,26 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             AndroidUtilities.isInMultiwindow = isInMultiWindowMode();
         }
 
+
+
         Theme.createCommonChatResources();
+
+
+
         Theme.createDialogsResources(this);
+
+
+
         if (SharedConfig.passcodeHash.length() != 0 && SharedConfig.appLocked) {
             SharedConfig.lastPauseTime = (int) (SystemClock.elapsedRealtime() / 1000);
         }
+
+
         AndroidUtilities.fillStatusBarHeight(this);
+
+
+
+
         actionBarLayout = new ActionBarLayout(this) {
             @Override
             public void setThemeAnimationValue(float value) {
@@ -367,6 +407,9 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             }
         };
 
+
+
+
         frameLayout = new FrameLayout(this) {
             @Override
             protected void dispatchDraw(Canvas canvas) {
@@ -374,11 +417,23 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 drawRippleAbove(canvas, this);
             }
         };
+
+
+
+
+
         setContentView(frameLayout, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+
+
+
         if (Build.VERSION.SDK_INT >= 21) {
             themeSwitchImageView = new ImageView(this);
             themeSwitchImageView.setVisibility(View.GONE);
         }
+
+
+
 
         drawerLayoutContainer = new DrawerLayoutContainer(this) {
             private boolean wasPortrait;
@@ -418,6 +473,10 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 }
             }
         };
+
+
+
+
         drawerLayoutContainer.setBehindKeyboardColor(Theme.getColor(Theme.key_windowBackgroundWhite));
         frameLayout.addView(drawerLayoutContainer, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.MATCH_PARENT));
 
@@ -434,56 +493,21 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             frameLayout.addView(themeSwitchSunView, LayoutHelper.createFrame(48, 48));
             themeSwitchSunView.setVisibility(View.GONE);
         }
+
+
+
+
         frameLayout.addView(fireworksOverlay = new FireworksOverlay(this));
+
+
+
         setupActionBarLayout();
+
+
+
         sideMenuContainer = new FrameLayout(this);
 
 
-        //******* Radwan  *******
-
-        bottomNavigationView = new BottomNavigationView(this);
-        bottomNavigationView.setVisibility(View.GONE);
-
-        // Create menu items
-        bottomNavigationView.getMenu().add(0, R.id.bottom_home, 0, "Home").setIcon(R.drawable.baseline_home_24);
-        bottomNavigationView.getMenu().add(0, R.id.bottom_call, 1, "Calls").setIcon(R.drawable.baseline_call_24);
-        bottomNavigationView.getMenu().add(0, R.id.bottom_meet, 2, "Meets").setIcon(R.drawable.baseline_meet_24);
-        bottomNavigationView.getMenu().add(0, R.id.bottom_meet, 3, "Settings").setIcon(R.drawable.baseline_settings_24);
-        bottomNavigationView.setBackgroundResource(R.color.primary_color);
-
-
-        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
-        bottomNavigationView.setForegroundGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
-
-
-        // Set an item selected listener
-        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            int itemId = item.getItemId();
-            if (itemId == R.id.bottom_home) {
-
-
-            } else if (itemId == R.id.bottom_call) {
-                presentFragment(new CallLogActivity());
-                drawerLayoutContainer.closeDrawer(false);
-                return true;
-
-            } else if (itemId == R.id.bottom_meet) {
-
-
-            } else if (itemId == R.id.bottom_settings) {
-
-
-            }
-            return true;
-        });
-
-
-        // Set the BottomNavigationView as the content view
-        frameLayout.addView(bottomNavigationView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 60,
-                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL,0,16,0,0));
-
-
-        //*******  *******  *******  *******  *******  *******  *******  *******  *******  **************  *******  *******  *******  *******  *******  *******  *******
 
 
         sideMenu = new RecyclerListView(this) {
@@ -503,7 +527,11 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 return result;
             }
         };
+
+
+
         itemAnimator = new SideMenultItemAnimator(sideMenu);
+
         sideMenu.setItemAnimator(itemAnimator);
         sideMenu.setBackgroundColor(Theme.getColor(Theme.key_changephoneinfo_image2));
         sideMenu.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -518,6 +546,10 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         layoutParams.height = LayoutHelper.MATCH_PARENT;
         sideMenuContainer.setLayoutParams(layoutParams);
         sideMenu.setOnItemClickListener((view, position, x, y) -> {
+            //TODO: radwan => should hide bottom nav
+            System.out.println("gone 2");
+            bottomNavigationView.setVisibility(View.GONE);
+
             if (position == 0) {
                 DrawerProfileCell profileCell = (DrawerProfileCell) view;
                 if (profileCell.isInAvatar(x, y)) {
@@ -543,6 +575,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     freeAccounts -= (UserConfig.MAX_ACCOUNT_COUNT - UserConfig.MAX_ACCOUNT_DEFAULT_COUNT);
                 }
                 if (freeAccounts > 0 && availableAccount != null) {
+
                     presentFragment(new LoginActivity(availableAccount));
                     drawerLayoutContainer.closeDrawer(false);
                 } else if (!UserConfig.hasPremiumOnAccounts()) {
@@ -569,12 +602,18 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     presentFragment(new ContactsActivity(args));
                     drawerLayoutContainer.closeDrawer(false);
                 } else if (id == 4) {
+                    System.out.println("position 4");
+
                     SharedPreferences preferences = MessagesController.getGlobalMainSettings();
                     if (!BuildVars.DEBUG_VERSION && preferences.getBoolean("channel_intro", false)) {
                         Bundle args = new Bundle();
                         args.putInt("step", 0);
                         presentFragment(new ChannelCreateActivity(args));
                     } else {
+                        if(bottomNavigationView.getVisibility()==View.VISIBLE){
+                            System.out.println("gone 4");
+                            bottomNavigationView.setVisibility(View.GONE);
+                        }
                         presentFragment(new ActionIntroActivity(ActionIntroActivity.ACTION_TYPE_CHANNEL_CREATE));
                         preferences.edit().putBoolean("channel_intro", true).commit();
                     }
@@ -596,11 +635,17 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 } else if (id == 11) {
                     Bundle args = new Bundle();
                     args.putLong("user_id", UserConfig.getInstance(currentAccount).getClientUserId());
+                    System.out.println("gone 5");
+                    bottomNavigationView.setVisibility(View.GONE);
                     presentFragment(new ChatActivity(args));
                     drawerLayoutContainer.closeDrawer(false);
                 } else if (id == 12) {
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                            if(bottomNavigationView.getVisibility()==View.VISIBLE){
+                                System.out.println("gone 6");
+                                bottomNavigationView.setVisibility(View.GONE);
+                            }
                             presentFragment(new ActionIntroActivity(ActionIntroActivity.ACTION_TYPE_NEARBY_LOCATION_ACCESS));
                             drawerLayoutContainer.closeDrawer(false);
                             return;
@@ -621,6 +666,10 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     if (enabled) {
                         presentFragment(new PeopleNearbyActivity());
                     } else {
+                        if(bottomNavigationView.getVisibility()==View.VISIBLE){
+                            System.out.println("gone 7");
+                            bottomNavigationView.setVisibility(View.GONE);
+                        }
                         presentFragment(new ActionIntroActivity(ActionIntroActivity.ACTION_TYPE_NEARBY_LOCATION_ENABLED));
                     }
                     drawerLayoutContainer.closeDrawer(false);
@@ -632,6 +681,9 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 }
             }
         });
+
+
+
         final ItemTouchHelper sideMenuTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
 
             private RecyclerView.ViewHolder selectedViewHolder;
@@ -740,6 +792,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             }
             return false;
         });
+
+
         drawerLayoutContainer.setParentActionBarLayout(actionBarLayout);
         actionBarLayout.setDrawerLayoutContainer(drawerLayoutContainer);
         actionBarLayout.init(mainFragmentsStack);
@@ -781,12 +835,20 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             }
 
             try {
+
+
+
+
+
+
                 if (savedInstanceState != null) {
                     String fragmentName = savedInstanceState.getString("fragment");
                     if (fragmentName != null) {
                         Bundle args = savedInstanceState.getBundle("args");
                         switch (fragmentName) {
                             case "chat":
+                                System.out.println("gone 8");
+                                bottomNavigationView.setVisibility(View.GONE);
                                 if (args != null) {
                                     ChatActivity chat = new ChatActivity(args);
                                     if (actionBarLayout.addFragmentToStack(chat)) {
@@ -908,9 +970,92 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 SharedConfig.BackgroundActivityPrefs.setLastCheckedBackgroundActivity(System.currentTimeMillis());
             }
         }
+
+        //******* Radwan  *******
+
+        bottomNavigationView.getMenu().add(0, R.id.bottom_home, 0, "Home").setIcon(R.drawable.baseline_home_24);
+        bottomNavigationView.getMenu().add(0, R.id.bottom_meet, 1, "Meets").setIcon(R.drawable.baseline_meet_24);
+        bottomNavigationView.getMenu().add(0, R.id.bottom_discover, 2, "Discover").setIcon(R.drawable.intro_tg_plane);
+        bottomNavigationView.getMenu().add(0, R.id.bottom_apps, 3, "Apps").setIcon(R.drawable.baseline_apps_24);
+        bottomNavigationView.getMenu().add(0, R.id.bottom_settings, 4, "Settings").setIcon(R.drawable.baseline_settings_24);
+        bottomNavigationView.setBackgroundResource(R.color.primary_color);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+        bottomNavigationView.setBackgroundResource(R.drawable.bottom_background);
+        bottomNavigationView.setForegroundGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.bottom_home) {
+
+
+                BaseFragment previousFragment = actionBarLayout.fragmentsStack.get(getMainFragmentsCount()-1);
+
+                System.out.println("home pressed  "+  previousFragment.toString());
+                if(!previousFragment.toString().contains("DialogsActivity")){
+                    actionBarLayout.closeLastFragment(true);
+                }
+
+            }
+            else if (itemId == R.id.bottom_meet) {
+
+
+                System.out.println("Meets pressed");
+//                startActivity(new Intent(getApplicationContext(), meetsActivity.class));
+//                drawerLayoutContainer.closeDrawer(false);
+//                return true;
+
+
+            }
+            else if (itemId == R.id.bottom_discover) {
+
+
+
+                System.out.println("discover pressed");
+//                startActivity(new Intent(getApplicationContext(), DiscoverActivity.class));
+//
+
+
+            }
+            else if (itemId == R.id.bottom_apps) {
+
+
+
+                System.out.println("apps pressed");
+//                startActivity(new Intent(getApplicationContext(), AppsActivity.class));
+//
+
+
+            }
+            else if (itemId == R.id.bottom_settings) {
+
+                BaseFragment previousFragment = actionBarLayout.fragmentsStack.get(getMainFragmentsCount()-1);
+
+                if(!previousFragment.toString().contains("ProfileActivity")){
+                    openSettings(false);
+                }
+
+
+
+            }
+            return true;
+        });
+
+
+        // Set the BottomNavigationView as the content view
+        frameLayout.addView(bottomNavigationView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 60,
+                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 10, 16, 10, 10));
+
+
+        //*******  *******  *******  *******  *******  *******  *******  *******  *******  ******** ******  *******  *******  *******  *******  *******  *******  *******
+
     }
 
     private void setupActionBarLayout() {
+
+        System.out.println("gone *2 "+bottomNavigationView.getVisibility());
+
+
         int i = drawerLayoutContainer.indexOfChild(launchLayout) != -1 ? drawerLayoutContainer.indexOfChild(launchLayout) : drawerLayoutContainer.indexOfChild(actionBarLayout);
         if (i != -1) {
             drawerLayoutContainer.removeViewAt(i);
@@ -1055,7 +1200,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             layersActionBarLayout.setVisibility(layerFragmentsStack.isEmpty() ? View.GONE : View.VISIBLE);
             VerticalPositionAutoAnimator.attach(layersActionBarLayout);
             launchLayout.addView(layersActionBarLayout);
-        } else {
+        }
+        else {
             ViewGroup parent = (ViewGroup) actionBarLayout.getParent();
             if (parent != null) {
                 parent.removeView(actionBarLayout);
@@ -1070,23 +1216,36 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         }
     }
 
-    public void addOnUserLeaveHintListener(Runnable callback) {
+    public void addOnUserLeaveHintListener(Runnable callback)
+    {
+        System.out.println("gone *3");
         onUserLeaveHintListeners.add(callback);
     }
 
     public void removeOnUserLeaveHintListener(Runnable callback) {
+        System.out.println("gone *4");
         onUserLeaveHintListeners.remove(callback);
     }
 
     private BaseFragment getClientNotActivatedFragment() {
+        System.out.println("gone *5 "+bottomNavigationView.getVisibility());
         if (LoginActivity.loadCurrentState(false).getInt("currentViewNum", 0) != 0) {
+            System.out.println("radwan 1*-");
             return new LoginActivity();
         }
-        bottomNavigationView.setVisibility(View.GONE);
+        System.out.println("radwan 1");
+
+
+        if(bottomNavigationView!=null){
+            System.out.println("gone *(0)");
+            bottomNavigationView.setVisibility(View.GONE);
+        }
+
         return new IntroActivity();
     }
 
     public void showSelectStatusDialog() {
+        System.out.println("gone *6");
         if (selectAnimatedEmojiDialog != null || SharedConfig.appLocked) {
             return;
         }
@@ -1193,10 +1352,14 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     public FireworksOverlay getFireworksOverlay() {
+
+        System.out.println("gone *7");
         return fireworksOverlay;
     }
 
     private void openSettings(boolean expanded) {
+        System.out.println("gone *8");
+        System.out.println("inside open settings");
         Bundle args = new Bundle();
         args.putLong("user_id", UserConfig.getInstance(currentAccount).clientUserId);
         if (expanded) {
@@ -1208,18 +1371,24 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void checkSystemBarColors() {
+        System.out.println("gone *9 "+bottomNavigationView.getVisibility());
         checkSystemBarColors(false, true, !isNavigationBarColorFrozen);
     }
 
     private void checkSystemBarColors(boolean useCurrentFragment) {
+        System.out.println("gone *10");
         checkSystemBarColors(useCurrentFragment, true, !isNavigationBarColorFrozen);
     }
 
     private void checkSystemBarColors(boolean checkStatusBar, boolean checkNavigationBar) {
+        System.out.println("gone *11 "+bottomNavigationView.getVisibility());
         checkSystemBarColors(false, checkStatusBar, checkNavigationBar);
     }
 
     private void checkSystemBarColors(boolean useCurrentFragment, boolean checkStatusBar, boolean checkNavigationBar) {
+
+
+        System.out.println("gone *12 "+bottomNavigationView.getVisibility());
         BaseFragment currentFragment = !mainFragmentsStack.isEmpty() ? mainFragmentsStack.get(mainFragmentsStack.size() - 1) : null;
         if (currentFragment != null && (currentFragment.isRemovingFromStack() || currentFragment.isInPreviewMode())) {
             currentFragment = mainFragmentsStack.size() > 1 ? mainFragmentsStack.get(mainFragmentsStack.size() - 2) : null;
@@ -1259,10 +1428,12 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     public void switchToAccount(int account, boolean removeAll) {
+        System.out.println("gone *13 "+bottomNavigationView.getVisibility());
         switchToAccount(account, removeAll, obj -> new DialogsActivity(null));
     }
 
     public void switchToAccount(int account, boolean removeAll, GenericProvider<Void, DialogsActivity> dialogsActivityProvider) {
+        System.out.println("gone *14 "+bottomNavigationView.getVisibility());
         if (account == UserConfig.selectedAccount || !UserConfig.isValidAccount(account)) {
             return;
         }
@@ -1308,6 +1479,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void switchToAvailableAccountOrLogout() {
+        System.out.println("gone *15");
         int account = -1;
         for (int a = 0; a < UserConfig.MAX_ACCOUNT_COUNT; a++) {
             if (UserConfig.getInstance(a).isClientActivated()) {
@@ -1331,11 +1503,16 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 rightActionBarLayout.rebuildLogout();
             }
             //TODO: may need to setVisibility of bottomnavigationbar to GONE
+            if(bottomNavigationView.getVisibility()==View.VISIBLE){
+                System.out.println("gone 9");
+                bottomNavigationView.setVisibility(View.GONE);
+            }
             presentFragment(new IntroActivity().setOnLogout());
         }
     }
 
     public static void clearFragments() {
+        System.out.println("gone *16");
         for (BaseFragment fragment : mainFragmentsStack) {
             fragment.onFragmentDestroy();
         }
@@ -1353,10 +1530,13 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     public int getMainFragmentsCount() {
+
+        System.out.println("gone *17");
         return mainFragmentsStack.size();
     }
 
     private void checkCurrentAccount() {
+        System.out.println("gone *18 "+bottomNavigationView.getVisibility());
         if (currentAccount != UserConfig.selectedAccount) {
             NotificationCenter.getInstance(currentAccount).removeObserver(this, NotificationCenter.appDidLogout);
             NotificationCenter.getInstance(currentAccount).removeObserver(this, NotificationCenter.mainUserInfoChanged);
@@ -1396,6 +1576,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void checkLayout() {
+        System.out.println("gone *19 "+bottomNavigationView.getVisibility());
+
         if (!AndroidUtilities.isTablet() || rightActionBarLayout == null) {
             return;
         }
@@ -1405,6 +1587,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             if (actionBarLayout.fragmentsStack.size() >= 2) {
                 for (int a = 1; a < actionBarLayout.fragmentsStack.size(); a++) {
                     BaseFragment chatFragment = actionBarLayout.fragmentsStack.get(a);
+                    System.out.println("gone 10");
+                    bottomNavigationView.setVisibility(View.GONE);
                     if (chatFragment instanceof ChatActivity) {
                         ((ChatActivity) chatFragment).setIgnoreAttachOnPause(true);
                     }
@@ -1414,10 +1598,14 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     a--;
                 }
                 if (passcodeView == null || passcodeView.getVisibility() != View.VISIBLE) {
+                    System.out.println("gone *1*0");
+                    bottomNavigationView.setVisibility(View.GONE);
                     actionBarLayout.showLastFragment();
                     rightActionBarLayout.showLastFragment();
                 }
             }
+
+
             rightActionBarLayout.setVisibility(rightActionBarLayout.fragmentsStack.isEmpty() ? View.GONE : View.VISIBLE);
             backgroundTablet.setVisibility(rightActionBarLayout.fragmentsStack.isEmpty() ? View.VISIBLE : View.GONE);
             shadowTabletSide.setVisibility(!actionBarLayout.fragmentsStack.isEmpty() ? View.VISIBLE : View.GONE);
@@ -1445,6 +1633,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void showUpdateActivity(int account, TLRPC.TL_help_appUpdate update, boolean check) {
+        System.out.println("gone *20");
         if (blockingUpdateView == null) {
             blockingUpdateView = new BlockingUpdateView(LaunchActivity.this) {
                 @Override
@@ -1462,6 +1651,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void showTosActivity(int account, TLRPC.TL_help_termsOfService tos) {
+        System.out.println("gone *21");
         if (termsOfServiceView == null) {
             termsOfServiceView = new TermsOfServiceView(this);
             termsOfServiceView.setAlpha(0f);
@@ -1501,6 +1691,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     public void showPasscodeActivity(boolean fingerprint, boolean animated, int x, int y, Runnable onShow, Runnable onStart) {
+        System.out.println("gone *22");
+
         if (drawerLayoutContainer == null) {
             return;
         }
@@ -1560,6 +1752,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @SuppressLint("Range")
     private boolean handleIntent(Intent intent, boolean isNew, boolean restore, boolean fromPassword) {
+        System.out.println("gone *23 "+bottomNavigationView.getVisibility());
         if (AndroidUtilities.handleProxyIntent(this, intent)) {
             actionBarLayout.showLastFragment();
             if (AndroidUtilities.isTablet()) {
@@ -2350,6 +2543,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                         String userID = data.getQueryParameter("user_id");
                                         String chatID = data.getQueryParameter("chat_id");
                                         String msgID = data.getQueryParameter("message_id");
+
+
                                         if (userID != null) {
                                             try {
                                                 push_user_id = Long.parseLong(userID);
@@ -2545,7 +2740,12 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     open_settings = 1;
                 } else if (intent.getAction().equals("new_dialog")) {
                     open_new_dialog = 1;
-                } else if (intent.getAction().startsWith("com.tmessages.openchat")) {
+                }
+
+                else if (intent.getAction().startsWith("com.tmessages.openchat")) {
+                    System.out.println("gone 21");
+
+
 //                    Integer chatIdInt = intent.getIntExtra("chatId", 0);
                     long chatId = intent.getLongExtra("chatId", 0);
 //                    Integer userIdInt = intent.getIntExtra("userId", 0);
@@ -2573,7 +2773,11 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                             showDialogsList = true;
                         }
                     }
-                } else if (intent.getAction().equals("com.tmessages.openplayer")) {
+                }
+
+
+
+                else if (intent.getAction().equals("com.tmessages.openplayer")) {
                     showPlayer = true;
                 } else if (intent.getAction().equals("org.tmessages.openlocations")) {
                     showLocations = true;
@@ -2616,6 +2820,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                         args.putInt("message_id", push_msg_id);
                     }
                     if (mainFragmentsStack.isEmpty() || MessagesController.getInstance(intentAccount[0]).checkCanOpenChat(args, mainFragmentsStack.get(mainFragmentsStack.size() - 1))) {
+                        System.out.println("gone 25");
                         ChatActivity fragment = new ChatActivity(args);
                         if (actionBarLayout.presentFragment(fragment, false, true, true, false)) {
                             pushOpened = true;
@@ -2630,6 +2835,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     args.putInt("message_id", push_msg_id);
                 }
                 if (mainFragmentsStack.isEmpty() || MessagesController.getInstance(intentAccount[0]).checkCanOpenChat(args, mainFragmentsStack.get(mainFragmentsStack.size() - 1))) {
+                    System.out.println("gone 26");
                     ChatActivity fragment = new ChatActivity(args);
                     if (actionBarLayout.presentFragment(fragment, false, true, true, false)) {
                         pushOpened = true;
@@ -2907,6 +3113,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     public static int getTimestampFromLink(Uri data) {
+        System.out.println("gone *24");
         List<String> segments = data.getPathSegments();
         String timestampStr = null;
         if (segments.contains("video")) {
@@ -2937,6 +3144,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void openDialogsToSend(boolean animated) {
+        System.out.println("gone *25");
         Bundle args = new Bundle();
         args.putBoolean("onlySelect", true);
         args.putInt("dialogsType", 3);
@@ -3002,6 +3210,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private int runCommentRequest(int intentAccount, AlertDialog progressDialog, Integer messageId, Integer commentId, Integer threadId, TLRPC.Chat chat) {
+        System.out.println("gone *26");
         if (chat == null) {
             return 0;
         }
@@ -3029,6 +3238,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     } else if (threadId != null) {
                         chatActivity.setHighlightMessageId(messageId);
                     }
+                    System.out.println("gone 20");
+                    bottomNavigationView.setVisibility(View.GONE);
                     presentFragment(chatActivity);
                     chatOpened = true;
                 }
@@ -3052,6 +3263,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     private void runImportRequest(final Uri importUri,
                                   ArrayList<Uri> documents) {
+        System.out.println("gone *27");
         final int intentAccount = UserConfig.selectedAccount;
         final AlertDialog progressDialog = new AlertDialog(this, 3);
         final int[] requestId = new int[]{0};
@@ -3180,6 +3392,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void openGroupCall(AccountInstance accountInstance, TLRPC.Chat chat, String hash) {
+        System.out.println("gone *28");
         VoIPHelper.startCall(chat, null, hash, false, this, mainFragmentsStack.get(mainFragmentsStack.size() - 1), accountInstance);
     }
 
@@ -3214,6 +3427,9 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                 final String setAsAttachBot,
                                 final String attachMenuBotToOpen,
                                 final String attachMenuBotChoose) {
+        System.out.println("gone *29");
+
+        System.out.println("gone 22");
         if (state == 0 && UserConfig.getActivatedAccountsCount() >= 2 && auth != null) {
             AlertsCreator.createAccountSelectDialog(this, account -> {
                 if (account != intentAccount) {
@@ -3300,10 +3516,14 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 if (!LaunchActivity.this.isFinishing()) {
                     boolean hideProgressDialog = true;
                     TLRPC.TL_contacts_resolvedPeer res = (TLRPC.TL_contacts_resolvedPeer) response;
-                    if (error == null && actionBarLayout != null && (game == null && voicechat == null || game != null && !res.users.isEmpty() || voicechat != null && !res.chats.isEmpty() || livestream != null && !res.chats.isEmpty())) {
+                    if (error == null && actionBarLayout != null && (game == null && voicechat == null || game != null && !res.users.isEmpty() || voicechat != null && !res.chats.isEmpty() ||
+                            livestream != null && !res.chats.isEmpty())) {
+                        System.out.println("gone 22");
                         MessagesController.getInstance(intentAccount).putUsers(res.users, false);
                         MessagesController.getInstance(intentAccount).putChats(res.chats, false);
                         MessagesStorage.getInstance(intentAccount).putUsersAndChats(res.users, res.chats, false, true);
+
+
                         if (setAsAttachBot != null && attachMenuBotToOpen == null) {
                             TLRPC.User user = MessagesController.getInstance(intentAccount).getUser(res.peer.user_id);
                             if (user != null && user.bot) {
@@ -3316,7 +3536,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                             MessagesController.getInstance(intentAccount).putUsers(attachMenuBotsBot.users, false);
                                             TLRPC.TL_attachMenuBot attachMenuBot = attachMenuBotsBot.bot;
                                             BaseFragment lastFragment = mainFragmentsStack.get(mainFragmentsStack.size() - 1);
-
+System.out.println("gone 27");
                                             List<String> chooserTargets = new ArrayList<>();
                                             if (!TextUtils.isEmpty(attachMenuBotChoose)) {
                                                 for (String target : attachMenuBotChoose.split(" ")) {
@@ -3356,6 +3576,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                                     }
                                                     if (MessagesController.getInstance(intentAccount).checkCanOpenChat(args1, fragment)) {
                                                         NotificationCenter.getInstance(intentAccount).postNotificationName(NotificationCenter.closeChats);
+                                                        System.out.println("gone 11");
+                                                        bottomNavigationView.setVisibility(View.GONE);
                                                         actionBarLayout.presentFragment(new ChatActivity(args1), true, false, true, false);
                                                     }
                                                 });
@@ -3447,6 +3669,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                 }
                                 if (MessagesController.getInstance(intentAccount).checkCanOpenChat(args1, fragment1)) {
                                     NotificationCenter.getInstance(intentAccount).postNotificationName(NotificationCenter.closeChats);
+                                    System.out.println("gone 12");
+                                    bottomNavigationView.setVisibility(View.GONE);
                                     actionBarLayout.presentFragment(new ChatActivity(args1), true, false, true, false);
                                 }
                             });
@@ -3664,21 +3888,26 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                 if (isBot && lastFragment instanceof ChatActivity && ((ChatActivity) lastFragment).getDialogId() == dialog_id) {
                                     ((ChatActivity) lastFragment).setBotUser(botUser);
                                 } else {
+                                    System.out.println("gone 28");
                                     MessagesController.getInstance(intentAccount).ensureMessagesLoaded(dialog_id, messageId == null ? 0 : messageId, new MessagesController.MessagesLoadedCallback() {
                                         @Override
                                         public void onMessagesLoaded(boolean fromCache) {
                                             try {
+                                                System.out.println("gone 29");
                                                 progressDialog.dismiss();
                                             } catch (Exception e) {
                                                 FileLog.e(e);
                                             }
                                             if (!LaunchActivity.this.isFinishing()) {
+                                                System.out.println("gone 30");
                                                 BaseFragment voipLastFragment;
                                                 if (livestream == null || !(lastFragment instanceof ChatActivity) || ((ChatActivity) lastFragment).getDialogId() != dialog_id) {
+                                                    System.out.println("gone 31");
                                                     ChatActivity fragment = new ChatActivity(args);
                                                     actionBarLayout.presentFragment(fragment);
                                                     voipLastFragment = fragment;
                                                 } else {
+                                                    System.out.println("gone 32");
                                                     voipLastFragment = lastFragment;
                                                 }
 
@@ -3687,6 +3916,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                                         AccountInstance accountInstance = AccountInstance.getInstance(currentAccount);
                                                         ChatObject.Call cachedCall = accountInstance.getMessagesController().getGroupCall(-dialog_id, false);
                                                         if (cachedCall != null) {
+                                                            System.out.println("gone 33");
                                                             VoIPHelper.startCall(accountInstance.getMessagesController().getChat(-dialog_id),
                                                                     accountInstance.getMessagesController().getInputPeer(dialog_id), null, false,
                                                                     cachedCall == null || !cachedCall.call.rtmp_stream, LaunchActivity.this, voipLastFragment, accountInstance);
@@ -3727,7 +3957,11 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                 }
                             }
                         }
-                    } else {
+                    }
+
+
+
+                    else {
                         try {
                             if (!mainFragmentsStack.isEmpty()) {
                                 BaseFragment fragment = mainFragmentsStack.get(mainFragmentsStack.size() - 1);
@@ -3772,7 +4006,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                 if (mainFragmentsStack.isEmpty() || MessagesController.getInstance(intentAccount).checkCanOpenChat(args, mainFragmentsStack.get(mainFragmentsStack.size() - 1))) {
                                     boolean[] canceled = new boolean[1];
                                     progressDialog.setOnCancelListener(dialog -> canceled[0] = true);
-
+                                    System.out.println("gone 34");
                                     MessagesController.getInstance(intentAccount).ensureMessagesLoaded(-invite.chat.id, 0, new MessagesController.MessagesLoadedCallback() {
                                         @Override
                                         public void onMessagesLoaded(boolean fromCache) {
@@ -3862,6 +4096,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                         args.putLong("chat_id", chat.id);
                                         if (mainFragmentsStack.isEmpty() || MessagesController.getInstance(intentAccount).checkCanOpenChat(args, mainFragmentsStack.get(mainFragmentsStack.size() - 1))) {
                                             ChatActivity fragment = new ChatActivity(args);
+                                            System.out.println("gone 35");
                                             NotificationCenter.getInstance(intentAccount).postNotificationName(NotificationCenter.closeChats);
                                             actionBarLayout.presentFragment(fragment, false, true, true, false);
                                         }
@@ -3891,6 +4126,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 BaseFragment fragment = mainFragmentsStack.get(mainFragmentsStack.size() - 1);
                 StickersAlert alert;
                 if (fragment instanceof ChatActivity) {
+                    System.out.println("gone 36");
                     ChatActivity chatActivity = (ChatActivity) fragment;
                     alert = new StickersAlert(LaunchActivity.this, fragment, stickerset, null, chatActivity.getChatActivityEnterViewForStickers(), chatActivity.getResourceProvider());
                     alert.setCalcMandatoryInsets(chatActivity.isKeyboardVisible());
@@ -3910,6 +4146,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 BaseFragment fragment = mainFragmentsStack.get(mainFragmentsStack.size() - 1);
                 EmojiPacksAlert alert;
                 if (fragment instanceof ChatActivity) {
+                    System.out.println("gone 37");
                     ChatActivity chatActivity = (ChatActivity) fragment;
                     alert = new EmojiPacksAlert(fragment, LaunchActivity.this, chatActivity.getResourceProvider(), sets);
                     alert.setCalcMandatoryInsets(chatActivity.isKeyboardVisible());
@@ -3939,6 +4176,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 if (MessagesController.getInstance(intentAccount).checkCanOpenChat(args13, fragment13)) {
                     NotificationCenter.getInstance(intentAccount).postNotificationName(NotificationCenter.closeChats);
                     MediaDataController.getInstance(intentAccount).saveDraft(did, 0, message, null, null, false);
+                    System.out.println("gone 13");
+                    bottomNavigationView.setVisibility(View.GONE);
                     actionBarLayout.presentFragment(new ChatActivity(args13), true, false, true, false);
                 }
             });
@@ -4033,6 +4272,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                         colorWallpaper = new WallpapersListActivity.ColorWallpaper(Theme.COLOR_BACKGROUND_SLUG, wallPaper.settings.background_color, wallPaper.settings.second_background_color, AndroidUtilities.getWallpaperRotation(wallPaper.settings.rotation, false));
                     }
                     ThemePreviewActivity wallpaperActivity = new ThemePreviewActivity(colorWallpaper, null, true, false);
+                    System.out.println("gone 44");
                     AndroidUtilities.runOnUIThread(() -> presentFragment(wallpaperActivity));
                     ok = true;
                 } catch (Exception e) {
@@ -4061,6 +4301,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                             object = res;
                         }
                         ThemePreviewActivity wallpaperActivity = new ThemePreviewActivity(object, null, true, false);
+                        System.out.println("gone 45");
                         wallpaperActivity.setInitialModes(wallPaper.settings.blur, wallPaper.settings.motion);
                         presentFragment(wallpaperActivity);
                     } else {
@@ -4203,6 +4444,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                         MessagesController.getInstance(currentAccount).putChats(res.chats, false);
                                         TLRPC.Chat chat = res.chats.get(0);
                                         if (lastFragment == null || MessagesController.getInstance(intentAccount).checkCanOpenChat(args, lastFragment)) {
+                                            System.out.println("gone 14");
+                                            bottomNavigationView.setVisibility(View.GONE);
                                             actionBarLayout.presentFragment(new ChatActivity(args));
                                         }
                                     }
@@ -4234,6 +4477,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private List<TLRPC.TL_contact> findContacts(String userName, String userPhone, boolean allowSelf) {
+        System.out.println("gone *30");
         final MessagesController messagesController = MessagesController.getInstance(currentAccount);
         final ContactsController contactsController = ContactsController.getInstance(currentAccount);
         final List<TLRPC.TL_contact> contacts = new ArrayList<>(contactsController.contacts);
@@ -4316,6 +4560,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void createUpdateUI() {
+        System.out.println("gone *31");
         if (sideMenuContainer == null) {
             return;
         }
@@ -4393,6 +4638,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void updateAppUpdateViews(boolean animated) {
+        System.out.println("gone *32 "+bottomNavigationView.getVisibility());
         if (sideMenuContainer == null) {
             return;
         }
@@ -4482,10 +4728,14 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 updateLayout.setVisibility(View.INVISIBLE);
             }
             sideMenu.setPadding(0, 0, 0, 0);
+//            bottomNavigationView.setVisibility(View.VISIBLE);
         }
     }
 
     public void checkAppUpdate(boolean force) {
+
+        System.out.println("gone *33 "+bottomNavigationView.getVisibility());
+
         if (!force && BuildVars.DEBUG_VERSION || !force && !BuildVars.CHECK_UPDATES) {
             return;
         }
@@ -4530,6 +4780,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     public AlertDialog showAlertDialog(AlertDialog.Builder builder) {
+        System.out.println("gone *34");
         try {
             if (visibleDialog != null) {
                 visibleDialog.dismiss();
@@ -4572,6 +4823,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     public void showBulletin(Function<BulletinFactory, Bulletin> createBulletin) {
+        System.out.println("gone *35");
         BaseFragment topFragment = null;
         if (!layerFragmentsStack.isEmpty()) {
             topFragment = layerFragmentsStack.get(layerFragmentsStack.size() - 1);
@@ -4586,21 +4838,27 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     public void setNavigateToPremiumBot(boolean val) {
+
+        System.out.println("gone *36");
         navigateToPremiumBot = val;
     }
 
     public void setNavigateToPremiumGiftCallback(Runnable val) {
+        System.out.println("gone *38");
         navigateToPremiumGiftCallback = val;
     }
 
     @Override
     public void onNewIntent(Intent intent) {
+        System.out.println("gone *39");
         super.onNewIntent(intent);
+        System.out.println("radwan=> new intent");
         handleIntent(intent, true, false, false);
     }
 
     @Override
     public void didSelectDialogs(DialogsActivity dialogsFragment, ArrayList<Long> dids, CharSequence message, boolean param) {
+        System.out.println("gone *40");
         final int account = dialogsFragment != null ? dialogsFragment.getCurrentAccount() : currentAccount;
 
         if (exportingChatUri != null) {
@@ -4619,6 +4877,9 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     } else {
                         args.putLong("chat_id", -result);
                     }
+
+                    System.out.println("gone 1");
+                    bottomNavigationView.setVisibility(View.GONE);
                     ChatActivity fragment = new ChatActivity(args);
                     fragment.setOpenImport();
                     actionBarLayout.presentFragment(fragment, dialogsFragment != null || param, dialogsFragment == null, true, false);
@@ -4785,6 +5046,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void onFinish() {
+        System.out.println("gone *41");
         if (lockRunnable != null) {
             AndroidUtilities.cancelRunOnUIThread(lockRunnable);
             lockRunnable = null;
@@ -4830,27 +5092,36 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     public void presentFragment(BaseFragment fragment) {
+        System.out.println("gone *42");
         actionBarLayout.presentFragment(fragment);
     }
 
     public boolean presentFragment(final BaseFragment fragment, final boolean removeLast, boolean forceWithoutAnimation) {
+        System.out.println("gone *42");
+        System.out.println("radwan => present fragment second");
         return actionBarLayout.presentFragment(fragment, removeLast, forceWithoutAnimation, true, false);
     }
 
     public ActionBarLayout getActionBarLayout() {
+
+        System.out.println("gone *43");
         return actionBarLayout;
     }
 
     public ActionBarLayout getLayersActionBarLayout() {
+        System.out.println("gone *44");
         return layersActionBarLayout;
     }
 
     public ActionBarLayout getRightActionBarLayout() {
+
+        System.out.println("gone *45");
         return rightActionBarLayout;
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        System.out.println("gone *46");
         if (SharedConfig.passcodeHash.length() != 0 && SharedConfig.lastPauseTime != 0) {
             SharedConfig.lastPauseTime = 0;
             if (BuildVars.LOGS_ENABLED) {
@@ -4908,6 +5179,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        System.out.println("gone *47");
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (!checkPermissionsResult(requestCode, permissions, grantResults)) return;
 
@@ -4938,6 +5210,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     protected void onPause() {
+        System.out.println("gone *48 "+bottomNavigationView.getVisibility());
         super.onPause();
         isResumed = false;
         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.stopAllHeavyOperations, 4096);
@@ -4975,7 +5248,11 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     protected void onStart() {
+        System.out.println("gone *49 "+bottomNavigationView.getVisibility());
         super.onStart();
+
+//        bottomNavigationView.setVisibility(View.GONE);
+
         Browser.bindCustomTabsService(this);
         ApplicationLoader.mainInterfaceStopped = false;
         GroupCallPip.updateVisibility(this);
@@ -4986,6 +5263,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     protected void onStop() {
+        System.out.println("gone *50 "+bottomNavigationView.getVisibility());
         super.onStop();
         Browser.unbindCustomTabsService(this);
         ApplicationLoader.mainInterfaceStopped = true;
@@ -4997,6 +5275,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     protected void onDestroy() {
+        System.out.println("gone *51");
         if (PhotoViewer.getPipInstance() != null) {
             PhotoViewer.getPipInstance().destroyPhotoViewer();
         }
@@ -5052,6 +5331,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     protected void onUserLeaveHint() {
+        System.out.println("gone *52 "+bottomNavigationView.getVisibility());
         for (Runnable callback : onUserLeaveHintListeners) {
             callback.run();
         }
@@ -5060,6 +5340,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     protected void onResume() {
+        System.out.println("gone *53 "+bottomNavigationView.getVisibility());
         super.onResume();
         isResumed = true;
         if (onResumeStaticCallback != null) {
@@ -5083,6 +5364,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         MediaController.checkGallery();
         onPasscodeResume();
         if (passcodeView == null || passcodeView.getVisibility() != View.VISIBLE) {
+            System.out.println("gone *++");
+
             actionBarLayout.onResume();
             if (AndroidUtilities.isTablet()) {
                 if (rightActionBarLayout != null) {
@@ -5133,6 +5416,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void invalidateTabletMode() {
+        System.out.println("gone *54 "+bottomNavigationView.getVisibility());
         Boolean wasTablet = AndroidUtilities.getWasTablet();
         if (wasTablet == null) {
             return;
@@ -5189,6 +5473,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
+        System.out.println("gone *55");
         AndroidUtilities.checkDisplaySize(this, newConfig);
         super.onConfigurationChanged(newConfig);
         checkLayout();
@@ -5215,6 +5500,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public void onMultiWindowModeChanged(boolean isInMultiWindowMode) {
+        System.out.println("gone *56");
         AndroidUtilities.isInMultiwindow = isInMultiWindowMode;
         checkLayout();
     }
@@ -5222,14 +5508,23 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     @Override
     @SuppressWarnings("unchecked")
     public void didReceivedNotification(int id, final int account, Object... args) {
+
+
         if (id == NotificationCenter.appDidLogout) {
+            System.out.println("gone *990");
             switchToAvailableAccountOrLogout();
-        } else if (id == NotificationCenter.closeOtherAppActivities) {
+        }
+
+        else if (id == NotificationCenter.closeOtherAppActivities) {
+            System.out.println("gone *991");
             if (args[0] != this) {
                 onFinish();
                 finish();
             }
-        } else if (id == NotificationCenter.didUpdateConnectionState) {
+        }
+
+        else if (id == NotificationCenter.didUpdateConnectionState) {
+//            System.out.println("gone *992");
             int state = ConnectionsManager.getInstance(account).getConnectionState();
             if (currentConnectionState != state) {
                 if (BuildVars.LOGS_ENABLED) {
@@ -5238,9 +5533,15 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 currentConnectionState = state;
                 updateCurrentConnectionState(account);
             }
-        } else if (id == NotificationCenter.mainUserInfoChanged) {
+        }
+
+        else if (id == NotificationCenter.mainUserInfoChanged) {
+            System.out.println("gone *993");
             drawerLayoutAdapter.notifyDataSetChanged();
-        } else if (id == NotificationCenter.needShowAlert) {
+        }
+
+        else if (id == NotificationCenter.needShowAlert) {
+            System.out.println("gone *994");
             final Integer reason = (Integer) args[0];
             if (reason == 6 || reason == 3 && proxyErrorDialog != null) {
                 return;
@@ -5290,7 +5591,10 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             if (!mainFragmentsStack.isEmpty()) {
                 mainFragmentsStack.get(mainFragmentsStack.size() - 1).showDialog(builder.create());
             }
-        } else if (id == NotificationCenter.wasUnableToFindCurrentLocation) {
+        }
+
+        else if (id == NotificationCenter.wasUnableToFindCurrentLocation) {
+            System.out.println("gone *995");
             final HashMap<String, MessageObject> waitingForLocation = (HashMap<String, MessageObject>) args[0];
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle("Vconnct");
@@ -5316,7 +5620,10 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             if (!mainFragmentsStack.isEmpty()) {
                 mainFragmentsStack.get(mainFragmentsStack.size() - 1).showDialog(builder.create());
             }
-        } else if (id == NotificationCenter.didSetNewWallpapper) {
+        }
+
+        else if (id == NotificationCenter.didSetNewWallpapper) {
+            System.out.println("gone *996 "+bottomNavigationView.getVisibility());
             if (sideMenu != null) {
                 View child = sideMenu.getChildAt(0);
                 if (child != null) {
@@ -5326,7 +5633,10 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             if (backgroundTablet != null) {
                 backgroundTablet.setBackgroundImage(Theme.getCachedWallpaper(), Theme.isWallpaperMotion());
             }
-        } else if (id == NotificationCenter.didSetPasscode) {
+        }
+
+        else if (id == NotificationCenter.didSetPasscode) {
+            System.out.println("gone *997");
             if (SharedConfig.passcodeHash.length() > 0 && !SharedConfig.allowScreenCapture) {
                 try {
                     getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
@@ -5340,7 +5650,12 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     FileLog.e(e);
                 }
             }
-        } else if (id == NotificationCenter.reloadInterface) {
+        }
+
+        else if (id == NotificationCenter.reloadInterface) {
+
+
+            System.out.println("gone *998 "+bottomNavigationView.getVisibility());
             boolean last = mainFragmentsStack.size() > 1 && mainFragmentsStack.get(mainFragmentsStack.size() - 1) instanceof ProfileActivity;
             if (last) {
                 ProfileActivity profileActivity = (ProfileActivity) mainFragmentsStack.get(mainFragmentsStack.size() - 1);
@@ -5349,15 +5664,24 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 }
             }
             rebuildAllFragments(last);
-        } else if (id == NotificationCenter.suggestedLangpack) {
+        }
+
+        else if (id == NotificationCenter.suggestedLangpack) {
+            System.out.println("gone *99-9");
             showLanguageAlert(false);
-        } else if (id == NotificationCenter.openArticle) {
+        }
+
+        else if (id == NotificationCenter.openArticle) {
+            System.out.println("gone *99-1");
             if (mainFragmentsStack.isEmpty()) {
                 return;
             }
             ArticleViewer.getInstance().setParentActivity(this, mainFragmentsStack.get(mainFragmentsStack.size() - 1));
             ArticleViewer.getInstance().open((TLRPC.TL_webPage) args[0], (String) args[1]);
-        } else if (id == NotificationCenter.hasNewContactsToImport) {
+        }
+
+        else if (id == NotificationCenter.hasNewContactsToImport) {
+            System.out.println("gone *99-2");
             if (actionBarLayout == null || actionBarLayout.fragmentsStack.isEmpty()) {
                 return;
             }
@@ -5377,7 +5701,10 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             AlertDialog dialog = builder.create();
             fragment.showDialog(dialog);
             dialog.setCanceledOnTouchOutside(false);
-        } else if (id == NotificationCenter.didSetNewTheme) {
+        }
+
+        else if (id == NotificationCenter.didSetNewTheme) {
+            System.out.println("gone *99-3 "+bottomNavigationView.getVisibility());
             Boolean nightTheme = (Boolean) args[0];
             if (!nightTheme) {
                 if (sideMenu != null) {
@@ -5400,7 +5727,10 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 checkNavigationBarColor = (boolean) args[1];
             }
             checkSystemBarColors(args.length > 2 && (boolean) args[2], true, checkNavigationBarColor && !isNavigationBarColorFrozen && !actionBarLayout.isTransitionAnimationInProgress());
-        } else if (id == NotificationCenter.needSetDayNightTheme) {
+        }
+
+        else if (id == NotificationCenter.needSetDayNightTheme) {
+            System.out.println("gone *99-4");
             boolean instant = false;
             if (Build.VERSION.SDK_INT >= 21 && args[2] != null) {
                 if (themeSwitchImageView.getVisibility() == View.VISIBLE) {
@@ -5502,7 +5832,10 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 layersActionBarLayout.animateThemedValues(theme, accentId, nightTheme, instant);
                 rightActionBarLayout.animateThemedValues(theme, accentId, nightTheme, instant);
             }
-        } else if (id == NotificationCenter.notificationsCountUpdated) {
+        }
+
+        else if (id == NotificationCenter.notificationsCountUpdated) {
+//            System.out.println("gone *99-5");
             if (sideMenu != null) {
                 Integer accountNum = (Integer) args[0];
                 int count = sideMenu.getChildCount();
@@ -5516,14 +5849,20 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     }
                 }
             }
-        } else if (id == NotificationCenter.needShowPlayServicesAlert) {
+        }
+
+        else if (id == NotificationCenter.needShowPlayServicesAlert) {
+            System.out.println("gone *99-6");
             try {
                 final Status status = (Status) args[0];
                 status.startResolutionForResult(this, PLAY_SERVICES_REQUEST_CHECK_SETTINGS);
             } catch (Throwable ignore) {
 
             }
-        } else if (id == NotificationCenter.fileLoaded) {
+        }
+
+        else if (id == NotificationCenter.fileLoaded) {
+//            System.out.println("gone *99-7");
             String path = (String) args[0];
             if (SharedConfig.isAppUpdateAvailable()) {
                 String name = FileLoader.getAttachFileName(SharedConfig.pendingAppUpdate.document);
@@ -5560,6 +5899,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                         }
                         Theme.ThemeInfo finalThemeInfo = Theme.applyThemeFile(locFile, loadingTheme.title, loadingTheme, true);
                         if (finalThemeInfo != null) {
+                            System.out.println("gone 46");
                             presentFragment(new ThemePreviewActivity(finalThemeInfo, true, ThemePreviewActivity.SCREEN_TYPE_PREVIEW, false, false));
                         }
                     }
@@ -5583,6 +5923,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                 File locFile = new File(ApplicationLoader.getFilesDirFixed(), "remote" + loadingTheme.id + ".attheme");
                                 Theme.ThemeInfo finalThemeInfo = Theme.applyThemeFile(locFile, loadingTheme.title, loadingTheme, true);
                                 if (finalThemeInfo != null) {
+                                    System.out.println("gone 47");
                                     presentFragment(new ThemePreviewActivity(finalThemeInfo, true, ThemePreviewActivity.SCREEN_TYPE_PREVIEW, false, false));
                                 }
                                 onThemeLoadFinish();
@@ -5591,7 +5932,10 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     }
                 }
             }
-        } else if (id == NotificationCenter.fileLoadFailed) {
+        }
+
+        else if (id == NotificationCenter.fileLoadFailed) {
+            System.out.println("gone *99-8");
             String path = (String) args[0];
             if (path.equals(loadingThemeFileName) || path.equals(loadingThemeWallpaperName)) {
                 onThemeLoadFinish();
@@ -5602,30 +5946,56 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     updateAppUpdateViews(true);
                 }
             }
-        } else if (id == NotificationCenter.screenStateChanged) {
+        }
+
+        else if (id == NotificationCenter.screenStateChanged) {
+            System.out.println("gone *99-9");
             if (ApplicationLoader.mainInterfacePaused) {
                 return;
             }
             if (ApplicationLoader.isScreenOn) {
+                System.out.println("gone *99-9-1");
                 onPasscodeResume();
             } else {
+                System.out.println("gone *99-9-2");
+
                 onPasscodePause();
             }
-        } else if (id == NotificationCenter.needCheckSystemBarColors) {
+        }
+
+        else if (id == NotificationCenter.needCheckSystemBarColors) {
+            System.out.println("gone *99-9-3");
+
             boolean useCurrentFragment = args.length > 0 && (boolean) args[0];
             checkSystemBarColors(useCurrentFragment);
-        } else if (id == NotificationCenter.historyImportProgressChanged) {
+        }
+
+        else if (id == NotificationCenter.historyImportProgressChanged) {
+            System.out.println("gone *99-9-4");
+
             if (args.length > 1 && !mainFragmentsStack.isEmpty()) {
                 AlertsCreator.processError(currentAccount, (TLRPC.TL_error) args[2], mainFragmentsStack.get(mainFragmentsStack.size() - 1), (TLObject) args[1]);
             }
-        } else if (id == NotificationCenter.stickersImportComplete) {
+        }
+
+        else if (id == NotificationCenter.stickersImportComplete) {
+            System.out.println("gone *99-9-5");
+
             MediaDataController.getInstance(account).toggleStickerSet(this, (TLObject) args[0], 2, !mainFragmentsStack.isEmpty() ? mainFragmentsStack.get(mainFragmentsStack.size() - 1) : null, false, true);
-        } else if (id == NotificationCenter.newSuggestionsAvailable) {
+        }
+
+        else if (id == NotificationCenter.newSuggestionsAvailable) {
+            System.out.println("gone *99-9-6");
+
             sideMenu.invalidateViews();
-        } else if (id == NotificationCenter.showBulletin) {
+        }
+
+        else if (id == NotificationCenter.showBulletin) {
+            System.out.println("gone *99-9-7");
+
             if (!mainFragmentsStack.isEmpty()) {
                 int type = (int) args[0];
-
+                System.out.println("gone 38");
                 FrameLayout container = null;
                 BaseFragment fragment = null;
                 if (GroupCallActivity.groupCallUiVisible && GroupCallActivity.groupCallInstance != null) {
@@ -5691,9 +6061,17 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     }
                 }
             }
-        } else if (id == NotificationCenter.groupCallUpdated) {
+        }
+
+        else if (id == NotificationCenter.groupCallUpdated) {
+            System.out.println("gone *99-9-8");
+
             checkWasMutedByAdmin(false);
-        } else if (id == NotificationCenter.fileLoadProgressChanged) {
+        }
+
+        else if (id == NotificationCenter.fileLoadProgressChanged) {
+//            System.out.println("gone *99-9-9");
+
             if (updateTextView != null && SharedConfig.isAppUpdateAvailable()) {
                 String location = (String) args[0];
                 String fileName = FileLoader.getAttachFileName(SharedConfig.pendingAppUpdate.document);
@@ -5705,20 +6083,33 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     updateTextView.setText(LocaleController.formatString("AppUpdateDownloading", R.string.AppUpdateDownloading, (int) (loadProgress * 100)));
                 }
             }
-        } else if (id == NotificationCenter.appUpdateAvailable) {
+        }
+
+        else if (id == NotificationCenter.appUpdateAvailable) {
+            System.out.println("gone *99-9--1");
+
             updateAppUpdateViews(mainFragmentsStack.size() == 1);
-        } else if (id == NotificationCenter.currentUserShowLimitReachedDialog) {
+        }
+
+        else if (id == NotificationCenter.currentUserShowLimitReachedDialog) {
+            System.out.println("gone *99-9--2 "+bottomNavigationView.getVisibility());
             if (!mainFragmentsStack.isEmpty()) {
                 BaseFragment fragment = mainFragmentsStack.get(mainFragmentsStack.size() - 1);
                 if (fragment.getParentActivity() != null) {
                     fragment.showDialog(new LimitReachedBottomSheet(fragment, fragment.getParentActivity(), (int) args[0], currentAccount));
                 }
             }
-        } else if (id == NotificationCenter.currentUserPremiumStatusChanged) {
+        }
+
+        else if (id == NotificationCenter.currentUserPremiumStatusChanged) {
+            System.out.println("gone *99-9--2");
             if (drawerLayoutAdapter != null) {
                 drawerLayoutAdapter.notifyDataSetChanged();
             }
-        } else if (id == NotificationCenter.requestPermissions) {
+        }
+
+        else if (id == NotificationCenter.requestPermissions) {
+            System.out.println("gone *99-9--3");
             int type = (int) args[0];
             String[] permissions = null;
             if (type == BLUETOOTH_CONNECT_TYPE) {
@@ -5741,6 +6132,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void invalidateCachedViews(View parent) {
+        System.out.println("gone *58");
         int layerType = parent.getLayerType();
         if (layerType != View.LAYER_TYPE_NONE) {
             parent.invalidate();
@@ -5754,6 +6146,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void checkWasMutedByAdmin(boolean checkOnly) {
+        System.out.println("gone *59 "+bottomNavigationView.getVisibility());
         VoIPService voIPService = VoIPService.getSharedInstance();
         if (voIPService != null && voIPService.groupCall != null) {
             boolean wasMuted = wasMutedByAdminRaisedHand;
@@ -5784,11 +6177,13 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void showVoiceChatTooltip(int action) {
+        System.out.println("gone *60");
         VoIPService voIPService = VoIPService.getSharedInstance();
         if (voIPService == null || mainFragmentsStack.isEmpty() || voIPService.groupCall == null) {
             return;
         }
         if (!mainFragmentsStack.isEmpty()) {
+            System.out.println("gone 39");
             TLRPC.Chat chat = voIPService.getChat();
             BaseFragment fragment = actionBarLayout.fragmentsStack.get(actionBarLayout.fragmentsStack.size() - 1);
             if (fragment instanceof ChatActivity) {
@@ -5811,6 +6206,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private String getStringForLanguageAlert(HashMap<String, String> map, String key, int intKey) {
+        System.out.println("gone *61");
         String value = map.get(key);
         if (value == null) {
             return LocaleController.getString(key, intKey);
@@ -5819,15 +6215,18 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void openThemeAccentPreview(TLRPC.TL_theme t, TLRPC.TL_wallPaper wallPaper, Theme.ThemeInfo info) {
+        System.out.println("gone *62");
         int lastId = info.lastAccentId;
         Theme.ThemeAccent accent = info.createNewAccent(t, currentAccount);
         info.prevAccentId = info.currentAccentId;
         info.setCurrentAccentId(accent.id);
         accent.pattern = wallPaper;
+        System.out.println("gone 38");
         presentFragment(new ThemePreviewActivity(info, lastId != info.lastAccentId, ThemePreviewActivity.SCREEN_TYPE_PREVIEW, false, false));
     }
 
     private void onThemeLoadFinish() {
+        System.out.println("gone *63");
         if (loadingThemeProgressDialog != null) {
             try {
                 loadingThemeProgressDialog.dismiss();
@@ -5843,6 +6242,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void checkFreeDiscSpace() {
+        System.out.println("gone *64 "+bottomNavigationView.getVisibility());
         SharedConfig.checkKeepMedia();
         SharedConfig.checkLogsToDelete();
         if (Build.VERSION.SDK_INT >= 26) {
@@ -5884,6 +6284,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void showLanguageAlertInternal(LocaleController.LocaleInfo systemInfo, LocaleController.LocaleInfo englishInfo, String systemLang) {
+        System.out.println("gone *65");
         try {
             loadingLocaleDialog = false;
             boolean firstSystem = systemInfo.builtIn || LocaleController.getInstance().isCurrentLocalLocale();
@@ -5943,7 +6344,14 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     private int[] tempLocation;
 
+
+
+
+
+
     private void drawRippleAbove(Canvas canvas, View parent) {
+//        System.out.println("gone *66");
+
         if (parent == null || rippleAbove == null || rippleAbove.getBackground() == null) {
             return;
         }
@@ -5961,7 +6369,12 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         canvas.restore();
     }
 
+
+
+
+
     private void showLanguageAlert(boolean force) {
+        System.out.println("gone *67 "+bottomNavigationView.getVisibility());
         if (!UserConfig.getInstance(currentAccount).isClientActivated()) {
             return;
         }
@@ -6065,6 +6478,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     private void onPasscodePause() {
+        System.out.println("gone *68 "+bottomNavigationView.getVisibility());
+
         if (lockRunnable != null) {
             if (BuildVars.LOGS_ENABLED) {
                 FileLog.d("cancel lockRunnable onPasscodePause");
@@ -6107,9 +6522,14 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             SharedConfig.lastPauseTime = 0;
         }
         SharedConfig.saveConfig();
+//        bottomNavigationView.setVisibility(View.VISIBLE);
     }
 
+
     private void onPasscodeResume() {
+
+        System.out.println("gone *69 "+bottomNavigationView.getVisibility());
+
         if (lockRunnable != null) {
             if (BuildVars.LOGS_ENABLED) {
                 FileLog.d("cancel lockRunnable onPasscodeResume");
@@ -6118,6 +6538,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             lockRunnable = null;
         }
         if (AndroidUtilities.needShowPasscode(true)) {
+            System.out.println("gone *555");
+            bottomNavigationView.setVisibility(View.GONE);
             showPasscodeActivity(true, false, -1, -1, null, null);
         }
         if (SharedConfig.lastPauseTime != 0) {
@@ -6129,7 +6551,13 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         }
     }
 
+
+
+
+
+
     private void updateCurrentConnectionState(int account) {
+//        System.out.println("gone *70");
         if (actionBarLayout == null) {
             return;
         }
@@ -6159,6 +6587,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     }
                 } else {
                     if (!mainFragmentsStack.isEmpty()) {
+                        System.out.println("gone 40");
                         lastFragment = mainFragmentsStack.get(mainFragmentsStack.size() - 1);
                     }
                 }
@@ -6172,6 +6601,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     public void hideVisibleActionMode() {
+        System.out.println("gone *71");
         if (visibleActionMode == null) {
             return;
         }
@@ -6180,6 +6610,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+        System.out.println("gone *72 "+bottomNavigationView.getVisibility());
         try {
             super.onSaveInstanceState(outState);
             BaseFragment lastFragment = null;
@@ -6228,6 +6659,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public void onBackPressed() {
+        System.out.println("gone *73");
         if (passcodeView != null && passcodeView.getVisibility() == View.VISIBLE) {
             finish();
             return;
@@ -6263,6 +6695,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public void onLowMemory() {
+        System.out.println("gone *74");
         super.onLowMemory();
         if (actionBarLayout != null) {
             actionBarLayout.onLowMemory();
@@ -6275,6 +6708,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public void onActionModeStarted(ActionMode mode) {
+        System.out.println("gone *75");
         super.onActionModeStarted(mode);
         visibleActionMode = mode;
         try {
@@ -6303,6 +6737,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public void onActionModeFinished(ActionMode mode) {
+
+        System.out.println("gone *76");
         super.onActionModeFinished(mode);
         if (visibleActionMode == mode) {
             visibleActionMode = null;
@@ -6319,6 +6755,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public boolean onPreIme() {
+        System.out.println("gone *77");
         if (SecretMediaViewer.hasInstance() && SecretMediaViewer.getInstance().isVisible()) {
             SecretMediaViewer.getInstance().closePhoto(true, false);
             return true;
@@ -6334,6 +6771,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
+        System.out.println("gone *78");
         int keyCode = event.getKeyCode();
         if (event.getAction() == KeyEvent.ACTION_DOWN && (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)) {
             if (VoIPService.getSharedInstance() != null) {
@@ -6349,7 +6787,9 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 }
             } else if (!mainFragmentsStack.isEmpty() && (!PhotoViewer.hasInstance() || !PhotoViewer.getInstance().isVisible()) && event.getRepeatCount() == 0) {
                 BaseFragment fragment = mainFragmentsStack.get(mainFragmentsStack.size() - 1);
+                System.out.println("gone 41");
                 if (fragment instanceof ChatActivity) {
+                    System.out.println("gone 42");
                     if (((ChatActivity) fragment).maybePlayVisibleVideo()) {
                         return true;
                     }
@@ -6357,6 +6797,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 if (AndroidUtilities.isTablet() && !rightFragmentsStack.isEmpty()) {
                     fragment = rightFragmentsStack.get(rightFragmentsStack.size() - 1);
                     if (fragment instanceof ChatActivity) {
+                        System.out.println("gone 43");
                         if (((ChatActivity) fragment).maybePlayVisibleVideo()) {
                             return true;
                         }
@@ -6374,6 +6815,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
+        System.out.println("gone *79");
         if (keyCode == KeyEvent.KEYCODE_MENU && !SharedConfig.isWaitingForPasscodeEnter) {
             if (PhotoViewer.hasInstance() && PhotoViewer.getInstance().isVisible()) {
                 return super.onKeyUp(keyCode, event);
@@ -6408,9 +6850,19 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public boolean needPresentFragment(BaseFragment fragment, boolean removeLast, boolean forceWithoutAnimation, ActionBarLayout layout) {
+
+        //TODO: msh htnf3 hna
+
+//        bottomNavigationView.setVisibility(View.GONE);
+
+
+        System.out.println("gone *80 "+bottomNavigationView.getVisibility());
+
         if (ArticleViewer.hasInstance() && ArticleViewer.getInstance().isVisible()) {
+            System.out.println("gone *880 "+bottomNavigationView.getVisibility());
             ArticleViewer.getInstance().close(false, true);
         }
+
         if (AndroidUtilities.isTablet()) {
             drawerLayoutContainer.setAllowOpenDrawer(!(fragment instanceof LoginActivity || fragment instanceof IntroActivity || fragment instanceof CountrySelectActivity) && layersActionBarLayout.getVisibility() != View.VISIBLE, true);
             if (fragment instanceof DialogsActivity) {
@@ -6491,24 +6943,38 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 layersActionBarLayout.presentFragment(fragment, removeLast, forceWithoutAnimation, false, false);
                 return false;
             }
-        } else {
+        }
+
+        else {
             boolean allow = true; // TODO: Make it a flag inside fragment itself, maybe BaseFragment#isDrawerOpenAllowed()?
             if (fragment instanceof LoginActivity || fragment instanceof IntroActivity) {
+                bottomNavigationView.setVisibility(View.GONE);
                 if (mainFragmentsStack.size() == 0 || mainFragmentsStack.get(0) instanceof IntroActivity) {
                     allow = false;
                 }
             } else if (fragment instanceof CountrySelectActivity) {
+                bottomNavigationView.setVisibility(View.GONE);
                 if (mainFragmentsStack.size() == 1) {
                     allow = false;
                 }
+            }else if (fragment instanceof ChatActivity) {
+                bottomNavigationView.setVisibility(View.GONE);
+
+            }
+            else {
+                bottomNavigationView.setVisibility(View.VISIBLE);
             }
             drawerLayoutContainer.setAllowOpenDrawer(allow, false);
         }
+        System.out.println("gone *8880 "+bottomNavigationView.getVisibility());
+
         return true;
     }
 
+
     @Override
     public boolean needAddFragmentToStack(BaseFragment fragment, ActionBarLayout layout) {
+        System.out.println("gone *81 fragment "+ fragment.toString()+" "+bottomNavigationView.getVisibility());
         if (AndroidUtilities.isTablet()) {
             drawerLayoutContainer.setAllowOpenDrawer(!(fragment instanceof LoginActivity || fragment instanceof IntroActivity || fragment instanceof CountrySelectActivity) && layersActionBarLayout.getVisibility() != View.VISIBLE, true);
             if (fragment instanceof DialogsActivity) {
@@ -6568,6 +7034,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         } else {
             boolean allow = true;
             if (fragment instanceof LoginActivity || fragment instanceof IntroActivity) {
+
+
                 if (mainFragmentsStack.size() == 0 || mainFragmentsStack.get(0) instanceof IntroActivity) {
                     allow = false;
                 }
@@ -6576,6 +7044,15 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     allow = false;
                 }
             }
+            else if (fragment instanceof DialogsActivity) {
+                System.out.println("gone ***81 "+bottomNavigationView.getVisibility());
+                bottomNavigationView.setVisibility(View.VISIBLE);
+                System.out.println("gone ***81 "+bottomNavigationView.getVisibility());
+                //                if (mainFragmentsStack.size() == 1) {
+//                    allow = false;
+//                }
+            }
+//            bottomNavigationView.setVisibility(View.VISIBLE);
             drawerLayoutContainer.setAllowOpenDrawer(allow, false);
         }
         return true;
@@ -6583,6 +7060,11 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public boolean needCloseLastFragment(ActionBarLayout layout) {
+
+
+
+
+        System.out.println("gone *82");
         if (AndroidUtilities.isTablet()) {
             if (layout == actionBarLayout && layout.fragmentsStack.size() <= 1) {
                 onFinish();
@@ -6597,20 +7079,27 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 finish();
                 return false;
             }
-        } else {
+        }
+
+        else {
             if (layout.fragmentsStack.size() <= 1) {
+                System.out.println("gone *1000 ");
                 onFinish();
                 finish();
                 return false;
             }
             if (layout.fragmentsStack.size() >= 2 && !(layout.fragmentsStack.get(0) instanceof LoginActivity)) {
+                System.out.println("gone *99");
+                bottomNavigationView.setVisibility(View.VISIBLE);
                 drawerLayoutContainer.setAllowOpenDrawer(true, false);
             }
         }
         return true;
     }
 
+
     public void rebuildAllFragments(boolean last) {
+        System.out.println("gone *83 "+bottomNavigationView.getVisibility());
         if (layersActionBarLayout != null) {
             layersActionBarLayout.rebuildAllFragmentViews(last, last);
         } else {
@@ -6620,6 +7109,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     @Override
     public void onRebuildAllFragments(ActionBarLayout layout, boolean last) {
+        System.out.println("gone *84 "+bottomNavigationView.getVisibility());
         if (AndroidUtilities.isTablet()) {
             if (layout == layersActionBarLayout) {
                 rightActionBarLayout.rebuildAllFragmentViews(last, last);

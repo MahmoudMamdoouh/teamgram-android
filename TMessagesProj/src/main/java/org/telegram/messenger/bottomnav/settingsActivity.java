@@ -18,7 +18,6 @@ public class settingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
 
-
         BottomNavigationView bottomNavigationView=findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setSelectedItemId(R.id.bottom_settings);
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -28,12 +27,6 @@ public class settingsActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
                 return true;
-            } else if (itemId == R.id.bottom_call) {
-                startActivity(new Intent(getApplicationContext(), callsActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                finish();
-                return true;
-
             } else if (itemId == R.id.bottom_meet) {
                 startActivity(new Intent(getApplicationContext(), meetsActivity.class));
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

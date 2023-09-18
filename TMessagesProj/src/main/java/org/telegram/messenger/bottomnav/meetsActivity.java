@@ -28,12 +28,6 @@ public class meetsActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
                 return true;
-            } else if (itemId == R.id.bottom_call) {
-                startActivity(new Intent(getApplicationContext(), callsActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                finish();
-                return true;
-
             } else if (itemId == R.id.bottom_meet) {
                 return true;
 
@@ -45,7 +39,6 @@ public class meetsActivity extends AppCompatActivity {
             }
             return false;
         });
-
 
     }
 }

@@ -1248,6 +1248,7 @@ public class ActionBar extends FrameLayout {
     }
 
     public void onMenuButtonPressed() {
+        System.out.println("onMenuButtonPressed");
         if (isActionModeShowed()) {
             return;
         }

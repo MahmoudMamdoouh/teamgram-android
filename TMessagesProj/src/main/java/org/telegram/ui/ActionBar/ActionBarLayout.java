@@ -1190,6 +1190,7 @@ public class ActionBarLayout extends FrameLayout {
 
 
     public boolean presentFragment(final BaseFragment fragment, final boolean removeLast, boolean forceWithoutAnimation, boolean check, final boolean preview) {
+
         return presentFragment(fragment, removeLast, forceWithoutAnimation, check, preview, null);
     }
 

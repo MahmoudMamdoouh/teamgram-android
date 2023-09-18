@@ -51,7 +51,8 @@ public class DrawerLayoutAdapter extends RecyclerListView.SelectionAdapter {
         mContext = context;
         mDrawerLayoutContainer = drawerLayoutContainer;
         itemAnimator = animator;
-        accountsShown = UserConfig.getActivatedAccountsCount() > 1 && MessagesController.getGlobalMainSettings().getBoolean("accountsShown", true);
+        accountsShown = UserConfig.getActivatedAccountsCount() > 1 && MessagesController.getGlobalMainSettings()
+                .getBoolean("accountsShown", true);
         Theme.createCommonDialogResources(context);
         resetItems();
         try {

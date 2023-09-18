@@ -105,37 +105,31 @@
         android:theme="@style/Theme.TMessages.Start"
         tools:replace="android:supportsRtl">
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:name=".bottomnav.AppsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".bottomnav.DiscoverActivity"
+            android:exported="false" />
+        <activity
             android:name=".bottomnav.settingsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name=".bottomnav.callsActivity"
-            android:exported="false" />
-
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:name=".bottomnav.meetsActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".bottomnav.VconnctLauncherActivity"
             android:exported="false"
-
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            />
-
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="org.telegram.ui.CallLogActivity"
             android:exported="false"
-
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            >
-
-
-        </activity>
-
-
-
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="org.telegram.ui.LaunchActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|uiMode"
@@ -146,7 +140,6 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -275,9 +268,6 @@
                 <category android:name="android.intent.category.MULTIWINDOW_LAUNCHER" />
             </intent-filter>
         </activity-alias>
-
-
-
         <activity-alias
             android:name=".TurboIcon"
             android:enabled="false"

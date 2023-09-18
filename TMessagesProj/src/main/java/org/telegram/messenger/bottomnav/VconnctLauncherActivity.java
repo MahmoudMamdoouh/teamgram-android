@@ -26,12 +26,7 @@ public class VconnctLauncherActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();
                 return true;
-            } else if (itemId == R.id.bottom_call) {
-                startActivity(new Intent(getApplicationContext(), callsActivity.class));
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                finish();
-                return true;
-            } else if (itemId == R.id.bottom_meet) {
+            }else if (itemId == R.id.bottom_meet) {
                 startActivity(new Intent(getApplicationContext(), meetsActivity.class));
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 finish();

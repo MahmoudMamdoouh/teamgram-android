@@ -1514,6 +1514,7 @@ public class LoginActivity extends BaseFragment {
             AndroidUtilities.setLightStatusBar(getParentActivity().getWindow(), false);
         }
         clearCurrentState();
+
         if (getParentActivity() instanceof LaunchActivity) {
             if (newAccount) {
                 newAccount = false;
@@ -1540,7 +1541,9 @@ public class LoginActivity extends BaseFragment {
                 NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.mainUserInfoChanged);
                 LocaleController.getInstance().loadRemoteLanguages(currentAccount);
             }
-        } else if (getParentActivity() instanceof ExternalActionActivity) {
+        }
+
+        else if (getParentActivity() instanceof ExternalActionActivity) {
             ((ExternalActionActivity) getParentActivity()).onFinishLogin();
         }
     }
@@ -1550,6 +1553,7 @@ public class LoginActivity extends BaseFragment {
     }
 
     private void onAuthSuccess(TLRPC.TL_auth_authorization res, boolean afterSignup) {
+
         MessagesController.getInstance(currentAccount).cleanup();
         ConnectionsManager.getInstance(currentAccount).setUserId(res.user.id);
         UserConfig.getInstance(currentAccount).clearConfig();
@@ -1572,6 +1576,7 @@ public class LoginActivity extends BaseFragment {
         MediaDataController.getInstance(currentAccount).loadStickersByEmojiOrName(AndroidUtilities.STICKERS_PLACEHOLDER_PACK_NAME, false, true);
 
         needFinishActivity(afterSignup, res.setup_password_required, res.otherwise_relogin_days);
+
     }
 
     private void fillNextCodeParams(Bundle params, TLRPC.TL_account_sentEmailCode res) {

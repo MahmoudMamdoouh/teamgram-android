@@ -158,17 +158,18 @@ public class ActionBar extends FrameLayout {
     }
 
     private void createBackButtonImage() {
+        System.out.println("gone * createBackButtonImage");
         if (backButtonImageView != null) {
             return;
         }
         backButtonImageView = new ImageView(getContext());
         backButtonImageView.setScaleType(ImageView.ScaleType.CENTER);
-        backButtonImageView.setBackgroundDrawable(Theme.createSelectorDrawable(itemsBackgroundColor));
+        backButtonImageView.setBackgroundDrawable(Theme.createSelectorDrawable(R.color.primary_color));
         if (itemsColor != 0) {
             backButtonImageView.setColorFilter(new PorterDuffColorFilter(itemsColor, PorterDuff.Mode.MULTIPLY));
         }
         backButtonImageView.setPadding(AndroidUtilities.dp(1), 0, 0, 0);
-        addView(backButtonImageView, LayoutHelper.createFrame(54, 54, Gravity.LEFT | Gravity.TOP));
+//        addView(backButtonImageView, LayoutHelper.createFrame(54, 54, Gravity.LEFT | Gravity.TOP));
 
         backButtonImageView.setOnClickListener(v -> {
             if (!actionModeVisible && isSearchFieldVisible) {
@@ -1248,12 +1249,13 @@ public class ActionBar extends FrameLayout {
     }
 
     public void onMenuButtonPressed() {
-        System.out.println("onMenuButtonPressed");
+        System.out.println("gone **baaaaack");
         if (isActionModeShowed()) {
             return;
         }
         if (menu != null) {
             menu.onMenuButtonPressed();
+            System.out.println("gone ***baaaaack");
         }
     }
 

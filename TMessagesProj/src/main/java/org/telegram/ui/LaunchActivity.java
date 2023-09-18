@@ -1458,6 +1458,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         if (removeAll) {
             actionBarLayout.removeAllFragments();
         } else {
+            System.out.println("backkkk");
             actionBarLayout.removeFragmentFromStack(0);
         }
         DialogsActivity dialogsActivity = dialogsActivityProvider.provide(null);
@@ -6853,10 +6854,10 @@ System.out.println("gone 27");
 
         //TODO: msh htnf3 hna
 
-//        bottomNavigationView.setVisibility(View.GONE);
+        bottomNavigationView.setVisibility(View.GONE);
 
 
-        System.out.println("gone *80 "+bottomNavigationView.getVisibility());
+        System.out.println("gone *80 "+bottomNavigationView.getVisibility() + fragment.toString());
 
         if (ArticleViewer.hasInstance() && ArticleViewer.getInstance().isVisible()) {
             System.out.println("gone *880 "+bottomNavigationView.getVisibility());
@@ -6957,10 +6958,17 @@ System.out.println("gone 27");
                 if (mainFragmentsStack.size() == 1) {
                     allow = false;
                 }
-            }else if (fragment instanceof ChatActivity) {
-                bottomNavigationView.setVisibility(View.GONE);
-
             }
+
+            else if (fragment instanceof ChangeUsernameActivity || fragment instanceof ChatActivity ||fragment instanceof ActionIntroActivity
+                    ||fragment instanceof ChangeBioActivity||fragment instanceof NotificationsSettingsActivity||fragment instanceof PrivacySettingsActivity
+                    ||fragment instanceof DataSettingsActivity||fragment instanceof LanguageSelectActivity
+            ) {
+                bottomNavigationView.setVisibility(View.GONE);
+            }
+
+
+
             else {
                 bottomNavigationView.setVisibility(View.VISIBLE);
             }
@@ -7060,8 +7068,6 @@ System.out.println("gone 27");
 
     @Override
     public boolean needCloseLastFragment(ActionBarLayout layout) {
-
-
 
 
         System.out.println("gone *82");

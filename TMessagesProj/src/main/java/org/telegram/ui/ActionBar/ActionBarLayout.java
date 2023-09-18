@@ -2173,6 +2173,7 @@ public class ActionBarLayout extends FrameLayout {
     public boolean onKeyUp(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_MENU && !checkTransitionAnimation() && !startedTracking && currentActionBar != null) {
             currentActionBar.onMenuButtonPressed();
+            System.out.println("gone *****baaaaack");
         }
         return super.onKeyUp(keyCode, event);
     }

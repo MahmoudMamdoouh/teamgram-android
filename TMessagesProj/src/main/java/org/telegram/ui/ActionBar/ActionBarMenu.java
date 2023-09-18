@@ -180,6 +180,7 @@ public class ActionBarMenu extends LinearLayout {
     }
 
     public void onMenuButtonPressed() {
+        System.out.println("gone *baaaaack");
         int count = getChildCount();
         for (int a = 0; a < count; a++) {
             View view = getChildAt(a);

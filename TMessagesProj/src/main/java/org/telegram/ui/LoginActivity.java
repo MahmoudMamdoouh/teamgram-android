@@ -1,3 +1,4 @@
+
 /*
  * This is the source code of Telegram for Android v. 5.x.x.
  * It is licensed under GNU GPL v. 2 or later.
@@ -1514,7 +1515,6 @@ public class LoginActivity extends BaseFragment {
             AndroidUtilities.setLightStatusBar(getParentActivity().getWindow(), false);
         }
         clearCurrentState();
-
         if (getParentActivity() instanceof LaunchActivity) {
             if (newAccount) {
                 newAccount = false;
@@ -1541,9 +1541,7 @@ public class LoginActivity extends BaseFragment {
                 NotificationCenter.getInstance(currentAccount).postNotificationName(NotificationCenter.mainUserInfoChanged);
                 LocaleController.getInstance().loadRemoteLanguages(currentAccount);
             }
-        }
-
-        else if (getParentActivity() instanceof ExternalActionActivity) {
+        } else if (getParentActivity() instanceof ExternalActionActivity) {
             ((ExternalActionActivity) getParentActivity()).onFinishLogin();
         }
     }
@@ -1553,7 +1551,6 @@ public class LoginActivity extends BaseFragment {
     }
 
     private void onAuthSuccess(TLRPC.TL_auth_authorization res, boolean afterSignup) {
-
         MessagesController.getInstance(currentAccount).cleanup();
         ConnectionsManager.getInstance(currentAccount).setUserId(res.user.id);
         UserConfig.getInstance(currentAccount).clearConfig();
@@ -1576,12 +1573,11 @@ public class LoginActivity extends BaseFragment {
         MediaDataController.getInstance(currentAccount).loadStickersByEmojiOrName(AndroidUtilities.STICKERS_PLACEHOLDER_PACK_NAME, false, true);
 
         needFinishActivity(afterSignup, res.setup_password_required, res.otherwise_relogin_days);
-
     }
 
     private void fillNextCodeParams(Bundle params, TLRPC.TL_account_sentEmailCode res) {
         params.putString("emailPattern", res.email_pattern);
-        params.putInt("length", res.length);
+        params.putInt("length",6);
         setPage(VIEW_CODE_EMAIL_SETUP, true, params, false);
     }
 
@@ -1602,7 +1598,8 @@ public class LoginActivity extends BaseFragment {
         }
         if (res.type instanceof TLRPC.TL_auth_sentCodeTypeApp) {
             params.putInt("type", AUTH_TYPE_MESSAGE);
-            params.putInt("length", res.type.length);
+            params.putInt("length", 6
+            );
             setPage(VIEW_CODE_MESSAGE, animate, params, false);
         } else {
             if (res.timeout == 0) {
@@ -1611,7 +1608,8 @@ public class LoginActivity extends BaseFragment {
             params.putInt("timeout", res.timeout * 1000);
             if (res.type instanceof TLRPC.TL_auth_sentCodeTypeCall) {
                 params.putInt("type", AUTH_TYPE_CALL);
-                params.putInt("length", res.type.length);
+                params.putInt("length", 6
+                );
                 setPage(VIEW_CODE_CALL, animate, params, false);
             } else if (res.type instanceof TLRPC.TL_auth_sentCodeTypeFlashCall) {
                 params.putInt("type", AUTH_TYPE_FLASH_CALL);
@@ -1619,11 +1617,13 @@ public class LoginActivity extends BaseFragment {
                 setPage(VIEW_CODE_FLASH_CALL, animate, params, false);
             } else if (res.type instanceof TLRPC.TL_auth_sentCodeTypeSms) {
                 params.putInt("type", AUTH_TYPE_SMS);
-                params.putInt("length", res.type.length);
+                params.putInt("length", 6
+                );
                 setPage(VIEW_CODE_SMS, animate, params, false);
             } else if (res.type instanceof TLRPC.TL_auth_sentCodeTypeMissedCall) {
                 params.putInt("type", AUTH_TYPE_MISSED_CALL);
-                params.putInt("length", res.type.length);
+                params.putInt("length", 6
+                );
                 params.putString("prefix", res.type.prefix);
                 setPage(VIEW_CODE_MISSED_CALL, animate, params, false);
             } else if (res.type instanceof TLRPC.TL_auth_sentCodeTypeSetUpEmailRequired) {
@@ -1632,7 +1632,8 @@ public class LoginActivity extends BaseFragment {
             } else if (res.type instanceof TLRPC.TL_auth_sentCodeTypeEmailCode) {
                 params.putBoolean("googleSignInAllowed", res.type.google_signin_allowed);
                 params.putString("emailPattern", res.type.email_pattern);
-                params.putInt("length", res.type.length);
+                params.putInt("length", 6
+                );
                 params.putInt("nextPhoneLoginDate", res.type.next_phone_login_date);
                 setPage(VIEW_CODE_EMAIL, animate, params, false);
             }
@@ -3352,7 +3353,7 @@ public class LoginActivity extends BaseFragment {
             prefix = params.getString("prefix");
             length = params.getInt("length");
             if (length == 0) {
-                length = 5;
+                length = 6;
             }
 
             codeFieldContainer.setNumbersCount(length, currentType);
@@ -5108,9 +5109,9 @@ public class LoginActivity extends BaseFragment {
                 }, NotificationCenter.onActivityResultReceived);
 
                 GoogleSignInClient googleClient = GoogleSignIn.getClient(getContext(), new GoogleSignInOptions.Builder()
-                                .requestIdToken(BuildVars.GOOGLE_AUTH_CLIENT_ID)
-                                .requestEmail()
-                                .build());
+                        .requestIdToken(BuildVars.GOOGLE_AUTH_CLIENT_ID)
+                        .requestEmail()
+                        .build());
                 googleClient.signOut().addOnCompleteListener(command -> getParentActivity().startActivityForResult(googleClient.getSignInIntent(), BasePermissionsActivity.REQUEST_CODE_SIGN_IN_WITH_GOOGLE));
             });
 
@@ -7329,3 +7330,4 @@ public class LoginActivity extends BaseFragment {
         return ColorUtils.calculateLuminance(color) > 0.7f;
     }
 }
+

@@ -979,6 +979,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         bottomNavigationView.getMenu().add(0, R.id.bottom_apps, 3, "Apps").setIcon(R.drawable.baseline_apps_24);
         bottomNavigationView.getMenu().add(0, R.id.bottom_settings, 4, "Settings").setIcon(R.drawable.baseline_settings_24);
         bottomNavigationView.setBackgroundResource(R.color.primary_color);
+
+
         bottomNavigationView.setSelectedItemId(R.id.bottom_home);
         bottomNavigationView.setBackgroundResource(R.drawable.bottom_background);
         bottomNavigationView.setForegroundGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);

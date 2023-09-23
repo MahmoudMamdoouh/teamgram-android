@@ -169,7 +169,7 @@ public class ActionBar extends FrameLayout {
             backButtonImageView.setColorFilter(new PorterDuffColorFilter(itemsColor, PorterDuff.Mode.MULTIPLY));
         }
         backButtonImageView.setPadding(AndroidUtilities.dp(1), 0, 0, 0);
-//        addView(backButtonImageView, LayoutHelper.createFrame(54, 54, Gravity.LEFT | Gravity.TOP));
+        addView(backButtonImageView, LayoutHelper.createFrame(54, 54, Gravity.LEFT | Gravity.TOP));
 
         backButtonImageView.setOnClickListener(v -> {
             if (!actionModeVisible && isSearchFieldVisible) {
@@ -185,6 +185,10 @@ public class ActionBar extends FrameLayout {
 
     public Drawable getBackButtonDrawable() {
         return backButtonDrawable;
+    }
+
+    public void hideNavigationDrawer(){
+        backButtonImageView.setVisibility(View.GONE);
     }
 
     public void setBackButtonDrawable(Drawable drawable) {

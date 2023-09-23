@@ -807,6 +807,12 @@ public class ActionBarLayout extends FrameLayout {
         lastFragment.prepareFragmentToSlide(false, true);
     }
 
+    public void hideNavigationDrawer(){
+        currentActionBar.hideNavigationDrawer();
+    }
+    public void showNavigationDrawer(){
+        currentActionBar.hideNavigationDrawer();
+    }
     public boolean onTouchEvent(MotionEvent ev) {
         if (!checkTransitionAnimation() && !inActionMode && !animationInProgress) {
             if (fragmentsStack.size() > 1) {
@@ -2283,6 +2289,7 @@ public class ActionBarLayout extends FrameLayout {
             BaseFragment fragment = fragmentsStack.get(a);
             if (fragment.actionBar != null) {
                 fragment.actionBar.setTitleOverlayText(titleOverlayText, titleOverlayTextId, action);
+                fragment.actionBar.hideNavigationDrawer();
             }
         }
     }

@@ -17,7 +17,7 @@
 
     <item
         android:id="@+id/bottom_discover"
-        android:icon="@drawable/intro_tg_plane"
+        android:icon="@drawable/book_logo"
         android:title="Discover"
         />
 

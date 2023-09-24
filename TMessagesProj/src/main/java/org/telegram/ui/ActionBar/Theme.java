@@ -4128,19 +4128,19 @@ public class Theme {
         defaultColors.put(key_avatar_nameInMessageCyan, 0xff379eb8);
         defaultColors.put(key_avatar_nameInMessageBlue, 0xff4e92cc);
         defaultColors.put(key_avatar_nameInMessagePink, 0xff4e92cc);
-        //change action bar color
+        //Radwan change action bar color
         defaultColors.put(key_actionBarDefault, 0xffffffff);
-        defaultColors.put(key_actionBarDefaultIcon, 0xffffffff);
+        defaultColors.put(key_actionBarDefaultIcon, 0xff111111);
         defaultColors.put(key_actionBarActionModeDefault, 0xffffffff);
         defaultColors.put(key_actionBarActionModeDefaultTop, 0x10000000);
         defaultColors.put(key_actionBarActionModeDefaultIcon, 0xff676a6f);
-        //change action bar title color
+        //Radwan change action bar title color
         defaultColors.put(key_actionBarDefaultTitle, 0xff000000);
-        defaultColors.put(key_actionBarDefaultSubtitle, 0xffd5e8f7);
+        defaultColors.put(key_actionBarDefaultSubtitle, 0xff16979d);
         defaultColors.put(key_actionBarDefaultSelector, 0xff406d94);
         defaultColors.put(key_actionBarWhiteSelector, 0x1d000000);
-        defaultColors.put(key_actionBarDefaultSearch, 0xffffffff);
-        defaultColors.put(key_actionBarDefaultSearchPlaceholder, 0x88ffffff);
+        defaultColors.put(key_actionBarDefaultSearch, 0xff262526);
+        defaultColors.put(key_actionBarDefaultSearchPlaceholder, 0xff676a6f);
         defaultColors.put(key_actionBarDefaultSubmenuItem, 0xff222222);
         defaultColors.put(key_actionBarDefaultSubmenuItemIcon, 0xff676b70);
         defaultColors.put(key_actionBarDefaultSubmenuBackground, 0xffffffff);

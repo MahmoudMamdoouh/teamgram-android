@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -264,6 +265,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     private boolean tabletFullSize;
 
     private String loadingThemeFileName;
+
+    private String profileFromScreen;
     private String loadingThemeWallpaperName;
     private TLRPC.TL_wallPaper loadingThemeWallpaper;
     private Theme.ThemeInfo loadingThemeInfo;
@@ -978,11 +981,17 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         bottomNavigationView.getMenu().add(0, R.id.bottom_discover, 2, "Discover").setIcon(R.drawable.intro_tg_plane);
         bottomNavigationView.getMenu().add(0, R.id.bottom_apps, 3, "Apps").setIcon(R.drawable.baseline_apps_24);
         bottomNavigationView.getMenu().add(0, R.id.bottom_settings, 4, "Settings").setIcon(R.drawable.baseline_settings_24);
-        bottomNavigationView.setBackgroundResource(R.color.primary_color);
+//        bottomNavigationView.setBackgroundResource(R.color.primary_color);
 
+        ColorStateList colorStateList = getResources().getColorStateList(R.color.bottom_nav_icon_color_selector);
+        bottomNavigationView.setItemIconTintList(colorStateList);
+        bottomNavigationView.setItemTextColor(colorStateList);
 
         bottomNavigationView.setSelectedItemId(R.id.bottom_home);
         bottomNavigationView.setBackgroundResource(R.drawable.bottom_background);
+        bottomNavigationView.setElevation(8);
+
+
         bottomNavigationView.setForegroundGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
@@ -990,6 +999,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
             if (itemId == R.id.bottom_home) {
 
+                profileFromScreen="Home";
 
                 BaseFragment previousFragment = actionBarLayout.fragmentsStack.get(getMainFragmentsCount()-1);
 
@@ -1032,12 +1042,9 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             else if (itemId == R.id.bottom_settings) {
 
                 BaseFragment previousFragment = actionBarLayout.fragmentsStack.get(getMainFragmentsCount()-1);
-
                 if(!previousFragment.toString().contains("ProfileActivity")){
                     openSettings(false);
                 }
-
-
 
             }
             return true;
@@ -1359,38 +1366,58 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         return fireworksOverlay;
     }
 
+
+
+
+
+
+
+
+
     private void openSettings(boolean expanded) {
-        System.out.println("gone *8");
-        System.out.println("inside open settings");
+        System.out.println("Radwan : inside open settings , BNav visibility : "+bottomNavigationView.getVisibility());
+        bottomNavigationView.setVisibility(View.VISIBLE);
         Bundle args = new Bundle();
         args.putLong("user_id", UserConfig.getInstance(currentAccount).clientUserId);
+        args.putString("from_screen", "Home");
+//        profileFromScreen="Home";
+        System.out.println("Radwan : set profileFromScreen = "+profileFromScreen+  "BNav visibility : "+bottomNavigationView.getVisibility());
+
+
         if (expanded) {
             args.putBoolean("expandPhoto", true);
         }
+
         ProfileActivity fragment = new ProfileActivity(args);
         presentFragment(fragment);
         drawerLayoutContainer.closeDrawer(false);
     }
 
+
+
+
+
+
+
+
+
+
+
     private void checkSystemBarColors() {
-        System.out.println("gone *9 "+bottomNavigationView.getVisibility());
         checkSystemBarColors(false, true, !isNavigationBarColorFrozen);
     }
 
     private void checkSystemBarColors(boolean useCurrentFragment) {
-        System.out.println("gone *10");
         checkSystemBarColors(useCurrentFragment, true, !isNavigationBarColorFrozen);
     }
 
     private void checkSystemBarColors(boolean checkStatusBar, boolean checkNavigationBar) {
-        System.out.println("gone *11 "+bottomNavigationView.getVisibility());
         checkSystemBarColors(false, checkStatusBar, checkNavigationBar);
     }
 
     private void checkSystemBarColors(boolean useCurrentFragment, boolean checkStatusBar, boolean checkNavigationBar) {
 
 
-        System.out.println("gone *12 "+bottomNavigationView.getVisibility());
         BaseFragment currentFragment = !mainFragmentsStack.isEmpty() ? mainFragmentsStack.get(mainFragmentsStack.size() - 1) : null;
         if (currentFragment != null && (currentFragment.isRemovingFromStack() || currentFragment.isInPreviewMode())) {
             currentFragment = mainFragmentsStack.size() > 1 ? mainFragmentsStack.get(mainFragmentsStack.size() - 2) : null;
@@ -1460,7 +1487,6 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         if (removeAll) {
             actionBarLayout.removeAllFragments();
         } else {
-            System.out.println("backkkk");
             actionBarLayout.removeFragmentFromStack(0);
         }
         DialogsActivity dialogsActivity = dialogsActivityProvider.provide(null);
@@ -1533,8 +1559,6 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     }
 
     public int getMainFragmentsCount() {
-
-        System.out.println("gone *17");
         return mainFragmentsStack.size();
     }
 
@@ -2831,7 +2855,9 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                         }
                     }
                 }
-            } else if (push_chat_id != 0) {
+            }
+
+            else if (push_chat_id != 0) {
                 Bundle args = new Bundle();
                 args.putLong("chat_id", push_chat_id);
                 if (push_msg_id != 0) {
@@ -5094,31 +5120,31 @@ System.out.println("gone 27");
         NotificationCenter.getGlobalInstance().removeObserver(this, NotificationCenter.requestPermissions);
     }
 
+
+
+
+
     public void presentFragment(BaseFragment fragment) {
-        System.out.println("gone *42");
         actionBarLayout.presentFragment(fragment);
     }
 
     public boolean presentFragment(final BaseFragment fragment, final boolean removeLast, boolean forceWithoutAnimation) {
-        System.out.println("gone *42");
-        System.out.println("radwan => present fragment second");
         return actionBarLayout.presentFragment(fragment, removeLast, forceWithoutAnimation, true, false);
     }
 
-    public ActionBarLayout getActionBarLayout() {
 
-        System.out.println("gone *43");
+
+
+
+    public ActionBarLayout getActionBarLayout() {
         return actionBarLayout;
     }
 
     public ActionBarLayout getLayersActionBarLayout() {
-        System.out.println("gone *44");
         return layersActionBarLayout;
     }
 
     public ActionBarLayout getRightActionBarLayout() {
-
-        System.out.println("gone *45");
         return rightActionBarLayout;
     }
 
@@ -6095,7 +6121,6 @@ System.out.println("gone 27");
         }
 
         else if (id == NotificationCenter.currentUserShowLimitReachedDialog) {
-            System.out.println("gone *99-9--2 "+bottomNavigationView.getVisibility());
             if (!mainFragmentsStack.isEmpty()) {
                 BaseFragment fragment = mainFragmentsStack.get(mainFragmentsStack.size() - 1);
                 if (fragment.getParentActivity() != null) {
@@ -6105,14 +6130,12 @@ System.out.println("gone 27");
         }
 
         else if (id == NotificationCenter.currentUserPremiumStatusChanged) {
-            System.out.println("gone *99-9--2");
             if (drawerLayoutAdapter != null) {
                 drawerLayoutAdapter.notifyDataSetChanged();
             }
         }
 
         else if (id == NotificationCenter.requestPermissions) {
-            System.out.println("gone *99-9--3");
             int type = (int) args[0];
             String[] permissions = null;
             if (type == BLUETOOTH_CONNECT_TYPE) {
@@ -6560,7 +6583,6 @@ System.out.println("gone 27");
 
 
     private void updateCurrentConnectionState(int account) {
-//        System.out.println("gone *70");
         if (actionBarLayout == null) {
             return;
         }
@@ -6854,12 +6876,10 @@ System.out.println("gone 27");
     @Override
     public boolean needPresentFragment(BaseFragment fragment, boolean removeLast, boolean forceWithoutAnimation, ActionBarLayout layout) {
 
-        //TODO: msh htnf3 hna
-
-        bottomNavigationView.setVisibility(View.GONE);
+//        bottomNavigationView.setVisibility(View.GONE);
 
 
-        System.out.println("gone *80 "+bottomNavigationView.getVisibility() + fragment.toString());
+        System.out.println("Radwan : need present fragment , BNav visibility : "+bottomNavigationView.getVisibility() +" Screen name : "+ fragment.toString());
 
         if (ArticleViewer.hasInstance() && ArticleViewer.getInstance().isVisible()) {
             System.out.println("gone *880 "+bottomNavigationView.getVisibility());
@@ -6950,18 +6970,67 @@ System.out.println("gone 27");
 
         else {
             boolean allow = true; // TODO: Make it a flag inside fragment itself, maybe BaseFragment#isDrawerOpenAllowed()?
+
+
+
             if (fragment instanceof LoginActivity || fragment instanceof IntroActivity) {
                 bottomNavigationView.setVisibility(View.GONE);
                 if (mainFragmentsStack.size() == 0 || mainFragmentsStack.get(0) instanceof IntroActivity) {
                     allow = false;
                 }
-            } else if (fragment instanceof CountrySelectActivity) {
+            }
+
+            else if (fragment instanceof CountrySelectActivity) {
                 bottomNavigationView.setVisibility(View.GONE);
                 if (mainFragmentsStack.size() == 1) {
                     allow = false;
                 }
             }
 
+
+
+
+            // if home screen and settings screen show nav bar
+            if( fragment instanceof DialogsActivity   || (fragment instanceof ProfileActivity && !((layout.fragmentsStack.get(layout.fragmentsStack.size()-1)) instanceof ChatActivity))){
+
+                System.out.println("Radwan : inside home or settings");
+                bottomNavigationView.setVisibility(View.VISIBLE);
+
+            }
+
+            else{
+                System.out.println("Radwan : not home or settings");
+
+                bottomNavigationView.setVisibility(View.GONE);
+            }
+
+
+
+
+//                if( fragment instanceof DialogsActivity   || fragment instanceof ProfileActivity){
+//
+//
+//                System.out.println("Radwan : Profile from "+profileFromScreen);
+//
+//
+//
+//
+//                if(profileFromScreen !="Home"){
+//                    bottomNavigationView.setVisibility(View.GONE);
+//                }else{
+//                    bottomNavigationView.setVisibility(View.VISIBLE);
+//                }
+//
+//
+//            }
+//            else if(! (fragment instanceof ProfileActivity)){
+//                bottomNavigationView.setVisibility(View.GONE);
+//            }
+
+
+
+
+/*            // Radwan here we hide and display bottom nav bar
             else if (fragment instanceof ChangeUsernameActivity || fragment instanceof ChatActivity ||fragment instanceof ActionIntroActivity
                     ||fragment instanceof ChangeBioActivity||fragment instanceof NotificationsSettingsActivity||fragment instanceof PrivacySettingsActivity
                     ||fragment instanceof DataSettingsActivity||fragment instanceof LanguageSelectActivity
@@ -6969,11 +7038,15 @@ System.out.println("gone 27");
                 bottomNavigationView.setVisibility(View.GONE);
             }
 
-
-
             else {
                 bottomNavigationView.setVisibility(View.VISIBLE);
-            }
+            }*/
+
+
+
+
+
+
             drawerLayoutContainer.setAllowOpenDrawer(allow, false);
         }
         System.out.println("gone *8880 "+bottomNavigationView.getVisibility());
@@ -7072,7 +7145,9 @@ System.out.println("gone 27");
     public boolean needCloseLastFragment(ActionBarLayout layout) {
 
 
-        System.out.println("gone *82");
+        System.out.println("Radwan : needCloseLastFragment , BNav visibility "+bottomNavigationView.getVisibility());
+
+
         if (AndroidUtilities.isTablet()) {
             if (layout == actionBarLayout && layout.fragmentsStack.size() <= 1) {
                 onFinish();
@@ -7090,16 +7165,75 @@ System.out.println("gone 27");
         }
 
         else {
+
+
             if (layout.fragmentsStack.size() <= 1) {
-                System.out.println("gone *1000 ");
                 onFinish();
                 finish();
+
                 return false;
             }
-            if (layout.fragmentsStack.size() >= 2 && !(layout.fragmentsStack.get(0) instanceof LoginActivity)) {
-                System.out.println("gone *99");
+
+
+            if (layout.fragmentsStack.size() == 2 || (
+                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof ChangeNameActivity  ||
+                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof LogoutActivity  ||
+                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof ActionIntroActivity  ||
+                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof ChangeUsernameActivity  ||
+                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof ChangeBioActivity  ||
+                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof NotificationsSettingsActivity  ||
+                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof PrivacySettingsActivity  ||
+                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof DataSettingsActivity  ||
+                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof LanguageSelectActivity)) {
+
                 bottomNavigationView.setVisibility(View.VISIBLE);
+            }
+
+
+
+            if (layout.fragmentsStack.size() >= 2 && !(layout.fragmentsStack.get(0) instanceof LoginActivity)) {
+
+
+                System.out.println("gone *99  "+ (layout.fragmentsStack.get(layout.fragmentsStack.size()-1)) +profileFromScreen);
+
+
+//                bottomNavigationView.setVisibility(View.VISIBLE);
                 drawerLayoutContainer.setAllowOpenDrawer(true, false);
+
+//                if(layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof ChatActivity
+//                        || layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof ChangeNameActivity  ||
+//                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof LogoutActivity  ||
+//                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof ActionIntroActivity  ||
+//                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof ChangeUsernameActivity  ||
+//                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof ChangeBioActivity  ||
+//                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof NotificationsSettingsActivity  ||
+//                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof PrivacySettingsActivity  ||
+//                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof DataSettingsActivity  ||
+//                        layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof LanguageSelectActivity
+////                        profileFromScreen==""
+//                       ){
+//
+//                    bottomNavigationView.setVisibility(View.VISIBLE);
+//                }
+//
+//
+//                else{
+//                    bottomNavigationView.setVisibility(View.GONE);
+//                }
+
+
+
+//
+//                if(layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof ProfileActivity ){
+//
+//                    bottomNavigationView.setVisibility(View.GONE);
+//                }
+//                else{
+//                    bottomNavigationView.setVisibility(View.VISIBLE);
+//
+//                }
+//                drawerLayoutContainer.setAllowOpenDrawer(true, false);
+
             }
         }
         return true;

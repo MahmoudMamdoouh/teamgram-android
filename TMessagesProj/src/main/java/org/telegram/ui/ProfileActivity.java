@@ -304,6 +304,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     protected float headerShadowAlpha = 1.0f;
     private TopView topView;
     private long userId;
+    private String fromScreen;
     private long chatId;
     private long dialogId;
     private boolean creatingChat;
@@ -741,6 +742,36 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             }
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private class OverlaysView extends View implements ProfileGalleryView.Callback {
 
@@ -1403,6 +1434,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
 
         userId = arguments.getLong("user_id", 0);
+        fromScreen = arguments.getString("from_screen", "");
         chatId = arguments.getLong("chat_id", 0);
         banFromGroup = arguments.getLong("ban_chat_id", 0);
         reportReactionMessageId = arguments.getInt("report_reaction_message_id", 0);
@@ -1586,6 +1618,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     protected ActionBar createActionBar(Context context) {
 
         BaseFragment lastFragment = parentLayout.getLastFragment();
+
         if (lastFragment instanceof ChatActivity && ((ChatActivity) lastFragment).themeDelegate != null && ((ChatActivity) lastFragment).themeDelegate.getCurrentTheme() != null) {
             resourcesProvider = lastFragment.getResourceProvider();
         }
@@ -1607,6 +1640,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 }
             }
         };
+
         actionBar.setForceSkipTouches(true);
         actionBar.setBackgroundColor(Color.TRANSPARENT);
         actionBar.setItemsBackgroundColor(getThemedColor(Theme.key_avatar_actionBarSelectorBlue), false);
@@ -1615,21 +1649,35 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
         actionBar.setCastShadows(false);
         actionBar.setAddToContainer(false);
         actionBar.setClipContent(true);
+
+
         actionBar.setOccupyStatusBar(Build.VERSION.SDK_INT >= 21 && !AndroidUtilities.isTablet() && !inBubbleMode);
         ImageView backButton = actionBar.getBackButton();
-        backButton.setOnLongClickListener(e -> {
-            ActionBarPopupWindow menu = BackButtonMenu.show(this, backButton, getDialogId(), resourcesProvider);
-            if (menu != null) {
-                menu.setOnDismissListener(() -> dimBehindView(false));
-                dimBehindView(backButton, 0.3f);
-                if (undoView != null) {
-                    undoView.hide(true, 1);
+
+
+        if(fromScreen=="Home"){
+
+            System.out.println("Radwan : Settings at home");
+            backButton.setVisibility(View.GONE);
+
+        }
+        else{
+            System.out.println("Radwan : Settings not in home");
+            backButton.setOnLongClickListener(e -> {
+                ActionBarPopupWindow menu = BackButtonMenu.show(this, backButton, getDialogId(), resourcesProvider);
+                if (menu != null) {
+                    menu.setOnDismissListener(() -> dimBehindView(false));
+                    dimBehindView(backButton, 0.3f);
+                    if (undoView != null) {
+                        undoView.hide(true, 1);
+                    }
+                    return true;
+                } else {
+                    return false;
                 }
-                return true;
-            } else {
-                return false;
-            }
-        });
+            });
+        }
+
         return actionBar;
     }
 

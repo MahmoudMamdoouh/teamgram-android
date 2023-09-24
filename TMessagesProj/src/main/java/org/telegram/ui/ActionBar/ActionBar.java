@@ -188,7 +188,10 @@ public class ActionBar extends FrameLayout {
     }
 
     public void hideNavigationDrawer(){
-        backButtonImageView.setVisibility(View.GONE);
+        if(backButtonImageView !=null){
+            backButtonImageView.setVisibility(View.GONE);
+        }
+
     }
 
     public void setBackButtonDrawable(Drawable drawable) {

@@ -289,7 +289,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     public static final int BLUETOOTH_CONNECT_TYPE = 0;
     private SparseIntArray requestedPermissions = new SparseIntArray();
     private int requsetPermissionsPointer = 5934;
-
+    private int currentFragment=R.id.bottom_home;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         bottomNavigationView = new BottomNavigationView(this);
@@ -998,14 +998,11 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             int itemId = item.getItemId();
 
             if (itemId == R.id.bottom_home) {
-
-                profileFromScreen="Home";
-
+                currentFragment=R.id.bottom_home;
                 BaseFragment previousFragment = actionBarLayout.fragmentsStack.get(getMainFragmentsCount()-1);
-
-                System.out.println("home pressed  "+  previousFragment.toString());
                 if(!previousFragment.toString().contains("DialogsActivity")){
-                    actionBarLayout.closeLastFragment(true);
+                    openHome(false);
+                    actionBarLayout.hideNavigationDrawer();
                 }
 
             }
@@ -1040,7 +1037,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
             }
             else if (itemId == R.id.bottom_settings) {
-
+                currentFragment=R.id.bottom_settings;
                 BaseFragment previousFragment = actionBarLayout.fragmentsStack.get(getMainFragmentsCount()-1);
                 if(!previousFragment.toString().contains("ProfileActivity")){
                     openSettings(false);
@@ -1059,6 +1056,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         //*******  *******  *******  *******  *******  *******  *******  *******  *******  ******** ******  *******  *******  *******  *******  *******  *******  *******
 
     }
+
+
 
     private void setupActionBarLayout() {
 
@@ -1389,10 +1388,15 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         }
 
         ProfileActivity fragment = new ProfileActivity(args);
-        presentFragment(fragment);
+        actionBarLayout.presentFragment(fragment,true);
         drawerLayoutContainer.closeDrawer(false);
     }
-
+    private void openHome(boolean expanded) {
+        bottomNavigationView.setVisibility(View.VISIBLE);
+        DialogsActivity fragment = new DialogsActivity(null);
+        actionBarLayout.presentFragment(fragment,true);
+        drawerLayoutContainer.closeDrawer(false);
+    }
 
 
 
@@ -5379,6 +5383,14 @@ System.out.println("gone 27");
         if (Theme.selectedAutoNightType == Theme.AUTO_NIGHT_TYPE_SYSTEM) {
             Theme.checkAutoNightThemeConditions();
         }
+        if(currentFragment==R.id.bottom_home){
+            bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+          //  openHome(false);
+        }
+        if(currentFragment==R.id.bottom_settings){
+            bottomNavigationView.setSelectedItemId(R.id.bottom_settings);
+          //  openSettings(false);
+        }
         checkWasMutedByAdmin(true);
         //FileLog.d("UI resume time = " + (SystemClock.elapsedRealtime() - ApplicationLoader.startTime));
         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.startAllHeavyOperations, 4096);
@@ -6681,9 +6693,18 @@ System.out.println("gone 27");
             FileLog.e(e);
         }
     }
-
+    public void minimizeApp() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+    }
     @Override
     public void onBackPressed() {
+        if(actionBarLayout.fragmentsStack.size()==1){
+            minimizeApp();
+            return;
+        }
         System.out.println("gone *73");
         if (passcodeView != null && passcodeView.getVisibility() == View.VISIBLE) {
             finish();

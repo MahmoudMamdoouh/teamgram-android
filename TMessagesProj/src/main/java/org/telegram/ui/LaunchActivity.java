@@ -293,6 +293,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         bottomNavigationView = new BottomNavigationView(this);
+        System.out.println("gone *1 "+bottomNavigationView.getVisibility());
 
         if (BuildVars.DEBUG_VERSION) {
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder(StrictMode.getVmPolicy())
@@ -986,7 +987,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         bottomNavigationView.setItemIconTintList(colorStateList);
         bottomNavigationView.setItemTextColor(colorStateList);
 
-       // bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
         bottomNavigationView.setBackgroundResource(R.drawable.bottom_background);
         bottomNavigationView.setElevation(8);
 
@@ -1391,7 +1392,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         drawerLayoutContainer.closeDrawer(false);
     }
     private void openHome(boolean expanded) {
-        bottomNavigationView.setVisibility(View.VISIBLE);
+        //bottomNavigationView.setVisibility(View.VISIBLE);
         DialogsActivity fragment = new DialogsActivity(null);
         actionBarLayout.presentFragment(fragment,true);
         drawerLayoutContainer.closeDrawer(false);

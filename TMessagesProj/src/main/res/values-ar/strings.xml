@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AppName">ڤي.كونكت</string>
-    <string name="AppNameBeta">Vconnct</string>
+    <string name="AppName">Vconnct Super.</string>
+    <string name="AppNameBeta">Vconnct Super.</string>
     <string name="LanguageName">العربية</string>
     <string name="English">الإنجليزية</string>
     <string name="LanguageNameInEnglish">Arabic</string>
@@ -1342,6 +1342,7 @@
     <string name="NotificationActionPinnedGifUser">ثبّت %1$s صورة متحركة</string>
     <string name="NotificationActionPinnedMusicUser">ثبّت %1$s ملفًا صوتيًا</string>
     <string name="SecretChatName">ڤي.كونكت</string>
+    <string name="coming_soon">قريباً</string>
     <!--contacts view-->
     <string name="SelectContact">اختر جهة اتصال</string>
     <string name="SelectContacts">تحديد جهات اتصال</string>

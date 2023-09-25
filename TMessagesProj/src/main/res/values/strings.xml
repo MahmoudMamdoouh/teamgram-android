@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AppName">Vconnct</string>
-    <string name="AppNameBeta">Vconnct</string>
+    <string name="AppName">Vconnct Super.</string>
+    <string name="AppNameBeta">Vconnct Super.</string>
     <string name="LanguageName">English</string>
     <string name="English">English</string>
     <string name="LanguageNameInEnglish">English</string>
@@ -1458,6 +1458,10 @@
     <string name="NotificationActionPinnedGifUser">%1$s pinned a GIF</string>
     <string name="NotificationActionPinnedMusicUser">%1$s pinned an audio file</string>
     <string name="SecretChatName">Vconnct</string>
+    <string name="coming_soon">Coming Soon</string>
+
+
+
     <!--contacts view-->
     <string name="SelectContact">Select Contact</string>
     <string name="SelectContacts">Select Contacts</string>

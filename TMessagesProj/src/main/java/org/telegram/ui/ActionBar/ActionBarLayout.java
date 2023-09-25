@@ -1194,7 +1194,15 @@ public class ActionBarLayout extends FrameLayout {
     public boolean presentFragment(final BaseFragment fragment, final boolean removeLast, boolean forceWithoutAnimation, boolean check, final boolean preview) {
         return presentFragment(fragment, removeLast, forceWithoutAnimation, check, preview, null);
     }
+    public void hideNavigationDrawer(){
+        for (int a = 0; a < fragmentsStack.size(); a++) {
+            BaseFragment fragment = fragmentsStack.get(a);
+            if (fragment.actionBar != null) {
+                fragment.actionBar.hideNavigationDrawer();
+            }
+        }
 
+    }
     public boolean presentFragment(final BaseFragment fragment, final boolean removeLast, boolean forceWithoutAnimation, boolean check, final boolean preview, ActionBarPopupWindow.ActionBarPopupWindowLayout menu) {
         if (fragment == null || checkTransitionAnimation() || delegate != null && check && !delegate.needPresentFragment(fragment, removeLast, forceWithoutAnimation, this) || !fragment.onFragmentCreate()) {
             return false;
@@ -2290,16 +2298,6 @@ public class ActionBarLayout extends FrameLayout {
                 fragment.actionBar.hideNavigationDrawer();
             }
         }
-    }
-
-    public void hideNavigationDrawer(){
-        for (int a = 0; a < fragmentsStack.size(); a++) {
-            BaseFragment fragment = fragmentsStack.get(a);
-            if (fragment.actionBar != null) {
-                fragment.actionBar.hideNavigationDrawer();
-            }
-        }
-
     }
 
     public boolean extendActionMode(Menu menu) {

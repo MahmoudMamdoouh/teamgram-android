@@ -2289,16 +2289,6 @@ public class ActionBarLayout extends FrameLayout {
         }
     }
 
-    public void hideNavigationDrawer(){
-        for (int a = 0; a < fragmentsStack.size(); a++) {
-            BaseFragment fragment = fragmentsStack.get(a);
-            if (fragment.actionBar != null) {
-                fragment.actionBar.hideNavigationDrawer();
-            }
-        }
-
-    }
-
     public boolean extendActionMode(Menu menu) {
         return !fragmentsStack.isEmpty() && fragmentsStack.get(fragmentsStack.size() - 1).extendActionMode(menu);
     }

@@ -289,11 +289,10 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     public static final int BLUETOOTH_CONNECT_TYPE = 0;
     private SparseIntArray requestedPermissions = new SparseIntArray();
     private int requsetPermissionsPointer = 5934;
-    private int currentFragment=R.id.bottom_home;
+    private int currentFragment=-1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         bottomNavigationView = new BottomNavigationView(this);
-        System.out.println("gone *1 "+bottomNavigationView.getVisibility());
 
         if (BuildVars.DEBUG_VERSION) {
             StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder(StrictMode.getVmPolicy())
@@ -987,7 +986,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
         bottomNavigationView.setItemIconTintList(colorStateList);
         bottomNavigationView.setItemTextColor(colorStateList);
 
-        bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+       // bottomNavigationView.setSelectedItemId(R.id.bottom_home);
         bottomNavigationView.setBackgroundResource(R.drawable.bottom_background);
         bottomNavigationView.setElevation(8);
 

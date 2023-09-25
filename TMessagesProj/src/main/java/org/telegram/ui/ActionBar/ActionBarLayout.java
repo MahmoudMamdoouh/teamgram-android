@@ -55,6 +55,7 @@ import org.telegram.ui.Components.Bulletin;
 import org.telegram.ui.Components.CubicBezierInterpolator;
 import org.telegram.ui.Components.GroupCallPip;
 import org.telegram.ui.Components.LayoutHelper;
+import org.telegram.ui.DialogsActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1191,7 +1192,6 @@ public class ActionBarLayout extends FrameLayout {
 
 
     public boolean presentFragment(final BaseFragment fragment, final boolean removeLast, boolean forceWithoutAnimation, boolean check, final boolean preview) {
-
         return presentFragment(fragment, removeLast, forceWithoutAnimation, check, preview, null);
     }
 
@@ -1280,6 +1280,9 @@ public class ActionBarLayout extends FrameLayout {
             fragment.actionBar.setTitleOverlayText(titleOverlayText, titleOverlayTextId, overlayAction);
         }
         fragmentsStack.add(fragment);
+        if(fragment instanceof DialogsActivity) {
+            fragment.actionBar.hideNavigationDrawer();
+        }
         onFragmentStackChanged();
         fragment.onResume();
         currentActionBar = fragment.actionBar;

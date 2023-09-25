@@ -2910,9 +2910,9 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
 
             clearHistoryItem = headerItem.addSubItem(clear_history, R.drawable.msg_clear, LocaleController.getString("ClearHistory", R.string.ClearHistory), themeDelegate);
 
-            if (themeDelegate.isThemeChangeAvailable()) {
-                headerItem.addSubItem(change_colors, R.drawable.msg_colors, LocaleController.getString("ChangeColors", R.string.ChangeColors), themeDelegate);
-            }
+//            if (themeDelegate.isThemeChangeAvailable()) {
+//                headerItem.addSubItem(change_colors, R.drawable.msg_colors, LocaleController.getString("ChangeColors", R.string.ChangeColors), themeDelegate);
+//            }
             if (ChatObject.isChannel(currentChat) && !currentChat.creator) {
                 if (!ChatObject.isNotInChat(currentChat)) {
                     if (currentChat.megagroup) {

@@ -290,6 +290,18 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     private SparseIntArray requestedPermissions = new SparseIntArray();
     private int requsetPermissionsPointer = 5934;
     private int currentFragment=-1;
+
+    public void makeThemeLight(){
+        DrawerProfileCell.switchingTheme = true;
+        String dayThemeName = "Blue";
+        Theme.ThemeInfo themeInfo;
+        boolean toDark=false;
+        themeInfo = Theme.getTheme(dayThemeName);
+        Theme.selectedAutoNightType = Theme.AUTO_NIGHT_TYPE_NONE;
+        Theme.saveAutoNightThemeConfig();
+        Theme.cancelAutoNightThemeCallbacks();
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         bottomNavigationView = new BottomNavigationView(this);
@@ -301,7 +313,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     .build());
         }
 
-
+        makeThemeLight();
         ApplicationLoader.postInitApplication();
 
         AndroidUtilities.checkDisplaySize(this, getResources().getConfiguration());
@@ -7207,7 +7219,8 @@ System.out.println("gone 27");
                         layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof DataSettingsActivity  ||
                         layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof LanguageSelectActivity)) {
 
-                bottomNavigationView.setVisibility(View.VISIBLE);
+                if(!(layout.fragmentsStack.get(layout.fragmentsStack.size()-1) instanceof CountrySelectActivity))
+                    bottomNavigationView.setVisibility(View.VISIBLE);
             }
 
 
@@ -7257,6 +7270,7 @@ System.out.println("gone 27");
 
             }
         }
+
         return true;
     }
 

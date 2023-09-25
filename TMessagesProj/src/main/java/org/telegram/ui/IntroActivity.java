@@ -195,6 +195,7 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
         themeIconView.setContentDescription(LocaleController.getString(Theme.getCurrentTheme().isDark() ? R.string.AccDescrSwitchToDayTheme : R.string.AccDescrSwitchToDayTheme));
 
         themeIconView.setAnimation(darkThemeDrawable);
+        themeFrameLayout.setVisibility(View.GONE);
         themeFrameLayout.setOnClickListener(v -> {
             if (DrawerProfileCell.switchingTheme) return;
             DrawerProfileCell.switchingTheme = true;
@@ -225,6 +226,7 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
             NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.needSetDayNightTheme, themeInfo, false, pos, -1, toDark, themeIconView);
             themeIconView.setContentDescription(LocaleController.getString(toDark ? R.string.AccDescrSwitchToDayTheme : R.string.AccDescrSwitchToDayTheme));
         });
+
 
         frameLayout2 = new FrameLayout(context);
         frameContainerView.addView(frameLayout2, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, LayoutHelper.WRAP_CONTENT, Gravity.LEFT | Gravity.TOP, 0, 78, 0, 0));
@@ -275,7 +277,7 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
 
             }
         });
-
+        //makeThemeLight();
         viewPager = new ViewPager(context);
         viewPager.setAdapter(new IntroAdapter());
         viewPager.setPageMargin(0);
@@ -432,6 +434,19 @@ public class IntroActivity extends BaseFragment implements NotificationCenter.No
         }
     }
 
+    public void makeThemeLight(){
+        if (DrawerProfileCell.switchingTheme) return;
+        DrawerProfileCell.switchingTheme = true;
+        String dayThemeName = "Blue";
+        Theme.ThemeInfo themeInfo;
+        boolean toDark=false;
+        themeInfo = Theme.getTheme(dayThemeName);
+        Theme.selectedAutoNightType = Theme.AUTO_NIGHT_TYPE_NONE;
+        Theme.saveAutoNightThemeConfig();
+        Theme.cancelAutoNightThemeCallbacks();
+        darkThemeDrawable.setCustomEndFrame(toDark ? darkThemeDrawable.getFramesCount() - 1 : 0);
+
+    }
     @Override
     public void onPause() {
         super.onPause();

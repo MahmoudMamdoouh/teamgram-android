@@ -176,7 +176,14 @@ public class TextCell extends FrameLayout {
             imageView.setTag(icon);
         }
     }
-
+    public void setColorOfprofilePhoto(String icon, String text) {
+        textView.setTextColor(0xff00969E);
+        textView.setTag(text);
+        if (icon != null) {
+            imageView.setColorFilter(new PorterDuffColorFilter(Theme.getColor(icon, resourcesProvider), PorterDuff.Mode.MULTIPLY));
+            imageView.setTag(icon);
+        }
+    }
     public void setText(String text, boolean divider) {
         imageLeft = 21;
         textView.setText(text);

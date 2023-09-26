@@ -927,6 +927,10 @@
     <string name="InternalFolderInfo">Browse your file system</string>
     <string name="ExternalFolderInfo">Browse your external storage</string>
     <string name="SearchMusic">Search music</string>
+    <string name="rooms">Rooms</string>
+    <string name="discover">Discover</string>
+    <string name="apps">Apps</string>
+
     <!--group stickers-->
     <string name="GroupStickers">Group Stickers</string>
     <string name="ChooseFromYourStickers">Choose from your stickers</string>
@@ -1459,7 +1463,6 @@
     <string name="NotificationActionPinnedMusicUser">%1$s pinned an audio file</string>
     <string name="SecretChatName">Vconnct</string>
     <string name="coming_soon">Coming Soon</string>
-
 
 
     <!--contacts view-->
@@ -3683,6 +3686,8 @@
     <string name="ViewMessage">Open Message</string>
     <!--Intro view-->
     <string name="Page1Title">**Vconnct**</string>
+    <string name="comingSoon">**Coming Soon**</string>
+
     <string name="Page2Title">Fast</string>
     <string name="Page3Title">Free</string>
     <string name="Page4Title">Secure</string>

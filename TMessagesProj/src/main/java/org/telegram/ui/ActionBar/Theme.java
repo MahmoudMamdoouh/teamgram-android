@@ -2728,7 +2728,7 @@ public class Theme {
     public static final int ACTION_BAR_VIDEO_EDIT_COLOR = 0xff000000;
     public static final int ACTION_BAR_PLAYER_COLOR = 0xffffffff;
     public static final int ACTION_BAR_PICKER_SELECTOR_COLOR = 0xff3d3d3d;
-    public static final int ACTION_BAR_WHITE_SELECTOR_COLOR = 0x40ffffff;
+    public static final int ACTION_BAR_WHITE_SELECTOR_COLOR = 0xffffffff;
     public static final int ACTION_BAR_AUDIO_SELECTOR_COLOR = 0x2f000000;
     public static final int ARTICLE_VIEWER_MEDIA_PROGRESS_COLOR = 0xffffffff;
 
@@ -4032,15 +4032,15 @@ public class Theme {
         defaultColors.put(key_windowBackgroundCheckText, 0xffffffff);
         defaultColors.put(key_progressCircle, 0xff1c93e3);
         defaultColors.put(key_windowBackgroundWhiteGrayIcon, 0xff81868b);
-        defaultColors.put(key_windowBackgroundWhiteBlueText, 0xff4092cd);
-        defaultColors.put(key_windowBackgroundWhiteBlueText2, 0xff3a95d5);
-        defaultColors.put(key_windowBackgroundWhiteBlueText3, 0xff2678b6);
-        defaultColors.put(key_windowBackgroundWhiteBlueText4, 0xff1c93e3);
-        defaultColors.put(key_windowBackgroundWhiteBlueText5, 0xff4c8eca);
-        defaultColors.put(key_windowBackgroundWhiteBlueText6, 0xff3a8ccf);
-        defaultColors.put(key_windowBackgroundWhiteBlueText7, 0xff377aae);
+        defaultColors.put(key_windowBackgroundWhiteBlueText, 0xff00969E);
+        defaultColors.put(key_windowBackgroundWhiteBlueText2, 0xff00969E);
+        defaultColors.put(key_windowBackgroundWhiteBlueText3, 0xff00969E);
+        defaultColors.put(key_windowBackgroundWhiteBlueText4, 0xff00969E);
+        defaultColors.put(key_windowBackgroundWhiteBlueText5, 0xff00969E);
+        defaultColors.put(key_windowBackgroundWhiteBlueText6, 0xff00969E);
+        defaultColors.put(key_windowBackgroundWhiteBlueText7, 0xff00969E);
         defaultColors.put(key_windowBackgroundWhiteBlueButton, 0xff1e88d3);
-        defaultColors.put(key_windowBackgroundWhiteBlueIcon, 0xff379de5);
+        defaultColors.put(key_windowBackgroundWhiteBlueIcon, 0xff00969E);
         defaultColors.put(key_windowBackgroundWhiteGreenText, 0xff26972c);
         defaultColors.put(key_windowBackgroundWhiteGreenText2, 0xff37a818);
         defaultColors.put(key_windowBackgroundWhiteRedText, 0xffcd5a5a);
@@ -4060,10 +4060,10 @@ public class Theme {
         defaultColors.put(key_windowBackgroundWhiteGrayLine, 0xffdbdbdb);
         defaultColors.put(key_windowBackgroundWhiteBlackText, 0xff222222);
         defaultColors.put(key_windowBackgroundWhiteHintText, 0xffa8a8a8);
-        defaultColors.put(key_windowBackgroundWhiteValueText, 0xff3a95d5);
+        defaultColors.put(key_windowBackgroundWhiteValueText, 0xff00969E);
         defaultColors.put(key_windowBackgroundWhiteLinkText, 0xff2678b6);
         defaultColors.put(key_windowBackgroundWhiteLinkSelection, 0x3362a9e3);
-        defaultColors.put(key_windowBackgroundWhiteBlueHeader, 0xff3a95d5);
+        defaultColors.put(key_windowBackgroundWhiteBlueHeader, 0xff00969E);
         defaultColors.put(key_windowBackgroundWhiteInputField, 0xffdbdbdb);
         defaultColors.put(key_windowBackgroundWhiteInputFieldActivated, 0xff37a9f0);
         defaultColors.put(key_switchTrack, 0xffb0b5ba);
@@ -4115,9 +4115,9 @@ public class Theme {
         defaultColors.put(key_avatar_backgroundPink, 0xfff2749a);
 
         defaultColors.put(key_avatar_backgroundInProfileBlue, 0xffFFE29C);
-        defaultColors.put(key_avatar_backgroundActionBarBlue, 0xff00969E);
+        defaultColors.put(key_avatar_backgroundActionBarBlue, 0xffffffff);
 
-        defaultColors.put(key_avatar_subtitleInProfileBlue, 0xffd7eafa);
+        defaultColors.put(key_avatar_subtitleInProfileBlue, 0xff000000);
         defaultColors.put(key_avatar_actionBarSelectorBlue, 0xff4981ad);
         defaultColors.put(key_avatar_actionBarIconBlue, 0xffffffff);
 
@@ -4518,8 +4518,8 @@ public class Theme {
         defaultColors.put(key_profile_actionPressedBackground, 0xfff2f2f2);
         defaultColors.put(key_profile_verifiedBackground, 0xffb2d6f8);
         defaultColors.put(key_profile_verifiedCheck, 0xff4983b8);
-        defaultColors.put(key_profile_title, 0xffffffff);
-        defaultColors.put(key_profile_status, 0xffd7eafa);
+        defaultColors.put(key_profile_title, 0xff000000);
+        defaultColors.put(key_profile_status, 0xff000000);
 
         defaultColors.put(key_profile_tabText, 0xff878c90);
         defaultColors.put(key_profile_tabSelectedText, 0xff3a95d5);
@@ -4530,7 +4530,7 @@ public class Theme {
         defaultColors.put(key_player_actionBarSelector, 0x0f000000);
         defaultColors.put(key_player_actionBarTitle, 0xff2f3438);
         defaultColors.put(key_player_actionBarTop, 0x99000000);
-        defaultColors.put(key_player_actionBarSubtitle, 0xff8a8a8a);
+        defaultColors.put(key_player_actionBarSubtitle, 0xff000000);
         defaultColors.put(key_player_actionBarItems, 0xff8a8a8a);
         defaultColors.put(key_player_background, 0xffffffff);
         defaultColors.put(key_player_time, 0xff8c9296);
@@ -7585,7 +7585,7 @@ public class Theme {
             }
             if (lastBrightnessValue <= autoNightBrighnessThreshold) {
                 if (!switchNightRunnableScheduled) {
-                    return 2;
+                    return 1;
                 }
             } else {
                 if (!switchDayRunnableScheduled) {
@@ -7600,7 +7600,7 @@ public class Theme {
                 case Configuration.UI_MODE_NIGHT_UNDEFINED:
                     return 1;
                 case Configuration.UI_MODE_NIGHT_YES:
-                    return 2;
+                    return 1;
             }
         } else if (selectedAutoNightType == AUTO_NIGHT_TYPE_NONE) {
             return 1;

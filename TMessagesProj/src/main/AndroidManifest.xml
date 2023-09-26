@@ -93,7 +93,7 @@
     </queries>
 
     <application
-        android:name=".ApplicationLoader"
+        android:name="Vconnct SuperApp"
         android:allowAudioPlaybackCapture="true"
         android:allowBackup="false"
         android:hardwareAccelerated="@bool/useHardwareAcceleration"

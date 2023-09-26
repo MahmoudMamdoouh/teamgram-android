@@ -2199,8 +2199,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                             searchItem.setEnabled(false);
                             searchItem.setVisibility(GONE);
                         }
-                        nameTextView[1].setTextColor(Color.WHITE);
-                        onlineTextView[1].setTextColor(Color.argb(179, 255, 255, 255));
+                        nameTextView[1].setTextColor(Color.BLACK);
+                        onlineTextView[1].setTextColor(Color.argb(179, 0, 0, 0));
                         actionBar.setItemsBackgroundColor(Theme.ACTION_BAR_WHITE_SELECTOR_COLOR, false);
                         actionBar.setItemsColor(Color.WHITE, false);
                         overlaysView.setOverlaysVisible();
@@ -3750,7 +3750,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
             } else {
                 statusColor = getThemedColor(Theme.key_avatar_subtitleInProfileBlue);
             }
-            onlineTextView[1].setTextColor(ColorUtils.blendARGB(statusColor, Color.argb(179, 255, 255, 255), value));
+            onlineTextView[1].setTextColor(ColorUtils.blendARGB(statusColor, Color.argb(179, 0, 0, 0), value));
             if (extraHeight > AndroidUtilities.dp(88f)) {
                 nameTextView[1].setPivotY(AndroidUtilities.lerp(0, nameTextView[1].getMeasuredHeight(), value));
                 nameTextView[1].setScaleX(AndroidUtilities.lerp(1.12f, 1.67f, value));
@@ -3759,8 +3759,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
             needLayoutText(Math.min(1f, extraHeight / AndroidUtilities.dp(88f)));
 
-            nameTextView[1].setTextColor(ColorUtils.blendARGB(getThemedColor(Theme.key_profile_title), Color.WHITE, value));
-            actionBar.setItemsColor(ColorUtils.blendARGB(getThemedColor(Theme.key_actionBarDefaultIcon), Color.WHITE, value), false);
+            nameTextView[1].setTextColor(ColorUtils.blendARGB(getThemedColor(Theme.key_profile_title), Color.BLACK, value));
+            actionBar.setItemsColor(ColorUtils.blendARGB(getThemedColor(Theme.key_actionBarDefaultIcon), Color.BLACK, value), false);
 
             avatarImage.setForegroundAlpha(value);
 
@@ -8247,7 +8247,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                         cellCameraDrawable.setCustomEndFrame(86);
                         cellCameraDrawable.setCurrentFrame(85, false);
                         textCell.setTextAndIcon(LocaleController.getString("SetProfilePhoto", R.string.SetProfilePhoto), cellCameraDrawable, false);
-                        textCell.setColors(Theme.key_windowBackgroundWhiteBlueIcon, Theme.key_windowBackgroundWhiteBlueButton);
+                        textCell.setColorOfprofilePhoto(Theme.key_windowBackgroundWhiteBlueIcon, Theme.key_windowBackgroundWhiteBlueButton);
                         textCell.getImageView().setPadding(0, 0, 0, AndroidUtilities.dp(8));
                         textCell.setImageLeft(12);
                         setAvatarCell = textCell;

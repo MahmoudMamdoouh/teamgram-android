@@ -310,6 +310,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         bottomNavigationView = new BottomNavigationView(this);
+        bottomNavigationView.setVisibility(View.GONE);
         System.out.println("gone *1 "+bottomNavigationView.getVisibility());
 
         if (BuildVars.DEBUG_VERSION) {
@@ -1084,9 +1085,11 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
             }
             else if (itemId == R.id.bottom_meet) {
-
-
                 System.out.println("Meets pressed");
+                currentFragment=R.id.bottom_meet;
+                BaseFragment previousFragment = actionBarLayout.fragmentsStack.get(getMainFragmentsCount()-1);
+                openComingSoon(false,R.string.rooms);
+
 //                startActivity(new Intent(getApplicationContext(), meetsActivity.class));
 //                drawerLayoutContainer.closeDrawer(false);
 //                return true;
@@ -1096,6 +1099,9 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             else if (itemId == R.id.bottom_discover) {
 
 
+                currentFragment=R.id.bottom_discover;
+                BaseFragment previousFragment = actionBarLayout.fragmentsStack.get(getMainFragmentsCount()-1);
+                openComingSoon(false,R.string.discover);
 
                 System.out.println("discover pressed");
 //                startActivity(new Intent(getApplicationContext(), DiscoverActivity.class));
@@ -1105,6 +1111,9 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             }
             else if (itemId == R.id.bottom_apps) {
 
+                currentFragment=R.id.bottom_apps;
+                BaseFragment previousFragment = actionBarLayout.fragmentsStack.get(getMainFragmentsCount()-1);
+                openComingSoon(false,R.string.apps);
 
 
                 System.out.println("apps pressed");
@@ -1466,6 +1475,12 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
         ProfileActivity fragment = new ProfileActivity(args);
         actionBarLayout.presentFragment(fragment,true);
+        drawerLayoutContainer.closeDrawer(false);
+    }
+    private void openComingSoon(boolean expanded,int title) {
+        ComingSoonActivity fragment = new ComingSoonActivity(title);
+        actionBarLayout.presentFragment(fragment,true);
+        bottomNavigationView.setVisibility(View.VISIBLE);
         drawerLayoutContainer.closeDrawer(false);
     }
     private void openHome(boolean expanded) {

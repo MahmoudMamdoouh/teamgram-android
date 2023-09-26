@@ -12,6 +12,23 @@
     </style>
 
 
+
+    <!-- Custom style for active tab text -->
+    <style name="BottomNavActiveText">
+        <item name="android:textColor">@color/primary_color</item>
+        <item name="android:textSize">16sp</item>
+
+<!--        <item name="android:textStyle"></item>-->
+        <!-- Add more text appearance attributes as needed -->
+    </style>
+
+    <!-- Custom style for inactive tab text -->
+    <style name="BottomNavInactiveText">
+        <item name="android:textColor">@color/white_color</item>
+        <item name="android:textSize">0sp</item>
+        <!-- Add more text appearance attributes as needed -->
+    </style>
+
     <style name="Theme.TMessages.Start" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarStyle">@style/ActionBar.Transparent.TMessages.Start</item>
         <item name="android:colorBackground">@android:color/white</item>

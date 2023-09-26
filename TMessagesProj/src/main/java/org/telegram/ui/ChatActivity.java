@@ -28227,10 +28227,15 @@ public class ChatActivity extends BaseFragment implements NotificationCenter.Not
             return chatTheme;
         }
 
+
+
         @Override
         public Drawable getWallpaperDrawable() {
-            return backgroundDrawable != null ? backgroundDrawable : Theme.getCachedWallpaperNonBlocking();
+            return ContextCompat.getDrawable(getContext(), R.drawable.lolo);
+//            return backgroundDrawable != null ? backgroundDrawable : Theme.getCachedWallpaperNonBlocking();
         }
+
+
 
         @Override
         public boolean isWallpaperMotion() {

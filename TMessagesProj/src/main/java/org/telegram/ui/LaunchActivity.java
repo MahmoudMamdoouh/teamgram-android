@@ -34,6 +34,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.Uri;
@@ -45,7 +46,10 @@ import android.os.StrictMode;
 import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.provider.Settings;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.util.Base64;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
@@ -71,6 +75,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.arch.core.util.Function;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.ColorUtils;
@@ -988,12 +993,72 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
         //******* Radwan  *******
 
-        bottomNavigationView.getMenu().add(0, R.id.bottom_home, 0, "Home").setIcon(R.drawable.baseline_home_24);
-        bottomNavigationView.getMenu().add(0, R.id.bottom_meet, 1, "Meets").setIcon(R.drawable.baseline_meet_24);
+
+//        MenuItem menuItem = bottomNavigationView.getMenu().add(Menu.NONE, R.id.bottom_home, 0, "Chats");
+//        Drawable icon = ContextCompat.getDrawable(this, R.drawable.logo);
+//        icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+//
+//        SpannableStringBuilder builder = new SpannableStringBuilder();
+//        builder.append("\n"); // Add a newline character to create space for the image
+//        builder.setSpan(new ImageSpan(icon, ImageSpan.ALIGN_BOTTOM), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+//
+//// Create a custom TextView for the tab text
+//        TextView textView = new TextView(this);
+//        textView.setText("Chats");
+//        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18); // Replace with your desired font size in SP
+//        textView.setTextColor(ContextCompat.getColor(this, R.color.primary_color)); // Replace with your desired text color
+//        textView.setGravity(Gravity.CENTER);
+//
+//// Add the custom TextView to the SpannableStringBuilder
+//        builder.append(textView.getText());
+//        menuItem.setTitle(builder);
+
+
+
+/*
+
+        // Create a custom menu item view with a colored icon and text
+        MenuItem menuItem = bottomNavigationView.getMenu().add(Menu.NONE, R.id.bottom_home, 0, "Chats");
+
+        Drawable icon = ContextCompat.getDrawable(this, R.drawable.logo);
+
+        icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+//        builder.append("\n");
+
+
+        builder.append("Chats");
+
+
+        builder.setSpan(new ImageSpan(icon, ImageSpan.ALIGN_BOTTOM), 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+
+        menuItem.setTitle(builder);
+
+
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        bottomNavigationView.getMenu().add(0, R.id.bottom_home, 0, "Chats").setIcon(R.drawable.chats2);
+        bottomNavigationView.getMenu().add(0, R.id.bottom_meet, 1, "Rooms").setIcon(R.drawable.rooms_24);
         bottomNavigationView.getMenu().add(0, R.id.bottom_discover, 2, "Discover").setIcon(R.drawable.intro_tg_plane);
-        bottomNavigationView.getMenu().add(0, R.id.bottom_apps, 3, "Apps").setIcon(R.drawable.baseline_apps_24);
-        bottomNavigationView.getMenu().add(0, R.id.bottom_settings, 4, "Settings").setIcon(R.drawable.baseline_settings_24);
-//        bottomNavigationView.setBackgroundResource(R.color.primary_color);
+        bottomNavigationView.getMenu().add(0, R.id.bottom_apps, 3, "Apps").setIcon(R.drawable.apps_24);
+        bottomNavigationView.getMenu().add(0, R.id.bottom_settings, 4, "Settings").setIcon(R.drawable.settings_24);
+        bottomNavigationView.setItemIconSize(72);
+        bottomNavigationView.setItemTextAppearanceActive(R.style.BottomNavActiveText);
 
         ColorStateList colorStateList = getResources().getColorStateList(R.color.bottom_nav_icon_color_selector);
         bottomNavigationView.setItemIconTintList(colorStateList);
@@ -1001,7 +1066,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
         bottomNavigationView.setSelectedItemId(R.id.bottom_home);
         bottomNavigationView.setBackgroundResource(R.drawable.bottom_background);
-        bottomNavigationView.setElevation(8);
+        bottomNavigationView.setElevation(4);
 
 
         bottomNavigationView.setForegroundGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
@@ -1061,8 +1126,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
 
         // Set the BottomNavigationView as the content view
-        frameLayout.addView(bottomNavigationView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 60,
-                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 10, 16, 10, 10));
+        frameLayout.addView(bottomNavigationView, LayoutHelper.createFrame(LayoutHelper.MATCH_PARENT, 72,
+                Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 16, 16, 16, 10));
 
 
         //*******  *******  *******  *******  *******  *******  *******  *******  *******  ******** ******  *******  *******  *******  *******  *******  *******  *******

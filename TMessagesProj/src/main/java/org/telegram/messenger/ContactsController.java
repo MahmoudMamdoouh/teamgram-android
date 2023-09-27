@@ -1341,15 +1341,20 @@ public class ContactsController extends BaseController {
     }
 
     public void loadContacts(boolean fromCache, final long hash) {
+        System.out.println("Radwaan => 1");
         synchronized (loadContactsSync) {
             loadingContacts = true;
         }
         if (fromCache) {
+            System.out.println("Radwaan => 2");
             if (BuildVars.LOGS_ENABLED) {
                 FileLog.d("load contacts from cache");
             }
             getMessagesStorage().getContacts();
-        } else {
+        }
+
+        else {
+            System.out.println("Radwaan => 3");
             if (BuildVars.LOGS_ENABLED) {
                 FileLog.d("load contacts from server");
             }

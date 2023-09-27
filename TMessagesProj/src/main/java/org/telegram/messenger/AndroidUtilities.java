@@ -1375,6 +1375,7 @@ public class AndroidUtilities {
     }
 
     public static ArrayList<TLRPC.User> loadVCardFromStream(Uri uri, int currentAccount, boolean asset, ArrayList<VcardItem> items, String name) {
+        System.out.println("Radwaan => 3");
         ArrayList<TLRPC.User> result = null;
         try {
             InputStream stream;

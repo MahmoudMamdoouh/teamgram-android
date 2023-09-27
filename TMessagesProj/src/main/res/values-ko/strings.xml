@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="AppName">텔레그램</string>
-    <string name="AppNameBeta">Vconnct Super.</string>
+    <string name="AppName">Vconnct SuperApp</string>
+    <string name="AppNameBeta">Vconnct SuperApp</string>
     <string name="LanguageName">한국어</string>
     <string name="English">영어</string>
     <string name="LanguageNameInEnglish">한국어</string>

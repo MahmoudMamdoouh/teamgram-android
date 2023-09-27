@@ -793,21 +793,21 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                         protected void onTransitionAnimationEnd(boolean isOpen, boolean backward) {
                             super.onTransitionAnimationEnd(isOpen, backward);
                             if (!isOpen && backward) { // closed
-                                drawerLayoutContainer.setDrawCurrentPreviewFragmentAbove(false);
+                               // drawerLayoutContainer.setDrawCurrentPreviewFragmentAbove(false);
                             }
                         }
 
                         @Override
                         protected void onPreviewOpenAnimationEnd() {
                             super.onPreviewOpenAnimationEnd();
-                            drawerLayoutContainer.setAllowOpenDrawer(false, false);
-                            drawerLayoutContainer.setDrawCurrentPreviewFragmentAbove(false);
+                            //drawerLayoutContainer.setAllowOpenDrawer(false, false);
+                            //drawerLayoutContainer.setDrawCurrentPreviewFragmentAbove(false);
                             switchToAccount(accountNumber, true);
                         }
                     };
                     fragment.setCurrentAccount(accountNumber);
                     actionBarLayout.presentFragmentAsPreview(fragment);
-                    drawerLayoutContainer.setDrawCurrentPreviewFragmentAbove(true);
+                    //drawerLayoutContainer.setDrawCurrentPreviewFragmentAbove(true);
                     return true;
                 }
             }
@@ -5475,14 +5475,14 @@ System.out.println("gone 27");
         if (Theme.selectedAutoNightType == Theme.AUTO_NIGHT_TYPE_SYSTEM) {
             Theme.checkAutoNightThemeConditions();
         }
-        if(currentFragment==R.id.bottom_home){
-            bottomNavigationView.setSelectedItemId(R.id.bottom_home);
-          //  openHome(false);
-        }
-        if(currentFragment==R.id.bottom_settings){
-            bottomNavigationView.setSelectedItemId(R.id.bottom_settings);
-          //  openSettings(false);
-        }
+//        if(currentFragment==R.id.bottom_home){
+//            bottomNavigationView.setSelectedItemId(R.id.bottom_home);
+//          //  openHome(false);
+//        }
+//        if(currentFragment==R.id.bottom_settings){
+//            bottomNavigationView.setSelectedItemId(R.id.bottom_settings);
+//          //  openSettings(false);
+//        }
         checkWasMutedByAdmin(true);
         //FileLog.d("UI resume time = " + (SystemClock.elapsedRealtime() - ApplicationLoader.startTime));
         NotificationCenter.getGlobalInstance().postNotificationName(NotificationCenter.startAllHeavyOperations, 4096);

@@ -4067,9 +4067,9 @@ public class Theme {
         defaultColors.put(key_windowBackgroundWhiteInputField, 0xffdbdbdb);
         defaultColors.put(key_windowBackgroundWhiteInputFieldActivated, 0xff37a9f0);
         defaultColors.put(key_switchTrack, 0xffb0b5ba);
-        defaultColors.put(key_switchTrackChecked, 0xff52ade9);
+        defaultColors.put(key_switchTrackChecked, 0xff00969E);
         defaultColors.put(key_switchTrackBlue, 0xff828e99);
-        defaultColors.put(key_switchTrackBlueChecked, 0xff3c88c7);
+        defaultColors.put(key_switchTrackBlueChecked, 0xff00969E);
         defaultColors.put(key_switchTrackBlueThumb, 0xffffffff);
         defaultColors.put(key_switchTrackBlueThumbChecked, 0xffffffff);
         defaultColors.put(key_switchTrackBlueSelector, 0x17404a53);

@@ -79,7 +79,7 @@ public class DrawerLayoutContainer extends FrameLayout {
     private float scrimOpacity;
     private Drawable shadowLeft;
     private boolean allowOpenDrawer;
-    private boolean allowOpenDrawerBySwipe = true;
+    private boolean allowOpenDrawerBySwipe = false;
 
     private float drawerPosition;
     private boolean drawerOpened;
@@ -346,7 +346,7 @@ public class DrawerLayoutContainer extends FrameLayout {
     }
 
     public void setAllowOpenDrawerBySwipe(boolean value) {
-        allowOpenDrawerBySwipe = value;
+        allowOpenDrawerBySwipe = false;
     }
 
     private void prepareForDrawerOpen(MotionEvent ev) {

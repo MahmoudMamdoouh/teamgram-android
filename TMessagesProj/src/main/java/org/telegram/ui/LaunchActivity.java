@@ -4602,6 +4602,7 @@ System.out.println("gone 27");
     }
 
     private List<TLRPC.TL_contact> findContacts(String userName, String userPhone, boolean allowSelf) {
+        System.out.println("Radwaan => find contacts");
         System.out.println("gone *30");
         final MessagesController messagesController = MessagesController.getInstance(currentAccount);
         final ContactsController contactsController = ContactsController.getInstance(currentAccount);
@@ -4609,17 +4610,22 @@ System.out.println("gone 27");
         final List<TLRPC.TL_contact> foundContacts = new ArrayList<>();
 
         if (userPhone != null) {
+            System.out.println("Radwaan => 4");
             userPhone = PhoneFormat.stripExceptNumbers(userPhone);
             TLRPC.TL_contact contact = contactsController.contactsByPhone.get(userPhone);
             if (contact == null) {
+                System.out.println("Radwaan => 5");
                 String shortUserPhone = userPhone.substring(Math.max(0, userPhone.length() - 7));
                 contact = contactsController.contactsByShortPhone.get(shortUserPhone);
             }
             if (contact != null) {
+                System.out.println("Radwaan => 6");
                 final TLRPC.User user = messagesController.getUser(contact.user_id);
                 if (user != null && (!user.self || allowSelf)) {
+                    System.out.println("Radwaan => 7");
                     foundContacts.add(contact);
                 } else {
+                    System.out.println("Radwaan => 8");
                     // disable search by name
                     userName = null;
                 }
@@ -4627,8 +4633,10 @@ System.out.println("gone 27");
         }
 
         if (foundContacts.isEmpty() && userName != null) {
+            System.out.println("Radwaan => 9");
             final String query1 = userName.trim().toLowerCase();
             if (!TextUtils.isEmpty(query1)) {
+                System.out.println("Radwaan => 10");
                 String query2 = LocaleController.getInstance().getTranslitString(query1);
                 if (query1.equals(query2) || query2.length() == 0) {
                     query2 = null;
@@ -4671,6 +4679,7 @@ System.out.println("gone 27");
                                     found = true;
                                 }
                                 if (found) {
+                                    System.out.println("Radwaan => 11");
                                     foundContacts.add(contact);
                                     break;
                                 }

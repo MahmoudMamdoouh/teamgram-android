@@ -2206,6 +2206,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     }
                     if (!onlySelect) {
                         floatingButtonContainer.setVisibility(View.GONE);
+                        actionBar.getBackButton().setVisibility(View.VISIBLE);
+
                     }
                 }
                 setScrollY(0);
@@ -2242,6 +2244,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     viewPages[0].listView.setEmptyView(folderId == 0 ? viewPages[0].progressView : null);
                     if (!onlySelect) {
                         floatingButtonContainer.setVisibility(View.VISIBLE);
+                        actionBar.getBackButton().setVisibility(View.GONE);
+
                         floatingHidden = true;
                         floatingButtonTranslation = AndroidUtilities.dp(100);
                         floatingButtonHideProgress = 1f;
@@ -8835,7 +8839,7 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         if (getParentActivity() == null || floatingButtonContainer == null) {
             return;
         }
-        Drawable drawable = Theme.createSimpleSelectorCircleDrawable(AndroidUtilities.dp(56), Theme.getColor(Theme.key_chats_actionBackground), Theme.getColor(Theme.key_chats_actionPressedBackground));
+        Drawable drawable = Theme.createRoundRectDrawable(AndroidUtilities.dp(10),AndroidUtilities.dp(10), Theme.getColor(Theme.key_chats_actionPressedBackground));
         if (Build.VERSION.SDK_INT < 21) {
             Drawable shadowDrawable = ContextCompat.getDrawable(getParentActivity(), R.drawable.floating_shadow).mutate();
             shadowDrawable.setColorFilter(new PorterDuffColorFilter(0xff000000, PorterDuff.Mode.MULTIPLY));

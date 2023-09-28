@@ -262,7 +262,7 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
     private ImageUpdater imageUpdater;
     private int avatarColor;
     TimerDrawable autoDeleteItemDrawable;
-
+    ImageView backButton;
     private View scrimView = null;
     private Paint scrimPaint = new Paint(Paint.ANTI_ALIAS_FLAG) {
         @Override
@@ -1652,12 +1652,12 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
 
 
         actionBar.setOccupyStatusBar(Build.VERSION.SDK_INT >= 21 && !AndroidUtilities.isTablet() && !inBubbleMode);
-        ImageView backButton = actionBar.getBackButton();
+         backButton = actionBar.getBackButton();
 
 
         if(fromScreen=="Home"){
 
-            System.out.println("Radwan : Settings at home");
+           // System.out.println("Radwan : Settings at home");
             backButton.setVisibility(View.GONE);
 
         }
@@ -2549,9 +2549,12 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                     searchMode = !searchMode;
                     if (!searchMode) {
                         searchItem.clearFocusOnSearchView();
+                        backButton.setVisibility(View.GONE);
+
                     }
                     if (searchMode) {
                         searchItem.getSearchField().setText("");
+                        backButton.setVisibility(View.VISIBLE);
                     }
                     return searchExpandTransition(searchMode);
                 }

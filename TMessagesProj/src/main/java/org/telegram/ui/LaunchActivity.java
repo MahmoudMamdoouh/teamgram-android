@@ -248,7 +248,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
     private AlertDialog proxyErrorDialog;
     private RecyclerListView sideMenu;
 
-    private BottomNavigationView bottomNavigationView;
+    static public BottomNavigationView bottomNavigationView;
     private SelectAnimatedEmojiDialog.SelectAnimatedEmojiDialogWindow selectAnimatedEmojiDialog;
     private SideMenultItemAnimator itemAnimator;
     private FrameLayout updateLayout;
@@ -659,7 +659,7 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     System.out.println("gone 5");
                     bottomNavigationView.setVisibility(View.GONE);
                     presentFragment(new ChatActivity(args));
-                    drawerLayoutContainer.closeDrawer(false);
+                   // drawerLayoutContainer.closeDrawer(false);
                 } else if (id == 12) {
                     if (Build.VERSION.SDK_INT >= 23) {
                         if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -7087,6 +7087,7 @@ System.out.println("gone 27");
 
 
             if (fragment instanceof LoginActivity || fragment instanceof IntroActivity) {
+                System.out.println("gone 7090");
                 bottomNavigationView.setVisibility(View.GONE);
                 if (mainFragmentsStack.size() == 0 || mainFragmentsStack.get(0) instanceof IntroActivity) {
                     allow = false;
@@ -7094,6 +7095,7 @@ System.out.println("gone 27");
             }
 
             else if (fragment instanceof CountrySelectActivity) {
+                System.out.println("gone 7098");
                 bottomNavigationView.setVisibility(View.GONE);
                 if (mainFragmentsStack.size() == 1) {
                     allow = false;
@@ -7112,9 +7114,9 @@ System.out.println("gone 27");
             }
 
             else{
-                System.out.println("Radwan : not home or settings");
-
-                bottomNavigationView.setVisibility(View.GONE);
+                System.out.println("gone 7118"+String.valueOf(fragment instanceof ChatActivity));
+                if(!(fragment instanceof ChatActivity))
+                    bottomNavigationView.setVisibility(View.GONE);
             }
 
 

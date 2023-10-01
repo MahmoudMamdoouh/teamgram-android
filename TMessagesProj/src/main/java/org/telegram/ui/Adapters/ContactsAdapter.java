@@ -454,11 +454,13 @@ public class ContactsAdapter extends RecyclerListView.SectionsAdapter {
                             textCell.setTextAndIcon(LocaleController.getString("NewGroup", R.string.NewGroup), R.drawable.msg_groups, false);
                         } else if (position == 1) {
                             textCell.setTextAndIcon(LocaleController.getString("NewSecretChat", R.string.NewSecretChat), R.drawable.msg_secret, false);
-                        } else if (position == 2) {
+                        } /*else if (position == 2) {
                             textCell.setTextAndIcon(LocaleController.getString("NewChannel", R.string.NewChannel), R.drawable.msg_channel, false);
-                        }
+                        }*/
                     }
                 } else {
+                    System.out.println("contacts : display contacts ");
+
                     ContactsController.Contact contact = ContactsController.getInstance(currentAccount).phoneBookContacts.get(position);
                     if (contact.first_name != null && contact.last_name != null) {
                         textCell.setText(contact.first_name + " " + contact.last_name, false);

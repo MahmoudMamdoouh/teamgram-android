@@ -306,7 +306,7 @@ public class ContactsController extends BaseController {
     public String getInviteText(int contacts) {
         String link =  "https://vconnct.us/install" ;
         // if (contacts <= 1) {
-            return "Hey, I\'m using Vconnct to chat. Join me! Download it here: " + link;
+            return "Hey, I\'m using Vconnct SuperApp to chat. Join me! Download it here: " + link;
         // } else {
         //     try {
         //         return String.format(LocaleController.getPluralString("InviteTextNum", contacts), contacts, link);
@@ -392,6 +392,8 @@ public class ContactsController extends BaseController {
     }
 
     public void checkContacts() {
+        System.out.println("Contacts => checkContacts");
+
         Utilities.globalQueue.postRunnable(() -> {
             if (checkContactsInternal()) {
                 if (BuildVars.LOGS_ENABLED) {
@@ -403,6 +405,8 @@ public class ContactsController extends BaseController {
     }
 
     public void forceImportContacts() {
+        System.out.println("Contacts => forceImportContacts");
+
         Utilities.globalQueue.postRunnable(() -> {
             if (BuildVars.LOGS_ENABLED) {
                 FileLog.d("force import contacts");
@@ -489,6 +493,8 @@ public class ContactsController extends BaseController {
     }
 
     public void resetImportedContacts() {
+        System.out.println("Contacts => resetImportedContacts");
+
         TLRPC.TL_contacts_resetSaved req = new TLRPC.TL_contacts_resetSaved();
         getConnectionsManager().sendRequest(req, (response, error) -> {
 
@@ -524,8 +530,11 @@ public class ContactsController extends BaseController {
     }
 
     public void readContacts() {
+        System.out.println("Contacts => readContacts");
+
         synchronized (loadContactsSync) {
             if (loadingContacts) {
+
                 return;
             }
             loadingContacts = true;
@@ -835,6 +844,7 @@ public class ContactsController extends BaseController {
     }
 
     protected void performSyncPhoneBook(final HashMap<String, Contact> contactHashMap, final boolean request, final boolean first, final boolean schedule, final boolean force, final boolean checkCount, final boolean canceled) {
+        System.out.println("Contacts => hashmap= "+contactHashMap);
         if (!first && !contactsBookLoaded) {
             return;
         }
@@ -955,6 +965,7 @@ public class ContactsController extends BaseController {
                                 imp.first_name = value.first_name;
                                 imp.last_name = value.last_name;
                                 imp.phone = value.phones.get(a);
+                                System.out.println("contacts : imp"+imp);
                                 toImport.add(imp);
                             }
                         }
@@ -1010,6 +1021,8 @@ public class ContactsController extends BaseController {
                                     imp.first_name = value.first_name;
                                     imp.last_name = value.last_name;
                                     imp.phone = value.phones.get(a);
+                                    System.out.println("contacts : impp "+imp);
+
                                     toImport.add(imp);
                                 }
                             } else {
@@ -1119,6 +1132,8 @@ public class ContactsController extends BaseController {
                         imp.first_name = value.first_name;
                         imp.last_name = value.last_name;
                         imp.phone = value.phones.get(a);
+                        System.out.println("contacts : imppp "+imp);
+
                         toImport.add(imp);
                     }
                 }
@@ -1149,6 +1164,9 @@ public class ContactsController extends BaseController {
                     } else {
                         checkType = 0;
                     }
+
+                    System.out.println("contacts : checkType "+checkType);
+
                     if (BuildVars.LOGS_ENABLED) {
                         FileLog.d("new phone book contacts " + newPhonebookContacts + " serverContactsInPhonebook " + serverContactsInPhonebook + " totalContacts " + contactsByPhone.size());
                     }
@@ -1187,29 +1205,53 @@ public class ContactsController extends BaseController {
                         contactIdToKey.put(value.contact_id, value.key);
                     }
                     completedRequestsCount = 0;
+
+
                     final int count = (int) Math.ceil(toImport.size() / 500.0);
+                    System.out.println("contacts : count length "+count+ " toImport.size() " +toImport.size());
+
                     for (int a = 0; a < count; a++) {
                         final TLRPC.TL_contacts_importContacts req = new TLRPC.TL_contacts_importContacts();
                         int start = a * 500;
                         int end = Math.min(start + 500, toImport.size());
+
+//                        TLRPC.TL_inputPhoneContact testContact = new TLRPC.TL_inputPhoneContact();
+//                        testContact.phone="01122388139";
+//                        testContact.first_name="Ahmed";
+//                        testContact.first_name="Radwan";
+//                        testContact.client_id=65;
                         req.contacts = new ArrayList<>(toImport.subList(start, end));
+//                        req.contacts.add(testContact);
+                        System.out.println("contacts : contacts length "+req.contacts.size()+ " "+req.contacts.get(0).first_name +" iteration "+a);
+
                         getConnectionsManager().sendRequest(req, (response, error) -> {
+
+                            System.out.println("contacts : getConnectionsManager().sendRequest at contacts length ");
+
                             completedRequestsCount++;
                             if (error == null) {
                                 if (BuildVars.LOGS_ENABLED) {
+                                    System.out.println("contacts : contacts imported ");
+
                                     FileLog.d("contacts imported");
                                 }
                                 final TLRPC.TL_contacts_importedContacts res = (TLRPC.TL_contacts_importedContacts) response;
                                 if (!res.retry_contacts.isEmpty()) {
+                                    System.out.println("contacts : res.retry_contacts not Empty "+res.retry_contacts.size());
+
                                     for (int a1 = 0; a1 < res.retry_contacts.size(); a1++) {
                                         long id = res.retry_contacts.get(a1);
                                         contactsMapToSave.remove(contactIdToKey.get((int) id));
                                     }
                                     hasErrors[0] = true;
                                     if (BuildVars.LOGS_ENABLED) {
+                                        System.out.println("contacts : result has retry contacts ");
+
                                         FileLog.d("result has retry contacts");
                                     }
                                 }
+                                System.out.println("contacts : popular_invites length "+res.popular_invites.size()+ " "+res.popular_invites.get(50).toString());
+
                                 for (int a1 = 0; a1 < res.popular_invites.size(); a1++) {
                                     TLRPC.TL_popularContact popularContact = res.popular_invites.get(a1);
                                     Contact contact = contactsMap.get(contactIdToKey.get((int) popularContact.client_id));
@@ -1224,6 +1266,7 @@ public class ContactsController extends BaseController {
                                     }
                                 }*/
                                 getMessagesStorage().putUsersAndChats(res.users, null, true, true);
+
                                 ArrayList<TLRPC.TL_contact> cArr = new ArrayList<>();
                                 for (int a1 = 0; a1 < res.imported.size(); a1++) {
                                     TLRPC.TL_contact contact = new TLRPC.TL_contact();
@@ -1232,20 +1275,32 @@ public class ContactsController extends BaseController {
                                 }
                                 processLoadedContacts(cArr, res.users, 2);
                             } else {
+                                System.out.println("contacts : contacts length "+req.contacts.size());
+
                                 for (int a1 = 0; a1 < req.contacts.size(); a1++) {
                                     TLRPC.TL_inputPhoneContact contact = req.contacts.get(a1);
                                     contactsMapToSave.remove(contactIdToKey.get((int) contact.client_id));
                                 }
                                 hasErrors[0] = true;
                                 if (BuildVars.LOGS_ENABLED) {
+                                    System.out.println("contacts : import contacts error "+ error.text);
+
                                     FileLog.d("import contacts error " + error.text);
                                 }
                             }
                             if (completedRequestsCount == count) {
+                                System.out.println("contacts : completedRequestsCount == count ");
+
                                 if (!contactsMapToSave.isEmpty()) {
+                                    System.out.println("contacts : putCachedPhoneBook "+contactsMapToSave);
+
                                     getMessagesStorage().putCachedPhoneBook(contactsMapToSave, false, false);
                                 }
                                 Utilities.stageQueue.postRunnable(() -> {
+                                    System.out.println("contacts : contactsBookShort "+contactsBookShort);
+                                    System.out.println("contacts : contactsMap "+contactsMap);
+
+
                                     contactsBookSPhones = contactsBookShort;
                                     contactsBook = contactsMap;
                                     contactsSyncInProgress = false;
@@ -1258,17 +1313,24 @@ public class ContactsController extends BaseController {
                                         delayedContactsUpdate.clear();
                                     }
                                     AndroidUtilities.runOnUIThread(() -> {
+                                        System.out.println("contacts : mergePhonebookAndTelegramContacts ");
+
                                         mergePhonebookAndTelegramContacts(phoneBookSectionsDictFinal, phoneBookSectionsArrayFinal, phoneBookByShortPhonesFinal);
                                         getNotificationCenter().postNotificationName(NotificationCenter.contactsImported);
                                     });
                                     if (hasErrors[0]) {
+                                        System.out.println("contacts : hasErrors");
+
                                         Utilities.globalQueue.postRunnable(() -> getMessagesStorage().getCachedPhoneBook(true), 60000 * 5);
                                     }
                                 });
                             }
                         }, ConnectionsManager.RequestFlagFailOnServerErrors | ConnectionsManager.RequestFlagCanCompress);
+
                     }
                 } else {
+                    System.out.println("contacts : TOIMPORT EMPTY");
+
                     Utilities.stageQueue.postRunnable(() -> {
                         contactsBookSPhones = contactsBookShort;
                         contactsBook = contactsMap;
@@ -1290,6 +1352,8 @@ public class ContactsController extends BaseController {
                     });
                 }
             } else {
+                System.out.println("contacts : elsee ");
+
                 Utilities.stageQueue.postRunnable(() -> {
                     contactsBookSPhones = contactsBookShort;
                     contactsBook = contactsMap;
@@ -1302,6 +1366,8 @@ public class ContactsController extends BaseController {
                         applyContactsUpdates(delayedContactsUpdate, null, null, null);
                         delayedContactsUpdate.clear();
                     }
+                    System.out.println("contacts : mergePhonebookAndTelegramContacts  /**/ ");
+
                     AndroidUtilities.runOnUIThread(() -> mergePhonebookAndTelegramContacts(phoneBookSectionsDictFinal, phoneBookSectionsArrayFinal, phoneBookByShortPhonesFinal));
                 });
                 if (!contactsMap.isEmpty()) {
@@ -1341,12 +1407,12 @@ public class ContactsController extends BaseController {
     }
 
     public void loadContacts(boolean fromCache, final long hash) {
-        System.out.println("Radwaan => 1");
+        System.out.println("contacts : loadContacts");
         synchronized (loadContactsSync) {
             loadingContacts = true;
         }
         if (fromCache) {
-            System.out.println("Radwaan => 2");
+            System.out.println("contacts : from cache");
             if (BuildVars.LOGS_ENABLED) {
                 FileLog.d("load contacts from cache");
             }
@@ -1354,7 +1420,7 @@ public class ContactsController extends BaseController {
         }
 
         else {
-            System.out.println("Radwaan => 3");
+            System.out.println("contacts : load contacts from server");
             if (BuildVars.LOGS_ENABLED) {
                 FileLog.d("load contacts from server");
             }
@@ -1362,11 +1428,18 @@ public class ContactsController extends BaseController {
             TLRPC.TL_contacts_getContacts req = new TLRPC.TL_contacts_getContacts();
             req.hash = hash;
             getConnectionsManager().sendRequest(req, (response, error) -> {
+                System.out.println("contacts : response "+response.toString());
+
                 if (error == null) {
                     TLRPC.contacts_Contacts res = (TLRPC.contacts_Contacts) response;
+
                     if (hash != 0 && res instanceof TLRPC.TL_contacts_contactsNotModified) {
+                        System.out.println("contacts : contactsNotModified");
+
                         contactsLoaded = true;
                         if (!delayedContactsUpdate.isEmpty() && contactsBookLoaded) {
+                            System.out.println("contacts : !delayedContactsUpdate.isEmpty() && contactsBookLoaded");
+
                             applyContactsUpdates(delayedContactsUpdate, null, null, null);
                             delayedContactsUpdate.clear();
                         }
@@ -1383,6 +1456,9 @@ public class ContactsController extends BaseController {
                         }
                         return;
                     } else {
+                        System.out.println("contacts : saved count = "+res.saved_count);
+                        System.out.println("contacts :  contactss "+res.contacts);
+
                         getUserConfig().contactsSavedCount = res.saved_count;
                         getUserConfig().saveConfig(false);
                     }
@@ -1393,6 +1469,7 @@ public class ContactsController extends BaseController {
     }
 
     public void processLoadedContacts(final ArrayList<TLRPC.TL_contact> contactsArr, final ArrayList<TLRPC.User> usersArr, final int from) {
+        System.out.println("contacts : processLoadedContacts");
         //from: 0 - from server, 1 - from db, 2 - from imported contacts
         AndroidUtilities.runOnUIThread(() -> {
             getMessagesController().putUsers(usersArr, from == 1);
@@ -1402,6 +1479,8 @@ public class ContactsController extends BaseController {
             final boolean isEmpty = contactsArr.isEmpty();
 
             if (from == 2 && !contacts.isEmpty()) {
+                System.out.println("contacts : processLoadedContacts from imported contacts");
+
                 for (int a = 0; a < contactsArr.size(); a++) {
                     TLRPC.TL_contact contact = contactsArr.get(a);
                     if (contactsDict.get(contact.user_id) != null) {
@@ -1416,6 +1495,8 @@ public class ContactsController extends BaseController {
                 TLRPC.User user = getMessagesController().getUser(contactsArr.get(a).user_id);
                 if (user != null) {
                     usersDict.put(user.id, user);
+                    System.out.println("contacts : loaded user contact " + user.first_name + " " + user.last_name + " " + user.phone);
+
                     //if (BuildVars.DEBUG_VERSION) {
                     //    FileLog.e("loaded user contact " + user.first_name + " " + user.last_name + " " + user.phone);
                     //}
@@ -1424,9 +1505,13 @@ public class ContactsController extends BaseController {
 
             Utilities.stageQueue.postRunnable(() -> {
                 if (BuildVars.LOGS_ENABLED) {
+                    System.out.println("contacts : done loading contacts");
+
                     FileLog.d("done loading contacts");
                 }
                 if (from == 1 && (contactsArr.isEmpty() || Math.abs(System.currentTimeMillis() / 1000 - getUserConfig().lastContactsSyncTime) >= 24 * 60 * 60)) {
+                    System.out.println("contacts : from db");
+
                     loadContacts(false, getContactsHash(contactsArr));
                     if (contactsArr.isEmpty()) {
                         AndroidUtilities.runOnUIThread(() -> {
@@ -1437,6 +1522,8 @@ public class ContactsController extends BaseController {
                     }
                 }
                 if (from == 0) {
+                    System.out.println("contacts : from server");
+
                     getUserConfig().lastContactsSyncTime = (int) (System.currentTimeMillis() / 1000);
                     getUserConfig().saveConfig(false);
                 }
@@ -1446,6 +1533,7 @@ public class ContactsController extends BaseController {
                     if (usersDict.get(contact.user_id) == null && contact.user_id != getUserConfig().getClientUserId()) {
                         loadContacts(false, 0);
                         if (BuildVars.LOGS_ENABLED) {
+                            System.out.println("contacts : contacts are broken, load from server");
                             FileLog.d("contacts are broken, load from server");
                         }
                         AndroidUtilities.runOnUIThread(() -> {
@@ -2291,6 +2379,8 @@ public class ContactsController extends BaseController {
     }
 
     private void reloadContactsStatuses() {
+        System.out.println("Contacts => reloadContactsStatuses");
+
         saveContactsLoadTime();
         getMessagesController().clearFullUsers();
         SharedPreferences preferences = MessagesController.getMainSettings(currentAccount);

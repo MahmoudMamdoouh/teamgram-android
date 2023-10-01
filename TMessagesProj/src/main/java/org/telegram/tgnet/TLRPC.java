@@ -7181,6 +7181,8 @@ public class TLRPC {
         public String last_name;
 
         public static TL_inputPhoneContact TLdeserialize(AbstractSerializedData stream, int constructor, boolean exception) {
+
+
             if (TL_inputPhoneContact.constructor != constructor) {
                 if (exception) {
                     throw new RuntimeException(String.format("can't parse magic %x in TL_inputPhoneContact", constructor));
@@ -30068,37 +30070,64 @@ public class TLRPC {
         public ArrayList<User> users = new ArrayList<>();
 
         public static TL_contacts_importedContacts TLdeserialize(AbstractSerializedData stream, int constructor, boolean exception) {
+            System.out.println("contacts : constructor");
+
             if (TL_contacts_importedContacts.constructor != constructor) {
+                System.out.println("contacts : L_contacts_importedContacts.constructor != constructor ");
+
                 if (exception) {
+                    System.out.println("contacts : can't parse magic %x in TL_contacts_importedContacts ");
+
                     throw new RuntimeException(String.format("can't parse magic %x in TL_contacts_importedContacts", constructor));
                 } else {
                     return null;
                 }
             }
             TL_contacts_importedContacts result = new TL_contacts_importedContacts();
+            System.out.println("contacts : result 1 "+result);
+
             result.readParams(stream, exception);
+            System.out.println("contacts : result "+result);
+
             return result;
         }
 
         public void readParams(AbstractSerializedData stream, boolean exception) {
+            
+
+
             int magic = stream.readInt32(exception);
+
+            System.out.println("contacts : readParams "+magic);
             if (magic != 0x1cb5c415) {
+
+                System.out.println("contacts : magic 1");
+
                 if (exception) {
+                    System.out.println("contacts : wrong Vector magic");
+
                     throw new RuntimeException(String.format("wrong Vector magic, got %x", magic));
                 }
                 return;
             }
+
             int count = stream.readInt32(exception);
             for (int a = 0; a < count; a++) {
                 TL_importedContact object = TL_importedContact.TLdeserialize(stream, stream.readInt32(exception), exception);
                 if (object == null) {
                     return;
                 }
+                System.out.println("contacts : objectt "+object);
+
                 imported.add(object);
             }
             magic = stream.readInt32(exception);
             if (magic != 0x1cb5c415) {
+                System.out.println("contacts : magic 2");
+
                 if (exception) {
+                    System.out.println("contacts : wrong Vector magic, got %x ");
+
                     throw new RuntimeException(String.format("wrong Vector magic, got %x", magic));
                 }
                 return;
@@ -30109,11 +30138,17 @@ public class TLRPC {
                 if (object == null) {
                     return;
                 }
+                System.out.println("contacts : objectttt "+object);
+
                 popular_invites.add(object);
             }
             magic = stream.readInt32(exception);
             if (magic != 0x1cb5c415) {
+                System.out.println("contacts : magic 3");
+
                 if (exception) {
+                    System.out.println("contacts : wrong Vector magic, got %x again ");
+
                     throw new RuntimeException(String.format("wrong Vector magic, got %x", magic));
                 }
                 return;
@@ -30124,6 +30159,7 @@ public class TLRPC {
             }
             magic = stream.readInt32(exception);
             if (magic != 0x1cb5c415) {
+                                System.out.println("contacts : magic 4");
                 if (exception) {
                     throw new RuntimeException(String.format("wrong Vector magic, got %x", magic));
                 }
@@ -30135,11 +30171,16 @@ public class TLRPC {
                 if (object == null) {
                     return;
                 }
+                System.out.println("Contacts : userss "+users);
                 users.add(object);
             }
+
+            System.out.println("contacts : users "+users);
+
         }
 
         public void serializeToStream(AbstractSerializedData stream) {
+            System.out.println("contacts : serializeToStream");
             stream.writeInt32(constructor);
             stream.writeInt32(0x1cb5c415);
             int count = imported.size();
@@ -49131,6 +49172,8 @@ public class TLRPC {
         public long hash;
 
         public TLObject deserializeResponse(AbstractSerializedData stream, int constructor, boolean exception) {
+            System.out.println("contacts => deserializeResponse "+contacts_Contacts.TLdeserialize(stream, constructor, exception));
+
             return contacts_Contacts.TLdeserialize(stream, constructor, exception);
         }
 
@@ -49146,6 +49189,8 @@ public class TLRPC {
         public ArrayList<TL_inputPhoneContact> contacts = new ArrayList<>();
 
         public TLObject deserializeResponse(AbstractSerializedData stream, int constructor, boolean exception) {
+            System.out.println("contacts => import contacts "+TL_contacts_importedContacts.TLdeserialize(stream, constructor, exception));
+
             return TL_contacts_importedContacts.TLdeserialize(stream, constructor, exception);
         }
 

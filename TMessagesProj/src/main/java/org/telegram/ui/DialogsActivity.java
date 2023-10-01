@@ -8839,7 +8839,9 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
         if (getParentActivity() == null || floatingButtonContainer == null) {
             return;
         }
-        Drawable drawable = Theme.createRoundRectDrawable(AndroidUtilities.dp(10),AndroidUtilities.dp(10), Theme.getColor(Theme.key_chats_actionPressedBackground));
+//        Drawable drawable = Theme.createRoundRectDrawable(AndroidUtilities.dp(10),AndroidUtilities.dp(10), Theme.getColor(Theme.key_chats_actionPressedBackground));
+        Drawable drawable = Theme.createSimpleSelectorCircleDrawable(AndroidUtilities.dp(56), Theme.getColor(Theme.key_chats_actionBackground), Theme.getColor(Theme.key_chats_actionPressedBackground));
+
         if (Build.VERSION.SDK_INT < 21) {
             Drawable shadowDrawable = ContextCompat.getDrawable(getParentActivity(), R.drawable.floating_shadow).mutate();
             shadowDrawable.setColorFilter(new PorterDuffColorFilter(0xff000000, PorterDuff.Mode.MULTIPLY));

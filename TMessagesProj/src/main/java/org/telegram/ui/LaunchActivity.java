@@ -379,6 +379,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             try {
                 getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
             } catch (Exception e) {
+                System.out.println("MO*9"+e);
+
                 FileLog.e(e);
             }
         }
@@ -681,6 +683,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                             int mode = Settings.Secure.getInt(ApplicationLoader.applicationContext.getContentResolver(), Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF);
                             enabled = (mode != Settings.Secure.LOCATION_MODE_OFF);
                         } catch (Throwable e) {
+                            System.out.println("MO*10"+e);
+
                             FileLog.e(e);
                         }
                     }
@@ -918,6 +922,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     }
                 }
             } catch (Exception e) {
+                System.out.println("MO*11"+e);
+
                 FileLog.e(e);
             }
         } else {
@@ -974,6 +980,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 });
             }
         } catch (Exception e) {
+            System.out.println("MO*12"+e);
+
             FileLog.e(e);
         }
         MediaController.getInstance().setBaseActivity(this, true);
@@ -1447,7 +1455,6 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
 
     public FireworksOverlay getFireworksOverlay() {
 
-        System.out.println("gone *7");
         return fireworksOverlay;
     }
 
@@ -1966,6 +1973,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                     }
                                 }
                             } catch (Throwable e) {
+                                System.out.println("MO*13"+e);
+
                                 FileLog.e(e);
                             }
                         } else {
@@ -1995,6 +2004,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                 error = true;
                             }
                         } catch (Exception e) {
+                            System.out.println("MO*14"+e);
+
                             FileLog.e(e);
                             error = true;
                         }
@@ -2053,6 +2064,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                                     break;
                                                 }
                                             } catch (Exception e) {
+                                                System.out.println("MO*15"+e);
+
                                                 FileLog.e(e);
                                             }
                                         }
@@ -2104,6 +2117,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                         importingStickersEmoji = intent.getStringArrayListExtra("STICKER_EMOJIS");
                         importingStickersSoftware = intent.getStringExtra("IMPORTER");
                     } catch (Throwable e) {
+                        System.out.println("MO*16"+e);
+
                         FileLog.e(e);
                         importingStickers = null;
                         importingStickersEmoji = null;
@@ -2176,6 +2191,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                                     break;
                                                 }
                                             } catch (Exception e) {
+                                                System.out.println("MO*16"+e);
+
                                                 FileLog.e(e);
                                             }
                                         }
@@ -2209,6 +2226,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                             error = true;
                         }
                     } catch (Exception e) {
+                        System.out.println("MO*17"+e);
+
                         FileLog.e(e);
                         error = true;
                     }
@@ -2854,6 +2873,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                                         }
                                     }
                                 } catch (Exception e) {
+                                    System.out.println("MO*18"+e);
+
                                     FileLog.e(e);
                                 }
                             }
@@ -3375,12 +3396,16 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                         BulletinFactory.of(mainFragmentsStack.get(mainFragmentsStack.size() - 1)).createErrorBulletin(LocaleController.getString("ChannelPostDeleted", R.string.ChannelPostDeleted)).show();
                     }
                 } catch (Exception e) {
+                    System.out.println("MO*19"+e);
+
                     FileLog.e(e);
                 }
             }
             try {
                 progressDialog.dismiss();
             } catch (Exception e) {
+                System.out.println("MO*20"+e);
+
                 FileLog.e(e);
             }
         }));
@@ -3407,6 +3432,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
             }
             content = total.toString();
         } catch (Exception e) {
+            System.out.println("MO*21"+e);
+
             FileLog.e(e);
             return;
         } finally {
@@ -3415,6 +3442,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                     inputStream.close();
                 }
             } catch (Exception e2) {
+                System.out.println("MO*22"+e2);
+
                 FileLog.e(e2);
             }
         }
@@ -3498,6 +3527,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 try {
                     progressDialog.dismiss();
                 } catch (Exception e) {
+                    System.out.println("MO*23"+e);
+
                     FileLog.e(e);
                 }
             }
@@ -3623,6 +3654,8 @@ public class LaunchActivity extends BasePermissionsActivity implements ActionBar
                 try {
                     progressDialog.dismiss();
                 } catch (Exception e) {
+                    System.out.println("MO*24"+e);
+
                     FileLog.e(e);
                 }
             }));
@@ -3831,6 +3864,8 @@ System.out.println("gone 27");
                                         BulletinFactory.of(mainFragmentsStack.get(mainFragmentsStack.size() - 1)).createErrorBulletin(LocaleController.getString("BotCantJoinGroups", R.string.BotCantJoinGroups)).show();
                                     }
                                 } catch (Exception e) {
+                                    System.out.println("MO*25"+e);
+
                                     FileLog.e(e);
                                 }
                                 return;
@@ -4021,6 +4056,8 @@ System.out.println("gone 27");
                                                 System.out.println("gone 29");
                                                 progressDialog.dismiss();
                                             } catch (Exception e) {
+                                                System.out.println("MO*26"+e);
+
                                                 FileLog.e(e);
                                             }
                                             if (!LaunchActivity.this.isFinishing()) {
@@ -4074,6 +4111,8 @@ System.out.println("gone 27");
                                             try {
                                                 progressDialog.dismiss();
                                             } catch (Exception e) {
+                                                System.out.println("MO*27"+e);
+
                                                 FileLog.e(e);
                                             }
                                         }
@@ -4099,6 +4138,8 @@ System.out.println("gone 27");
                                 }
                             }
                         } catch (Exception e) {
+                            System.out.println("MO*28"+e);
+
                             FileLog.e(e);
                         }
                     }
@@ -4868,7 +4909,6 @@ System.out.println("gone 27");
 
     public void checkAppUpdate(boolean force) {
 
-        System.out.println("gone *33 "+bottomNavigationView.getVisibility());
 
         if (!force && BuildVars.DEBUG_VERSION || !force && !BuildVars.CHECK_UPDATES) {
             return;
@@ -5382,7 +5422,6 @@ System.out.println("gone 27");
 
     @Override
     protected void onStart() {
-        System.out.println("gone *49 "+bottomNavigationView.getVisibility());
         super.onStart();
 
 //        bottomNavigationView.setVisibility(View.GONE);
@@ -5474,7 +5513,7 @@ System.out.println("gone 27");
 
     @Override
     protected void onResume() {
-        System.out.println("gone *53 "+bottomNavigationView.getVisibility());
+        System.out.println("onResume ");
         super.onResume();
         isResumed = true;
         if (onResumeStaticCallback != null) {
@@ -5506,7 +5545,6 @@ System.out.println("gone 27");
         MediaController.checkGallery();
         onPasscodeResume();
         if (passcodeView == null || passcodeView.getVisibility() != View.VISIBLE) {
-            System.out.println("gone *++");
 
             actionBarLayout.onResume();
             if (AndroidUtilities.isTablet()) {
@@ -5558,7 +5596,6 @@ System.out.println("gone 27");
     }
 
     private void invalidateTabletMode() {
-        System.out.println("gone *54 "+bottomNavigationView.getVisibility());
         Boolean wasTablet = AndroidUtilities.getWasTablet();
         if (wasTablet == null) {
             return;
@@ -5765,7 +5802,6 @@ System.out.println("gone 27");
         }
 
         else if (id == NotificationCenter.didSetNewWallpapper) {
-            System.out.println("gone *996 "+bottomNavigationView.getVisibility());
             if (sideMenu != null) {
                 View child = sideMenu.getChildAt(0);
                 if (child != null) {
@@ -5778,7 +5814,6 @@ System.out.println("gone 27");
         }
 
         else if (id == NotificationCenter.didSetPasscode) {
-            System.out.println("gone *997");
             if (SharedConfig.passcodeHash.length() > 0 && !SharedConfig.allowScreenCapture) {
                 try {
                     getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
@@ -5846,7 +5881,6 @@ System.out.println("gone 27");
         }
 
         else if (id == NotificationCenter.didSetNewTheme) {
-            System.out.println("gone *99-3 "+bottomNavigationView.getVisibility());
             Boolean nightTheme = (Boolean) args[0];
             if (!nightTheme) {
                 if (sideMenu != null) {
@@ -6918,7 +6952,6 @@ System.out.println("gone 27");
 
     @Override
     public boolean dispatchKeyEvent(KeyEvent event) {
-        System.out.println("gone *78");
         int keyCode = event.getKeyCode();
         if (event.getAction() == KeyEvent.ACTION_DOWN && (event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP || event.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)) {
             if (VoIPService.getSharedInstance() != null) {
@@ -6962,7 +6995,6 @@ System.out.println("gone 27");
 
     @Override
     public boolean onKeyUp(int keyCode, KeyEvent event) {
-        System.out.println("gone *79");
         if (keyCode == KeyEvent.KEYCODE_MENU && !SharedConfig.isWaitingForPasscodeEnter) {
             if (PhotoViewer.hasInstance() && PhotoViewer.getInstance().isVisible()) {
                 return super.onKeyUp(keyCode, event);
@@ -7096,7 +7128,6 @@ System.out.println("gone 27");
 
 
             if (fragment instanceof LoginActivity || fragment instanceof IntroActivity) {
-                System.out.println("gone 7090");
                 bottomNavigationView.setVisibility(View.GONE);
                 if (mainFragmentsStack.size() == 0 || mainFragmentsStack.get(0) instanceof IntroActivity) {
                     allow = false;
@@ -7104,7 +7135,6 @@ System.out.println("gone 27");
             }
 
             else if (fragment instanceof CountrySelectActivity) {
-                System.out.println("gone 7098");
                 bottomNavigationView.setVisibility(View.GONE);
                 if (mainFragmentsStack.size() == 1) {
                     allow = false;
@@ -7123,57 +7153,14 @@ System.out.println("gone 27");
             }
 
             else{
-                System.out.println("gone 7118"+String.valueOf(fragment instanceof ChatActivity));
                 if(!(fragment instanceof ChatActivity))
                     bottomNavigationView.setVisibility(View.GONE);
             }
 
 
 
-
-//                if( fragment instanceof DialogsActivity   || fragment instanceof ProfileActivity){
-//
-//
-//                System.out.println("Radwan : Profile from "+profileFromScreen);
-//
-//
-//
-//
-//                if(profileFromScreen !="Home"){
-//                    bottomNavigationView.setVisibility(View.GONE);
-//                }else{
-//                    bottomNavigationView.setVisibility(View.VISIBLE);
-//                }
-//
-//
-//            }
-//            else if(! (fragment instanceof ProfileActivity)){
-//                bottomNavigationView.setVisibility(View.GONE);
-//            }
-
-
-
-
-/*            // Radwan here we hide and display bottom nav bar
-            else if (fragment instanceof ChangeUsernameActivity || fragment instanceof ChatActivity ||fragment instanceof ActionIntroActivity
-                    ||fragment instanceof ChangeBioActivity||fragment instanceof NotificationsSettingsActivity||fragment instanceof PrivacySettingsActivity
-                    ||fragment instanceof DataSettingsActivity||fragment instanceof LanguageSelectActivity
-            ) {
-                bottomNavigationView.setVisibility(View.GONE);
-            }
-
-            else {
-                bottomNavigationView.setVisibility(View.VISIBLE);
-            }*/
-
-
-
-
-
-
             drawerLayoutContainer.setAllowOpenDrawer(allow, false);
         }
-        System.out.println("gone *8880 "+bottomNavigationView.getVisibility());
 
         return true;
     }

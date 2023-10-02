@@ -21940,24 +21940,34 @@ public class TLRPC {
         public EmojiStatus emoji_status;
 
         public static User TLdeserialize(AbstractSerializedData stream, int constructor, boolean exception) {
+            System.out.println("TL_userContact_old22 ");
+            System.out.println(" constructorr => "+constructor);
             User result = null;
             switch (constructor) {
                 case 0xcab35e18:
+                    System.out.println("TL_userContact_old2 ");
                     result = new TL_userContact_old2();
                     break;
                 case 0xf2fb8319:
+                    System.out.println("TL_userContact_old ");
+
                     result = new TL_userContact_old();
                     break;
                 case 0xd3bc4b7a:
+                    System.out.println("TL_userEmpty ");
+
                     result = new TL_userEmpty();
                     break;
                 case 0x5d99adee:
+                    System.out.println("TL_user ");
                     result = new TL_user();
                     break;
                 case 0x3ff6ecb0:
+                    System.out.println("TL_user_layer144 ");
                     result = new TL_user_layer144();
                     break;
                 case 0x938458c1:
+                    System.out.println("TL_user_layer131 ");
                     result = new TL_user_layer131();
                     break;
                 case 0x2e13f4c3:
@@ -22000,6 +22010,7 @@ public class TLRPC {
                     result = new TL_userSelf_old2();
                     break;
             }
+
             if (result == null && exception) {
                 throw new RuntimeException(String.format("can't parse magic %x in User", constructor));
             }
@@ -22082,10 +22093,19 @@ public class TLRPC {
         public static int constructor = 0x5d99adee;
 
         public void readParams(AbstractSerializedData stream, boolean exception) {
+            System.out.println("**/**");
             flags = stream.readInt32(exception);
+            System.out.println("**//**");
+
             self = (flags & 1024) != 0;
+            System.out.println("**///**");
+
             contact = (flags & 2048) != 0;
+            System.out.println("**////**");
+
             mutual_contact = (flags & 4096) != 0;
+            System.out.println("**/////**");
+
             deleted = (flags & 8192) != 0;
             bot = (flags & 16384) != 0;
             bot_chat_history = (flags & 32768) != 0;
@@ -30070,7 +30090,6 @@ public class TLRPC {
         public ArrayList<User> users = new ArrayList<>();
 
         public static TL_contacts_importedContacts TLdeserialize(AbstractSerializedData stream, int constructor, boolean exception) {
-            System.out.println("contacts : constructor");
 
             if (TL_contacts_importedContacts.constructor != constructor) {
                 System.out.println("contacts : L_contacts_importedContacts.constructor != constructor ");
@@ -30084,11 +30103,16 @@ public class TLRPC {
                 }
             }
             TL_contacts_importedContacts result = new TL_contacts_importedContacts();
-            System.out.println("contacts : result 1 "+result);
+            System.out.println("contacts : result is "+result.users);
 
             result.readParams(stream, exception);
             System.out.println("contacts : result "+result);
 
+
+            TLRPC.User testUser=   TLRPC.User.TLdeserialize(stream, constructor, exception);
+
+            // this is the result
+//            result.users.add(0,testUser);
             return result;
         }
 
@@ -30098,7 +30122,7 @@ public class TLRPC {
 
             int magic = stream.readInt32(exception);
 
-            System.out.println("contacts : readParams "+magic);
+            System.out.println("contacts : magic 1 "+magic);
             if (magic != 0x1cb5c415) {
 
                 System.out.println("contacts : magic 1");
@@ -30122,6 +30146,9 @@ public class TLRPC {
                 imported.add(object);
             }
             magic = stream.readInt32(exception);
+
+            System.out.println("contacts : magic 2 "+magic);
+
             if (magic != 0x1cb5c415) {
                 System.out.println("contacts : magic 2");
 
@@ -30132,7 +30159,10 @@ public class TLRPC {
                 }
                 return;
             }
+
             count = stream.readInt32(exception);
+            System.out.println("contacts : count "+count);
+
             for (int a = 0; a < count; a++) {
                 TL_popularContact object = TL_popularContact.TLdeserialize(stream, stream.readInt32(exception), exception);
                 if (object == null) {
@@ -30142,9 +30172,12 @@ public class TLRPC {
 
                 popular_invites.add(object);
             }
+
             magic = stream.readInt32(exception);
+            System.out.println("contacts : magic 4 "+magic);
+
             if (magic != 0x1cb5c415) {
-                System.out.println("contacts : magic 3");
+                System.out.println("contacts : magic ");
 
                 if (exception) {
                     System.out.println("contacts : wrong Vector magic, got %x again ");
@@ -30154,10 +30187,14 @@ public class TLRPC {
                 return;
             }
             count = stream.readInt32(exception);
+            System.out.println("contacts : count 2 "+count);
+
             for (int a = 0; a < count; a++) {
                 retry_contacts.add(stream.readInt64(exception));
             }
             magic = stream.readInt32(exception);
+            System.out.println("contacts : magic 5 "+magic);
+
             if (magic != 0x1cb5c415) {
                                 System.out.println("contacts : magic 4");
                 if (exception) {
@@ -30166,8 +30203,13 @@ public class TLRPC {
                 return;
             }
             count = stream.readInt32(exception);
+            System.out.println("count => "+count);
             for (int a = 0; a < count; a++) {
-                User object = User.TLdeserialize(stream, stream.readInt32(exception), exception);
+
+                System.out.println("contacts : inside for "+exception);
+//                System.out.println("contacts : inside for "+stream.readInt32(false));
+
+                User object = User.TLdeserialize(stream, stream.readInt32(false), exception);
                 if (object == null) {
                     return;
                 }

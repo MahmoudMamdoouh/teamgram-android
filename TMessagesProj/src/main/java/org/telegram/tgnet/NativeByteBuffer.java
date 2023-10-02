@@ -385,6 +385,7 @@ public class NativeByteBuffer extends AbstractSerializedData {
             return buffer.getInt();
         } catch (Exception e) {
             if (exception) {
+
                 throw new RuntimeException("read int32 error", e);
             } else {
                 if (BuildVars.LOGS_ENABLED) {

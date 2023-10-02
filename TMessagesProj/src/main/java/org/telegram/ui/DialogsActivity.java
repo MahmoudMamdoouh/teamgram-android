@@ -2974,6 +2974,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                         try {
                             super.onLayoutChildren(recycler, state);
                         } catch (IndexOutOfBoundsException e) {
+                            System.out.println("MO*7"+e);
+
                             FileLog.e(e);
                             AndroidUtilities.runOnUIThread(() -> viewPage.dialogsAdapter.notifyDataSetChanged());
                         }
@@ -3182,6 +3184,8 @@ public class DialogsActivity extends BaseFragment implements NotificationCenter.
                     try {
                         super.notifyDataSetChanged();
                     } catch (Exception e) {
+                        System.out.println("MO*8"+e);
+
                         FileLog.e(e);
                     }
                 }

@@ -158,7 +158,6 @@ public class ActionBar extends FrameLayout {
     }
 
     private void createBackButtonImage() {
-        System.out.println("gone * createBackButtonImage");
         if (backButtonImageView != null) {
             return;
         }

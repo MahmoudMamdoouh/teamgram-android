@@ -173,6 +173,7 @@ public class ContactsActivity extends BaseFragment implements NotificationCenter
         checkPermission = UserConfig.getInstance(currentAccount).syncContacts;
         if (arguments != null) {
             onlyUsers = arguments.getBoolean("onlyUsers", false);
+            System.out.println("onlyuser = "+onlyUsers);
             destroyAfterSelect = arguments.getBoolean("destroyAfterSelect", false);
             returnAsResult = arguments.getBoolean("returnAsResult", false);
             createSecretChat = arguments.getBoolean("createSecretChat", false);
@@ -480,6 +481,7 @@ public class ContactsActivity extends BaseFragment implements NotificationCenter
                                     int mode = Settings.Secure.getInt(ApplicationLoader.applicationContext.getContentResolver(), Settings.Secure.LOCATION_MODE, Settings.Secure.LOCATION_MODE_OFF);
                                     enabled = (mode != Settings.Secure.LOCATION_MODE_OFF);
                                 } catch (Throwable e) {
+                                    System.out.println("MO*1"+e);
                                     FileLog.e(e);
                                 }
                             }
@@ -558,6 +560,8 @@ public class ContactsActivity extends BaseFragment implements NotificationCenter
                                 intent.putExtra("sms_body", ContactsController.getInstance(currentAccount).getInviteText(1));
                                 getParentActivity().startActivityForResult(intent, 500);
                             } catch (Exception e) {
+                                System.out.println("MO*2"+e);
+
                                 FileLog.e(e);
                             }
                         });
@@ -669,6 +673,8 @@ public class ContactsActivity extends BaseFragment implements NotificationCenter
                     try {
                         BulletinFactory.of(this).createErrorBulletin(LocaleController.getString("BotCantJoinGroups", R.string.BotCantJoinGroups)).show();
                     } catch (Exception e) {
+                        System.out.println("MO*3"+e);
+
                         FileLog.e(e);
                     }
                     return;
@@ -738,6 +744,8 @@ public class ContactsActivity extends BaseFragment implements NotificationCenter
                                 }
                             }
                         } catch (Exception e) {
+                            System.out.println("MO*4"+e);
+
                             FileLog.e(e);
                         }
                     }
@@ -859,6 +867,8 @@ public class ContactsActivity extends BaseFragment implements NotificationCenter
         try {
             activity.requestPermissions(items, 1);
         } catch (Exception e) {
+            System.out.println("MO*5"+e);
+
             FileLog.e(e);
         }
     }
@@ -882,6 +892,8 @@ public class ContactsActivity extends BaseFragment implements NotificationCenter
                                 intent.setData(uri);
                                 getParentActivity().startActivity(intent);
                             } catch (Exception e) {
+                                System.out.println("MO*6"+e);
+
                                 FileLog.e(e);
                             }
                         }

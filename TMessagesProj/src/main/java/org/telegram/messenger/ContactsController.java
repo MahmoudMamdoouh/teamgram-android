@@ -1224,9 +1224,13 @@ public class ContactsController extends BaseController {
 //                        req.contacts.add(testContact);
                         System.out.println("contacts : contacts length "+req.contacts.size()+ " "+req.contacts.get(0).first_name +" iteration "+a);
 
+
+
+                        System.out.println("contacts : before send request "+req.toString());
+
                         getConnectionsManager().sendRequest(req, (response, error) -> {
 
-                            System.out.println("contacts : getConnectionsManager().sendRequest at contacts length ");
+                            System.out.println("contacts : getConnectionsManager().sendRequest send request "+response);
 
                             completedRequestsCount++;
                             if (error == null) {
@@ -1283,6 +1287,7 @@ public class ContactsController extends BaseController {
                                 }
                                 hasErrors[0] = true;
                                 if (BuildVars.LOGS_ENABLED) {
+
                                     System.out.println("contacts : import contacts error "+ error.text);
 
                                     FileLog.d("import contacts error " + error.text);
@@ -1326,6 +1331,7 @@ public class ContactsController extends BaseController {
                                 });
                             }
                         }, ConnectionsManager.RequestFlagFailOnServerErrors | ConnectionsManager.RequestFlagCanCompress);
+                        System.out.println("contacts : after send request "+req.toString());
 
                     }
                 } else {

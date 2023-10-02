@@ -160,7 +160,7 @@ public class ContactsAdapter extends RecyclerListView.SectionsAdapter {
     public Object getItem(int section, int position) {
         HashMap<String, ArrayList<TLRPC.TL_contact>> usersSectionsDict = onlyUsers == 2 ? ContactsController.getInstance(currentAccount).usersMutualSectionsDict : ContactsController.getInstance(currentAccount).usersSectionsDict;
         ArrayList<String> sortedUsersSectionsArray = onlyUsers == 2 ? ContactsController.getInstance(currentAccount).sortedUsersMutualSectionsArray : ContactsController.getInstance(currentAccount).sortedUsersSectionsArray;
-
+System.out.println("users  "+sortedUsersSectionsArray.size());
         if (onlyUsers != 0 && !isAdmin) {
             if (section < sortedUsersSectionsArray.size()) {
                 ArrayList<TLRPC.TL_contact> arr = usersSectionsDict.get(sortedUsersSectionsArray.get(section));

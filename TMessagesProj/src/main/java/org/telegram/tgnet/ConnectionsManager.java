@@ -271,6 +271,7 @@ public class ConnectionsManager extends BaseController {
     }
 
     public int sendRequest(TLObject object, RequestDelegate completionBlock, int flags) {
+
         return sendRequest(object, completionBlock, null, null, null, flags, DEFAULT_DATACENTER_ID, ConnectionTypeGeneric, true);
     }
 
@@ -308,12 +309,13 @@ public class ConnectionsManager extends BaseController {
                         if (response != 0) {
                             NativeByteBuffer buff = NativeByteBuffer.wrap(response);
                             buff.reused = true;
-//                            try {
+                            try {
                                 resp = object.deserializeResponse(buff, buff.readInt32(true), true);
-//                            } catch (Exception e2) {
-//                                FileLog.fatal(e2);
-//                                return;
-//                            }
+
+                            } catch (Exception e2) {
+                                FileLog.fatal(e2);
+                                return;
+                            }
                         } else if (errorText != null) {
                             error = new TLRPC.TL_error();
                             error.code = errorCode;

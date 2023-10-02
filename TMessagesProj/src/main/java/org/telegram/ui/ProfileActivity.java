@@ -1496,6 +1496,8 @@ public class ProfileActivity extends BaseFragment implements NotificationCenter.
                 try {
                     countDownLatch.await();
                 } catch (Exception e) {
+                    System.out.println("MO*29"+e);
+
                     FileLog.e(e);
                 }
                 if (currentChat != null) {
